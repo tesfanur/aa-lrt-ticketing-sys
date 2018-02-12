@@ -83,7 +83,7 @@ function user_login(req, res) {
 
 }
 /**
-*2. Find all list of users controller
+*3. Find all list of users controller
 */
 function findAllUser(req, res){
   var allUsers={};
@@ -97,7 +97,7 @@ function findAllUser(req, res){
           });
    }
 /**
-*3. Find user by their ID controller
+*4. Find user by their ID controller
 */
 function findUserById(req, res){
   console.log('Getting user by id:');
@@ -113,7 +113,7 @@ function findUserById(req, res){
           });
    }
 /**
-*4. Update User Info Controller
+*5. Update User Info Controller
 */
 function updateUserInfo(req,res){
   var modifiedAt = new Date();
@@ -133,114 +133,19 @@ function updateUserInfo(req,res){
          });
 }
 /**
-*5. Delete User Controller
+*6. Delete User Controller
 */
 function deleteUserById(req,res){
-  var UserId=req.params.userId;
-  UserModel.findOneAndRemove({_id:UserId},
-         function(err, retrievedUser){
-          if(err)  res.send('Error Deleteing');
-           else  {res.send("No content found");
-           //res.json(retrievedUser);
-         }
-         });
-
-}
-/**
-*6. User Login Controller
-*/
-function loginUser(req,res){
-  var body = _.pick(req.body, "email","password","username");
-   var userD=body;
-if (userD.email && userD.password) {
-     UserModel.authenticate(userD.email, userD.password, function (error, user) {
-       console.log({error, user:user});
-       if (error) {
-         var err ={};
-          err.message='WRONG EMAIL OR PASSWORD.';
-          err.status  = error;
-         return res.status(401).json({"ERROR":"AUTHENTICATION FAILED",
-          "ACTUAL ERROR":err});
-       }
-       if (!user) {
-           err.message='User not found';
-          return res.status(401).json({"error":"AUTHENTICATION FAILED",
-        error:err});
-        }
-         //req.session.userId = user._id;
-         //return res.redirect('/profile');
-         return res.json({"message": "Hello "+user.firstName+ " "+
-         user.lastName + ". WELCOME TO AA LRT ONLINE TICKETING SYSTEM!",
-       "user":_.pick(user,"email","username","firstName","lastName")});
-
-     });
-} else {
- var err = {};
- err.status = 400;//bad request status code
- err.message='Bad Request.All fields are required.';
- //return next(err);
- return res.status(400).json({"error":err});//bad request
-}
-
-}
-
-/**________________________________
-* User Login Controller ??? take some part of the code into your new code
-*__________________________________*/
-function userLogin(req, res) {
-    var email    = req.body.email;
-    var password = req.body.password;
-
-UserModel.findOne({email:email}).exec()
-        .then(userFound => {
-              if(!userFound) return res.status(400).json({"message": "No user found"});
-
-               bcrypt.compare(password, userFound.password)
-                     .then(function(result) {
-                       if(!result) return res.status(400).json({"message": "Incorrect Password"});
-                       console.log("result:", result);
-                       if(result){
-                         //TODO: add jwt features like expire time,...
-                         //sign a token with 1 hour of expiration time
-                         var token ="JWT " + jwt.sign({ username: userFound.username,
-                         exp: Math.floor(Date.now() / 1000) + (60 * 60)}, config.SECRET)
-
-                       return res.header("Auth",token).status(201).json( {"message":`Hello ${userFound.username}. Welcome to our website`,
-                       user: userFound,token: token})}
-                       })
-                     .catch(err => {console.log(err)});
-
+  var query= {_id:req.params.userId};
+  UserDal.delete(query)
+         .then(user => {
+           if(!user) return res.send("No content found");
+           return res.send(user);
          })
-        .catch(err => {console.log(err)});
-}
-/**
-*II. Find user using their token value instead of plain old text
-*/
-function findUserByToken(){
-  return new Promise(function(resolve, reject){
-    try{
-      var decodedJWT =jwt.verify(token, config.SECRET);
-      var bytes = cryptojs.AES.decrypt(decodedJWT,config.SECRET);
-      var tokenData = JSON.parse(bytes.toString(cryptojs.enc.utf8));
-      userModel.findById(tokenData._id)
-               .then(function(user){
-                 if(user){
-                   resolve(user);
-                 }
-                 else{
-                   reject();
-                 }
-               },
-             function(e){
-               reject();
-             })
-    }catch(e){
-      reject();
-    }
-  }
+         .catch(e => {console.log(e);
+         res.status(404).send({"error":e});});
 
-  );
-}
+} 
 /**
 *II. Export User Controllers
 */

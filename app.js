@@ -4,7 +4,7 @@ var express      = require('express'),
 		cookieParser = require('cookie-parser'),
 		bodyParser   = require('body-parser'),
 	  expressValidator = require('express-validator'),
-		expressSession   = require('express-session'),
+		session   = require('express-session'),
 		passport   = require('passport'),
 		mongoose   = require('mongoose');
 
@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));// parse application/x-www-fo
 app.use(expressValidator());//use for user input validation
 app.use(morgan('dev')); //Logging HTTP Method and URL
 app.use(cookieParser());
-app.use(expressSession(
+app.use(session(
 	{secret:config.SESSION_SECRET,//use salt from bcrypt
 	resave:false,
 	saveUninitialized:true}));
