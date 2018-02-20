@@ -4,8 +4,7 @@
 const _         = require('lodash');
 const jwt       = require('jsonwebtoken');
 const bcrypt    = require('bcrypt');
-const expressValidator= require('express-validator');
-;
+const mongoose  = require('mongoose');
 /**
 *Load local module dependecies
 */
@@ -26,7 +25,7 @@ function create_user(req, res) {
   var errors = req.validationErrors();
   if(errors){
    console.log(errors);
-   return res.status(500).json({'validation-errors':errors});
+   return res.status(400).json({'validation-errors':errors});
    }
       //take only the required field from req.body object
       //use array and destract method to make the following code
@@ -68,6 +67,12 @@ function user_login(req, res) {
   req.checkBody('email','Email you entered is invalid. Please try again').isEmail().trim();
   req.checkBody('password','password is required').notEmpty();
 
+    var errors = req.validationErrors();
+    if(errors){
+     console.log(errors);
+     return res.status(400).json({'validation-errors':errors});
+     }
+
   var userData = _.pick(req.body, ['email', 'password']);
   UserDal.login(userData)
           .then(result => {
@@ -77,7 +82,7 @@ function user_login(req, res) {
             res.header('x-auth', token).send(user);
           })
           .catch(e => {
-              res.status(400).json({"MESSAGE":"ACCESS FORBID",
+              res.status(401).json({"MESSAGE":"ACCESS FORBIDDEN",
             "ERROR":e});
           });
 
@@ -85,7 +90,7 @@ function user_login(req, res) {
 /**
 *3. Find all list of users controller
 */
-function findAllUser(req, res){
+function findAllUser(req, res, next){
   var allUsers={};
   UserDal.findAll(allUsers)
           .then(users => {
@@ -93,6 +98,8 @@ function findAllUser(req, res){
             return res.json(users);
           })
           .catch(e => {
+              //?????
+              next(e);
               return res.status(500).json(e);
           });
    }
@@ -102,15 +109,23 @@ function findAllUser(req, res){
 function findUserById(req, res){
   console.log('Getting user by id:');
   var userId=req.params.userId;
-  UserDal.findById(userId)
-          .then(user => {
-            if(!user) return res.status(404).json({"ERROR": "NO USER FOUND"});
-            console.log("user",user)
-            return res.json(user);
-          })
-          .catch(e => {
-              return res.status(500).json(e);
-          });
+  //chech if User ObjectId is valid or not
+  var validObjectId=mongoose.Types.ObjectId.isValid(userId);
+  if(validObjectId){
+    UserDal.findById(userId)
+            .then(user => {
+              if(!user) return res.status(404).json({"ERROR": "NO USER FOUND"});
+              console.log("user",user)
+              return res.json(user);
+            })
+            .catch(e => {
+                return res.status(500).json(e);
+            });
+  }else{
+     res.status(400).send({"message":"User Id is not valid"});
+   }
+
+
    }
 /**
 *5. Update User Info Controller
@@ -118,9 +133,13 @@ function findUserById(req, res){
 function updateUserInfo(req,res){
   var modifiedAt = new Date();
   req.body.modifiedAt=modifiedAt;
-  var setUpdates= _.pick(req.body,["email","password","phone","modifiedAt"]);
+  var setUpdates= _.pick(req.body,["email","password","phone","userType","modifiedAt"]);
+  var updates ={email:setUpdates.email,
+                phone:setUpdates.phone,
+                userType:setUpdates.userType
+              }
   var query ={_id:req.params.userId};
-  var updateOpts =  {$set: setUpdates };
+  var updateOpts =  {$set: updates };
   //try to debug server error problem when your create
   UserDal.update(query,updateOpts)
          .then(updatedUser => {
@@ -136,16 +155,24 @@ function updateUserInfo(req,res){
 *6. Delete User Controller
 */
 function deleteUserById(req,res){
-  var query= {_id:req.params.userId};
-  UserDal.delete(query)
-         .then(user => {
-           if(!user) return res.send("No content found");
-           return res.send(user);
-         })
-         .catch(e => {console.log(e);
-         res.status(404).send({"error":e});});
+  var userId=req.params.userId;
+  //chech if User ObjectId is valid or not
+  var validObjectId=mongoose.Types.ObjectId.isValid(userId);
+  if(validObjectId){
+    var query= {_id:userId};
+    UserDal.delete(query)
+           .then(user => {
+             if(!user) return res.send("No content found");
+             return res.send(user);
+           })
+           .catch(e => {console.log(e);
+           res.status(404).send({"error":e});});
+  }  else{
+     res.status(400).send({"message":"User Id is not valid"});
+   }
 
-} 
+
+}
 /**
 *II. Export User Controllers
 */

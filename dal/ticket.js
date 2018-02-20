@@ -1,90 +1,221 @@
-//Load module dependencies
+/**
+*Load module dependecies
+*/
+const debug   = require('debug')('api:ticket-dal');
+const q       = require('q');
+const moment  = require('moment');
 
-var TicketModel = require('../models/ticket');
+const TicketModel = require('../models/ticket');
+const logMsg  = require('../lib/utils').showMsg;
 
-var debug   = require('debug')('api:ticket-dal');
-
-var TicketDalModule = (function(TicketModel){
+const TicketDalModule = (function(TicketModel){
   'use strict';
-//1. Create Ticket
- function createTicket(data, cb){
-    debug('creating a new ticket');
-    var ticket = new TicketModel(data);
-          ticket.save()
-                .then(function(ticketData){
-                        getTicketById({_id:ticketData._id},
-                          function (err, ticket){
-                            if(err) return cb(null,err)
-                            cb (null, ticket);});})
-                  .catch(function(err){
-                         return cb(err);//short form of if else statement
-                    });
-}
-// 2. Get all Tickets
-function getAllTickets(query, cb){
-    debug('getting all ticket collection');
- TicketModel.find(query)
-        .exec()
-        .then(function(tickets){
-            cb(null, tickets || {});})
-        .catch(function(err){
-            if(err) return cb(err)});
+/**
+*1. Create TicketModel
+*/
+function createTicket(data){
+   debug('CREATING A NEW TICKET');
+   //save fare info
+    let newTicket = new TicketModel(data);
+    return new Promise((resolve,reject)=>{
+                newTicket.save()
+                         .then((result) => {
+                            resolve(result);
+                          }, function(err){
+                            return reject(err);
+                          })
+                   });
 
 }
-//Get Ticket by Id
-function getTicketById(query, cb){
-    debug('getting a ticket', query);
- TicketModel.findOne(query)
-        .exec()
-        .then(function(ticket){
-            cb(null, ticket || {});})
-        .catch(function(err){
-            return cb(err)});
+
+  /**
+  *2. Get all TicketModels
+  */
+  function getAllTickets(query){
+      debug('getting all ticket collection');
+       var defferd = q.defer();
+  TicketModel.find(query,{createdAt:-1})
+             .populate('from',"name route stationId")
+             .populate('to',"name route stationId")
+             .populate('passengerId',"email")
+             .sort({createdAt:-1})
+             .exec()
+             .then( (tickets) => {
+               if(tickets){
+                 var publickTicket=tickets;
+                publickTicket.createdAt =moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
+                 console.log(tickets.createdAt);
+              defferd.resolve(publickTicket);
+            }
+           }, function(err) {
+             defferd.reject(err);
+           });
+
+    return defferd.promise;
+  }
+  /**
+  *3. Get all my TicketModels
+  */
+  function getAllMyTickets(query){
+      debug('GETTING ALL TICKET COLLECTION');
+       var defferd = q.defer();
+  TicketModel.find(query)
+             .populate('from',"name route stationId")
+             .populate('to',"name route stationId")
+             .populate('passengerId',"email phone")
+             .sort({createdAt:-1})
+             .exec()
+             .then( (tickets) => {
+              defferd.resolve(tickets);
+           }, function(err) {
+             defferd.reject(err);
+           });
+
+    return defferd.promise;
+  }
+  /**
+  *3.Get Ticket by Id ?
+  */
+   function getTicketById(id){
+        debug('GETTIGN STATION', id)
+        console.log("my ticket id : " + id);
+
+      return new Promise((resolve, reject)=>{
+   TicketModel.findOne({_id : id})
+              .populate('from',"name route stationId")
+              .populate('to',"name route stationId")
+              .populate('passengerId',"email phone")
+              .sort({createdAt:-1})
+              .exec()
+              .then((result) => {
+                  if(!result) return resolve(404);//ticket not found
+                  return resolve(result);
+              },function(err){
+                 reject(err);
+              });
+      })
+    }
+
+
+  function getTicketByCustomId(id){
+      debug('GETTIGN STATION', id)
+      console.log("my ticket id : " + id);
+      var defferd = q.defer();
+      TicketModel.findOne({ticketId : id})
+          .exec()
+          .then((result) => {
+              if(!result) return defferd.resolve(404);
+              return defferd.resolve(result);
+          },function(err){
+            defferd.reject(err);
+          });
+      return defferd.promise
+  }
+
+  /**
+  *3. Search ticket by query instead of req.body
+  */
+function searchTicketByName(name){
+
+  return new Promise((resolve,reject)=>{
+        TicketModel.findOne({name:name})
+                     .then(function(result){
+                         //if not ticket found return 404
+                         if(!result) resolve(404);
+                         resolve(result);
+                     }, function(err){
+                       reject(err)
+                     })
+  });
+  }
+
+function ticketExist(ticketId){
+   debug('CHECKING STATION EXISTENCE');
+   logMsg({ticketId: ticketId});
+   var defferd = q.defer();
+TicketModel.findOne({ticketId:ticketId})
+            .exec()
+            .then((err,result) => {
+              if(err) return defferd.reject(err);
+              //if ticket doesn't exist
+              //if(!result) return defferd.resolve(false);
+              defferd.resolve(result);
+            })
+
+        return defferd.promise;
+
+}
+function ticketExist(ticketId){
+   debug('CHECKING STATION EXISTENCE');
+   logMsg({ticketId: ticketId});
+
+return new Promise((resolve, reject)=>{
+  TicketModel.findOne({ticketId:ticketId})
+              .exec()
+              .then((result) => {
+                //if ticket doesn't exist
+                if(!result) return resolve(true);
+                 resolve(400);//bad request
+              },(err)=>{
+                reject(err);
+              })
+ });
 }
 
-//Update Ticket
-function updateTicket(query, update, cb){
+/**
+*3.Update Ticket
+*/
+function updateTicket(query, update, opts){
     debug('updating a ticket', query);
-    var opts = {
-        'new': true
-    };
- TicketModel.findOneAndUpdate(query, update, opts)
-        .exec()
-        .then(function (ticket){
-            cb(null, ticket || {})})
-        .catch(function (err){
-            if(err) return cb(err);});
-}
-//Remove Ticket
-function deleteTicket(query, cb){
-    debug('deleting a ticket');
- TicketModel.findOne(query)
-        .exec()
-        .then(function (ticket){
-            if(!ticket) {
-               res.status(404);
-              return cb(null, {"message":"Not found"})}
-              ////cb(null, ticket);
 
-            ticket.remove(function(err, data){
-                if(err) return cb(err)
-                cb(null, data);})
-                ;})
-         .catch(function (err){
-                    return cb(err); });
+    return new Promise((resolve, reject)=>{
+      TicketModel.findOneAndUpdate(query, update, opts)
+            .exec()
+            .then((result) => {
+                //if(!result) return resolve();//no content found
+                  resolve(result);
+            }, (err)=>{
+              reject(err)
+            });
+    });
+
 }
-//Get ticket by pagination
-function getTicketByPagination(query, qs, cb){
+/**
+*4.Remove Ticket
+*/
+function deleteTicket(query){
+    debug('DELETING STATION');
+    var defferd =q.defer();
+    return new Promise((resolve, reject)=>{
+      TicketModel.findOneAndRemove(query)
+               .then((result)=>{
+                   if(!result) return resolve(404);
+                   resolve(result)
+                 }, err=>{
+                   reject(err);
+                 });
+           //return defferd.promise;
+    })
+
+
+}
+
+/**
+*5.Get ticket by pagination
+*/
+function getTicketByPagination(query, qs){
     debug('fetching a collection of tickets');
-
+    var defferd =q.defer();
     var opts = {
         sort: qs.sort || {},
         page: qs.page || 1,
         limit: qs.per_page || 10
     };
 
-    TicketModel.paginate(query, opts, function (err, data){
-        if(err) return cb(err,null);
+    TicketModel.paginate(query, opts, (err, data)=>{
+        if(err) return defferd.reject(err);
+
+        if(!data) return defferd.reject("Ticket not found");
 
         var response = {
             page: data.page,
@@ -93,18 +224,25 @@ function getTicketByPagination(query, qs, cb){
             per_page: data.limit,
             docs: data.docs
         };
-
-        cb(null, response);
+       if(data) return defferd.resolve(response);
     });
+    return defferd.promise;
 }
 
-//return TicketDalModule public APIs
+//
+/**
+*6.return TicketDalModule public APIs
+*/
   return {create : createTicket,
-  getAll : getAllTickets,
-  getById : getTicketById,
+  findAll  : getAllTickets,
+  fineMine : getAllMyTickets,
+  findById : getTicketById,
   update : updateTicket,
   delete : deleteTicket,
-  paginate : getTicketByPagination
+  paginate : getTicketByPagination,
+  ticketExist: ticketExist,
+  findByCustomId:getTicketByCustomId,
+  searchByName:searchTicketByName
 };
 }(TicketModel));
 

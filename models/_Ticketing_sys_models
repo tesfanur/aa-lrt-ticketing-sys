@@ -1,0 +1,74 @@
+Addis Ababa Light Rail transit Train Online
+Ticketing System Models
+======================
+1. User Model
+======================
+userId     : Number
+email      : String
+password   : String
+phone      : Number
+userType   : String
+
+======================
+2. UserProfile Model
+======================
+userId          : Number
+username        : String
+firstName       : Number
+lastName        : String
+profileImgPath  : String
+address         : String
+
+======================
+3. Station Model
+======================
+id       : String
+userId   : Number
+route    : String
+name     : String
+lat      : Number
+long     : Number
+
+======================
+4. Fare Model
+======================
+id          : Number
+userId      : Number
+route       : String
+from        : String
+to          : String
+distance    : Number
+fare        : Number
+
+======================
+5. Ticket Model
+======================
+id           : Number
+passengerId  : String
+type         : String
+status       : String
+route        : String
+from         : String
+to           : String
+price        : Number
+
+======================
+6. Schedule Model
+======================
+scheduleIid     : String
+createdBy       : Number
+station         : Number
+trainId         : Number
+arrivaleTime    : Date
+departureTime   : Date
+
+
+======================
+7. FAQs Model
+======================
+Id            : Number
+userId        : Number
+question      : Number
+answer        : String
+dateCreated   : Date
+dateAnswerd   : Date

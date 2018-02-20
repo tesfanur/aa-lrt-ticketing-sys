@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var TicketSchema = new Schema({
-    ticketType :{type:String,
+    type    :{type:String,
               enum : ['for child','for adult','for handicaped'],
               default: 'for adult',
               required : true},
@@ -23,8 +23,10 @@ var TicketSchema = new Schema({
                    ref:'Station'},
     price   : {type: Number,
                required: true},
+    route   : {type: String,
+              required: true},
 
-    ticketStatus :{type:String,
+    status :{type:String,
               enum : ['unused','used','cancelled'],
               default: 'unused',
               required : true},

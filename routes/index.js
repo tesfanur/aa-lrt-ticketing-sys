@@ -3,11 +3,11 @@
 var authenticate   = require('../lib/middleware/authenticate').authenticate;
 var home           = require('../lib/utils').root;
 var userRouter     = require('./user');
-var profileRouter  = require('./profile');
 var scheduleRouter = require('./schedule');
 var stationRouter  = require('./station');
 var fareRouter     = require('./fare');
 var ticketRouter   = require('./ticket');
+var userProfileRouter   = require('./user_profile');
 //var courseRouter = require('./course');
 var profileImageRouter = require('./profileimage');
 
@@ -26,12 +26,8 @@ module.exports = function appRouter(app) {
 	app.use('/tickets', ticketRouter);
 	//Fare/Payment routes
 	app.use('/fares', fareRouter);
-	//course routes
-	//app.use('/courses', courseRouter);
+	//User Profile routes
+	app.use('/profiles', userProfileRouter);
  //get home page
 	app.get('/',home);
-	// app.get('/', function (req, res){
-	// 	res.json({message: "ONLINE AA TRAIN TICKETING SYSTEM API STARTED RUNNING ON HEROKU!"});})
-
-
 }

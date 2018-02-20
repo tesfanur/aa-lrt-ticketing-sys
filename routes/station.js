@@ -17,18 +17,23 @@ var router = express.Router();
  * @apiGroup Station
  * @apiDescription Creates a new Station
  *
- * @apiParam {String} firstName The first name of the Station
- * @apiParam {String} lastName The last name of the Station
- * @apiParam {String} email The email address of the Station
- * @apiParam {String} password The user password
+ * @apiParam {String} name The name of the Station
+ * @apiParam {String} stationId The last name of the Station
+ * @apiParam {String} route The route of the Station
+ * @apiParam {Number} latitude The latitude of the station
+ * @apiParam {Number} longitude The longitude of the sation
  *
  * @apiParamExample Request Example
  *
  * {
- *	"email": "john1@aksum.com",
- *	"password": "password",
- *	"firstName": "John",
- *	"lastName": "Doe"
+ *   "_id": "5a74264fc461a418b08dae07",
+ *   "stationId": "2",
+ *   "name": "Meri",
+ *   "longitude": 38.863153,
+ *   "latitude": 9.0195233,
+ *   "createdAt": "2018-02-02T08:50:23.602Z",
+ *   "modifiedAt": "2018-02-02T08:50:23.602Z",
+ *   "route": "EW"
  * }
  *
  * @apiSuccessExample Response Example
@@ -52,7 +57,7 @@ router.post('/',authenticate, stationController.create);
  *
  *
  */
- router.get('/',authenticate, stationController.getAll);
+ router.get('/',authenticate, stationController.findAll);
 //
 // /**
 //  * @api {GET} /stations/paginate Station Paginate
@@ -72,7 +77,7 @@ router.get('/paginate',authenticate, stationController.paginate);
  * {"email": "john1@aksum.com"}
  */
  //the following should use get http method
-router.put('/search',authenticate, stationController.search);
+router.get('/search/:name',authenticate, stationController.searchByName);
 
 /**
  * @api {GET} /stations/:id Get Station
@@ -83,7 +88,10 @@ router.put('/search',authenticate, stationController.search);
  *
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
-router.get('/:id',authenticate, stationController.getById);
+ router.get('/:id',authenticate, stationController.findById);
+ //
+
+router.get('/customid/:cid',authenticate, stationController.findByCustomId);
 
 /**
  * @api {UPDATE} /stations/:id Update Station
@@ -106,6 +114,6 @@ router.put('/:id',authenticate, stationController.update);
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
 router.delete('/:id', authenticate, stationController.delete);
-router.get('/station/:name', authenticate, stationController.findByName);
+//router.get('/station/:name', authenticate, stationController.findByName);
 
 module.exports = router;

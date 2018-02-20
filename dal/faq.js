@@ -3,23 +3,23 @@
 */
 const _       = require('lodash');
 const q       = require('q');
-const debug   = require('debug')('api:fare-dal');
+const debug   = require('debug')('api:faq-dal');
 const moment  = require('moment');
 /**
 *Load custom module dependecies
 */
-const FareModel = require('../models/fare');
-const StationDal   = require('../dal/station');
+const FaqDalModule = require('../models/faq');
+const StationDal   = require('../dal/station');//???
 const logMsg = require('../lib/utils').showMsg;
 const errorHandler = require('../lib/utils').errorHandler;
 
-var returnFields = FareModel.whitelist;
+var returnFields = FaqDalModule.whitelist;
 // var population = [{
 //   path: 'user',
 //   select: User.whitelist
 // }];
 
-const FareDalModule = (function(FareModel){
+const FaqDalModule = (function(FaqDalModule){
   'use strict';
 /**
 *1. Create Fare DATA ACCESS LAYER
@@ -28,11 +28,11 @@ const FareDalModule = (function(FareModel){
      debug('CREATING A NEW FARE');
 
      var defferd = q.defer();
-     //save fare info
-      let fare = new FareModel(data);
-             fare.save()
-                 .then(fareData => {
-                    defferd.resolve(fareData);
+     //save faq info
+      let faq = new FaqDalModule(data);
+             faq.save()
+                 .then(faqData => {
+                    defferd.resolve(faqData);
                   })
                 .catch(err =>
                     {
@@ -42,25 +42,25 @@ const FareDalModule = (function(FareModel){
 
  }
  /**
- *2. DATA ACCESS LAYER to check whether fare documet Exists or not b/n two stations
+ *2. DATA ACCESS LAYER to check whether faq documet Exists or not b/n two stations
  */
- function fareExist(from, to){
+ function faqExist(from, to){
     debug('CREATING A NEW FARE');
 
     logMsg({from:from, to:to});
     var defferd = q.defer();
     //console.log("log data ",{from: from, to:to});
-    FareModel.findOne({from:from, to:to})
+    FaqDalModule.findOne({from:from, to:to})
              .exec()
              .then(result => {
-               //fare
+               //faq
                if(result){
                    logMsg("This record already exists.");
-                     //fare doesn't exist
+                     //faq doesn't exist
                      defferd.resolve(true);
                     }
                     else{
-                      //fare exists
+                      //faq exists
                     defferd.resolve(false);
                     }
              }).catch(err => {defferd.reject(err);});
@@ -69,18 +69,18 @@ const FareDalModule = (function(FareModel){
 
 }
 /**
-*3. DATA ACCESS LAYER for setting fare amount
+*3. DATA ACCESS LAYER for setting faq amount
 */
-function setFareAmount(from, to, fare){
+function setFareAmount(from, to, faq){
    debug('CREATING A NEW FARE');
 
-   logMsg({from:from, to:to, fare:fare});
+   logMsg({from:from, to:to, faq:faq});
    var defferd = q.defer();
-   FareModel.findOne({from:from, to:to})
+   FaqDalModule.findOne({from:from, to:to})
             .exec()
             .then(result => {
               if(!result)  return defferd.reject();
-                result.fare =fare;
+                result.faq =faq;
                 result.userId =req.user._id;
                 result.save()
                     .then(updatedFare => {
@@ -98,9 +98,9 @@ function setFareAmount(from, to, fare){
 function setDistance(from, to, distance){
    debug('CREATING A NEW FARE');
 
-   logMsg({from:from, to:to, fare:fare});
+   logMsg({from:from, to:to, faq:faq});
    var defferd = q.defer();
-   FareModel.findOne({from:from, to:to})
+   FaqDalModule.findOne({from:from, to:to})
             .exec()
             .then(result => {
               if(!result)  return defferd.reject();
@@ -122,21 +122,21 @@ function setDistance(from, to, distance){
 function getAllFares(query){
     debug('GETTING ALL FARE COLLECTION');
     var defferd =q.defer();
- FareModel.find(query,returnFields)
+ FaqDalModule.find(query,returnFields)
           .populate('from',"name route")
           .populate('to',"name route")
           .populate('userId',"email")
           .sort({createdAt:-1})
           .exec()
-          .then(fares => {
+          .then(faqs => {
             var publicFares ={};
-            //publicFares = fares[0];
-            publicFares.from = fares[0].from.name;
-            publicFares.to = fares[0].to.name;
-            publicFares.distance = fares[0].distance;
-            publicFares.fare = fares[0].fare;
-             if(fares) return defferd.resolve(fares);
-                defferd.resolve("No fares document available");
+            //publicFares = faqs[0];
+            publicFares.from = faqs[0].from.name;
+            publicFares.to = faqs[0].to.name;
+            publicFares.distance = faqs[0].distance;
+            publicFares.faq = faqs[0].faq;
+             if(faqs) return defferd.resolve(faqs);
+                defferd.resolve("No faqs document available");
               })
           .catch((err)=> {
                defferd.reject(err)});
@@ -146,15 +146,15 @@ function getAllFares(query){
 /**
 *6. DATA ACCESS LAYER to Get Fare document by Id
 */
-function getFareById(fareId){
-    debug('getting a fare', fareId);
+function getFareById(faqId){
+    debug('getting a faq', faqId);
     var defferd = q.defer();
- FareModel.findOne({_id:fareId})
+ FaqDalModule.findOne({_id:faqId})
           .exec()
-          .then(fare => {
-             if(fare) return defferd.resolve(fare);;
+          .then(faq => {
+             if(faq) return defferd.resolve(faq);;
                //no error
-                if(fare) return defferd.resolve(fare);
+                if(faq) return defferd.resolve(faq);
                 return defferd.resolve(null);
               })
           .catch(err => { defferd.reject(err)});
@@ -164,40 +164,40 @@ function getFareById(fareId){
 *7. DATA ACCESS LAYER to update Fare document info
 */
 function updateFare(query, update, cb){
-    debug('updating a fare', query);
+    debug('updating a faq', query);
     var opts = {
         'new': true
     };
- FareModel.findOneAndUpdate(query, update, opts)
+ FaqDalModule.findOneAndUpdate(query, update, opts)
         .exec()
-        .then(fare => cb(null, fare || {}))
+        .then(faq => cb(null, faq || {}))
         .catch( err   => {if(err) return cb(err);});
 }
 /**
 *8. DATA ACCESS LAYER to remove Fare document
 */
 function deleteFare(query, cb){
-    debug('deleting a fare');
- FareModel.findOne(query)
+    debug('deleting a faq');
+ FaqDalModule.findOne(query)
         .exec()
-        .then(function (fare){
-            if(!fare) {
-              return cb(null, {fare : fare,
+        .then(function (faq){
+            if(!faq) {
+              return cb(null, {faq : faq,
                 "message":"Fare not found"
             })}
-              ////cb(null, fare);
+              ////cb(null, faq);
 
-            fare.remove((err, data)=>{
+            faq.remove((err, data)=>{
                 if(err) return cb(err)
                 cb(null, data);})
                 ;})
          .catch(err=>{return cb(err)} );
 }
 /**
-*9. DATA ACCESS LAYER to Get fare documents by pagination
+*9. DATA ACCESS LAYER to Get faq documents by pagination
 */
 function getFareByPagination(query, qs, cb){
-    debug('fetching a collection of fares');
+    debug('fetching a collection of faqs');
 
     var opts = {
         sort: qs.sort || {},
@@ -205,7 +205,7 @@ function getFareByPagination(query, qs, cb){
         limit: qs.per_page || 10
     };
 
-    FareModel.paginate(query, opts, (err, data)=>{
+    FaqDalModule.paginate(query, opts, (err, data)=>{
         if(err) return cb(err,null);
 
         var response = {
@@ -223,14 +223,14 @@ function getFareByPagination(query, qs, cb){
 *10.Get Fare by Id  cb({error},{result}) ???
 */
 function getFareByIdAndPopulate(query, cb){
- FareModel.findOne(query,{_id:0})
+ FaqDalModule.findOne(query,{_id:0})
           .populate('from',["name"])
           .populate('to',["name"])
           .exec()
-          .then(fare => {
-             if(!fare) return cb({"error": "No record found"},null);
+          .then(faq => {
+             if(!faq) return cb({"error": "No record found"},null);
                //no error
-              cb(null, fare);})
+              cb(null, faq);})
           .catch(err => {
               return cb(err,null)});
 }
@@ -239,10 +239,10 @@ function getFareByIdAndPopulate(query, cb){
 //https://gist.github.com/kdelemme/9659364
 function getTotalPrice() {
     return new Promise((resolve, reject)=>{
-      FareModel.aggregate([
+      FaqDalModule.aggregate([
           { $group: {
               _id: "$route",
-              totalPrice: { $sum: "$fare"  }
+              totalPrice: { $sum: "$faq"  }
           }}
       ], function (err, result) {
           if (err) {
@@ -260,7 +260,7 @@ function getCompleteFareInfo(route,from,to) {
   console.log("route = "+route + " from = " + from +" to = "+ to)
 
     return new Promise((resolve, reject)=>{
-      FareModel.aggregate([
+      FaqDalModule.aggregate([
 
         {
       $lookup:
@@ -298,7 +298,7 @@ function getCompleteFareInfo(route,from,to) {
             "destination":"$to",
             "passenger":"$userId",
             "distance":"$distance",
-            "ticketPrice":"$fare"}},
+            "ticketPrice":"$faq"}},
 
             {$match:{"source.route":route,
                     "source.stationId":{"$gte":from},
@@ -399,7 +399,7 @@ function generateTicketInfo(route, from,to,user){
           });//end of promise
 }
 /**
-*11.return FareDalModule public APIs
+*11.return FaqDalModule public APIs
 */
 return {
 create : createFare,
@@ -409,7 +409,7 @@ update : updateFare,
 delete : deleteFare,
 paginate : getFareByPagination,
 findAndPopulate :getFareByIdAndPopulate,
-fareExist :fareExist,
+faqExist :faqExist,
 setFareAmount : setFareAmount,
 getTotalPrice:getTotalPrice,
 completeInfo:getCompleteFareInfo,
@@ -417,6 +417,6 @@ generateTicket:generateTicketInfo
 
 };
 
-}(FareModel));
+}(FaqDalModule));
 
-module.exports= FareDalModule;
+module.exports= FaqDalModule;

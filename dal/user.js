@@ -21,7 +21,7 @@ function createNewUser(userData){
     user.save().then(() => {
       return user.generateAuthToken();
     }).then((token) => {
-      if(!token) return defferd.reject(err);
+      if(!token) return defferd.reject();
       var result =[token, user];
       defferd.resolve(result);
     })
@@ -34,8 +34,10 @@ function createNewUser(userData){
 function getAllUsers(query){
     debug('GETTING ALL USER DOCUMENTS');
     var defferd =q.defer();
+    //null here refers to get all user or don't use limit value
  UserModel.find(query)
         //.populate('userId',"firstName lastName username profileImage")
+        .sort({createdAt: -1})//sort by descending order latest on the top
         .exec((err, users) => {
           if(err) return defferd.reject(err);
           return defferd.resolve(users);
@@ -83,30 +85,13 @@ function updateUser(query, setUpdates){
         .exec()
         .then(function (err, updatedUser){
           if(err) return defferd.reject(err);
-          return defferd.resolve(user);
+          return defferd.resolve(updatedUser);
         });
         return defferd.promise;
 }
 /**
 *6. Remove User
 */
-  // function deleteUser(query, cb){
-  //     debug('deleting a User');
-  //  UserModel.findOne(query)
-  //         .exec()
-  //         .then(function (User){
-  //             if(!User) {
-  //                res.status(404);
-  //               return cb(null, {"message":"Not found"})}
-  //               ////cb(null, User);
-  //
-  //             UserModel.remove(function(err, data){
-  //                 if(err) return cb(err)
-  //                 cb(null, data);})
-  //                 ;})
-  //          .catch(function (err){
-  //                     return cb(err); });
-  // }
   function deleteUser(query){
       debug('DELETING USER');
       var defferd =q.defer();

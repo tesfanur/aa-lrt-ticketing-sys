@@ -1,27 +1,27 @@
 /**
 *Load module dependecies
 */
-const debug   = require('debug')('api:station-dal');
+const debug   = require('debug')('api:userProfile-dal');
 const q       = require('q');
 
-const StationModel = require('../models/station');
+const UserProfileModel = require('../models/user_profile');
 const logMsg  = require('../lib/utils').showMsg;
 
-const StationDalModule = (function(StationModel){
+const UserProfileDalModule = (function(UserProfileModel){
   'use strict';
 /**
-*1. Create StationModel
+*1. Create UserProfileModel
 */
-function createStation(data){
+function createUserProfile(data){
    debug('CREATING A NEW FARE');
    //save fare info
-    let station = new StationModel(data);
+    let userProfile = new UserProfileModel(data);
     return new Promise((resolve,reject)=>{
-      StationModel.findOne({stationId:data.stationId})
+   UserProfileModel.findOne({userId:data.userId})
                    .exec()
                    .then(result => {
-                     if(result) return resolve(400);//bad request to create station that already exists
-                     station.save()
+                     if(result) return resolve(400);//bad request to create userProfile that already exists
+                     userProfile.save()
                          .then((result) => {
                             resolve(result);
                           }, function(err){
@@ -33,35 +33,34 @@ function createStation(data){
 }
 
   /**
-  *2. Get all StationModels
+  *2. Get all UserProfileModels
   */
-  function getAllStations(query){
-      debug('getting all station collection');
+  function getAllUserProfiles(query){
+      debug('getting all userProfile collection');
        var defferd = q.defer();
-   StationModel.find(query)
-            .populate('userId',["email"])
+   UserProfileModel.find(query)
+            .populate('userId',["email"])//to be refactored
             .sort({createdAt :-1})
             .exec()
-            .then( (stations) => {
-              defferd.resolve(stations);
+            .then( (userProfiles) => {
+              defferd.resolve(userProfiles);
            }, function(err) {
              defferd.reject(err);
            });
-
     return defferd.promise;
   }
   /**
-  *3.Get Station by Id ?
+  *3.Get UserProfile by Id ?
   */
-   function getStationById(id){
+   function getUserProfileById(id){
         debug('GETTING STATION', id)
-        console.log("my station id : " + id);
+        console.log("my userProfile id : " + id);
 
       return new Promise((resolve, reject)=>{
-        StationModel.findOne({_id : id})
+        UserProfileModel.findOne({_id : id})
               .exec()
               .then((result) => {
-                  if(!result) return resolve(404);//station not found
+                  if(!result) return resolve(404);//userProfile not found
                   return resolve(result);
               },function(err){
                  reject(err);
@@ -69,13 +68,13 @@ function createStation(data){
       })
     }
     /**
-    *find station by custom id
+    *find userProfile by custom id
     **/
-  function getStationByCustomId(customid){
+  function getUserProfileByCustomId(customid){
       debug('GETTIGN STATION', customid)
-      //console.log("station customid : " + customid);
+      //console.log("userProfile customid : " + customid);
       var defferd = q.defer();
-      StationModel.findOne({stationId : customid})
+      UserProfileModel.findOne({userProfileId : customid})
           .exec()
           .then((result) => {
               //console.log("dal result",result)
@@ -88,14 +87,14 @@ function createStation(data){
   }
 
   /**
-  *3. Search station by query instead of req.body
+  *3. Search userProfile by query instead of req.body
   */
-function searchStationByName(name){
+function searchUserProfileByName(name){
 
   return new Promise((resolve,reject)=>{
-        StationModel.findOne({name:name})
+        UserProfileModel.findOne({name:name})
                      .then(function(result){
-                         //if not station found return 404
+                         //if not userProfile found return 404
                          if(!result) resolve(404);
                          resolve(result);
                      }, function(err){
@@ -104,15 +103,15 @@ function searchStationByName(name){
   });
   }
 
-function stationExist(stationId){
+function userProfileExist(userProfileId){
    debug('CHECKING STATION EXISTENCE');
-   logMsg({stationId: stationId});
+   logMsg({userProfileId: userProfileId});
    var defferd = q.defer();
-StationModel.findOne({stationId:stationId})
+UserProfileModel.findOne({userProfileId:userProfileId})
             .exec()
             .then((err,result) => {
               if(err) return defferd.reject(err);
-              //if station doesn't exist
+              //if userProfile doesn't exist
               //if(!result) return defferd.resolve(false);
               defferd.resolve(result);
             })
@@ -120,15 +119,15 @@ StationModel.findOne({stationId:stationId})
         return defferd.promise;
 
 }
-function stationExist(stationId){
+function userProfileExist(userProfileId){
    debug('CHECKING STATION EXISTENCE');
-   logMsg({stationId: stationId});
+   logMsg({userProfileId: userProfileId});
 
 return new Promise((resolve, reject)=>{
-  StationModel.findOne({stationId:stationId})
+  UserProfileModel.findOne({userProfileId:userProfileId})
               .exec()
               .then((result) => {
-                //if station doesn't exist
+                //if userProfile doesn't exist
                 if(!result) return resolve(true);
                  resolve(400);//bad request
               },(err)=>{
@@ -138,13 +137,13 @@ return new Promise((resolve, reject)=>{
 }
 
 /**
-*3.Update Station
+*3.Update UserProfile
 */
-function updateStation(query, update, opts){
-    debug('updating a station', query);
+function updateUserProfile(query, update, opts){
+    debug('updating a userProfile', query);
 
     return new Promise((resolve, reject)=>{
-      StationModel.findOneAndUpdate(query, update, opts)
+      UserProfileModel.findOneAndUpdate(query, update, opts)
             .exec()
             .then((result) => {
                 //if(!result) return resolve();//no content found
@@ -156,13 +155,13 @@ function updateStation(query, update, opts){
 
 }
 /**
-*4.Remove Station
+*4.Remove UserProfile
 */
-function deleteStation(query){
+function deleteUserProfile(query){
     debug('DELETING STATION');
     var defferd =q.defer();
     return new Promise((resolve, reject)=>{
-      StationModel.findOneAndRemove(query)
+      UserProfileModel.findOneAndRemove(query)
                .then((result)=>{
                    if(!result) return resolve(404);
                    resolve(result)
@@ -176,10 +175,10 @@ function deleteStation(query){
 }
 
 /**
-*5.Get station by pagination
+*5.Get userProfile by pagination
 */
-function getStationByPagination(query, qs){
-    debug('fetching a collection of stations');
+function getUserProfileByPagination(query, qs){
+    debug('fetching a collection of userProfiles');
     var defferd =q.defer();
     var opts = {
         sort: qs.sort || {},
@@ -187,10 +186,10 @@ function getStationByPagination(query, qs){
         limit: qs.per_page || 10
     };
 
-    StationModel.paginate(query, opts, (err, data)=>{
+    UserProfileModel.paginate(query, opts, (err, data)=>{
         if(err) return defferd.reject(err);
 
-        if(!data) return defferd.reject("Station not found");
+        if(!data) return defferd.reject("UserProfile not found");
 
         var response = {
             page: data.page,
@@ -206,18 +205,18 @@ function getStationByPagination(query, qs){
 
 //
 /**
-*6.return StationDalModule public APIs
+*6.return UserProfileDalModule public APIs
 */
-  return {create : createStation,
-  findAll : getAllStations,
-  findById : getStationById,
-  update : updateStation,
-  delete : deleteStation,
-  paginate : getStationByPagination,
-  stationExist: stationExist,
-  findByCustomId:getStationByCustomId,
-  searchByName:searchStationByName
+  return {create : createUserProfile,
+  findAll : getAllUserProfiles,
+  findById : getUserProfileById,
+  update : updateUserProfile,
+  delete : deleteUserProfile,
+  paginate : getUserProfileByPagination,
+  userProfileExist: userProfileExist,
+  findByCustomId:getUserProfileByCustomId,
+  searchByName:searchUserProfileByName
 };
-}(StationModel));
+}(UserProfileModel));
 
-module.exports= StationDalModule;
+module.exports= UserProfileDalModule;

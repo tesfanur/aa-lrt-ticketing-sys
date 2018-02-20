@@ -8,9 +8,12 @@ var ObjectId =Schema.Types.ObjectId;
 *Train Stations Schema
 */
 var StationSchema = new Schema({
-    stationId   :  {type: String, unique: true},
+    stationId   :  {type: Number, unique: true},
     userId      :  {type: ObjectId, required: true, ref:'User'},
-    name        :  {type: String},
+    route       : {type: String, required: true,
+                  enum: ["EW","NS",""],
+                   default: ""},
+    name        :  {type: String,unique: true},
     latitude    :  {type: Number},
     longitude   :  {type: Number},
 
@@ -23,7 +26,7 @@ StationSchema.methods.toJSON = function () {
   var station = this;
   var stationObject = station.toObject();
 
-  return _.pick(stationObject, ['_id','userId.email','stationId', 'name','longitude','latitude','createdAt','modifiedAt']);
+  return _.pick(stationObject, ['_id','userId.email','stationId', 'name','longitude','latitude','createdAt','modifiedAt',"route"]);
 };
 
 //Static method we can call via Station.getStationByName in our code

@@ -4,7 +4,7 @@ var express      = require('express'),
 		cookieParser = require('cookie-parser'),
 		bodyParser   = require('body-parser'),
 	  expressValidator = require('express-validator'),
-		session   = require('express-session'),
+		session    = require('express-session'),
 		passport   = require('passport'),
 		mongoose   = require('mongoose');
 
@@ -13,16 +13,15 @@ var  db      = require('./config/connection'),
 		 config  = require('./config/config'),
 		 router  = require('./routes'),
 		 User    = require('./models/user'),
-		 Profile = require('./models/profile'),
 		 authenticate = require('./lib/middleware/auth').requireAuthentication,
-		 display = require('./lib/utils').showMsg;
+		 display      = require('./lib/utils').showMsg;
 
 //instantiate express -server
 var app  = express();
-debug('AA LRT ONLINE TICKETING SYSTEM');
-//configuration your app
-app.set('PORT', config.PORT)
-app.set('SECRET', config.SECRET)
+		debug('AA LRT ONLINE TICKETING SYSTEM');
+		//configuration your app
+		app.set('PORT', config.PORT)
+		app.set('SECRET', config.SECRET)
 
 //strat database connection
 db.connectMongoDB(mongoose);
@@ -48,7 +47,6 @@ app.use(session(
 			//     next();
 			// });
 
-
 /*
 TODO:
 authentication middleware using passportjs and third party passport strategies [facebook & google+]
@@ -69,8 +67,9 @@ app.use(function pageNotFound(req, res, next){
 
 //Handle errors
 
-app.use(function errorHandler(err, req, res, next){
-	res.json({ message: err.message });
+app.use(function(err, req, res, next){
+	res.json({ message: err.message,
+	 Error: err });
 });
 function handleServerStartup(){
     display("\nEXPRESS SERVER APP STARTED LISTENING REQUESTS ON PORT "+app.get('PORT')+"!");

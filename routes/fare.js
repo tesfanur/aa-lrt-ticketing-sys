@@ -106,7 +106,15 @@ router.put('/:id',authenticate, fareController.update);
  * http://localhost:3000/fares/5a478c962698af267483b1ee
  */
 router.delete('/:id', authenticate, fareController.delete);
+//SET FARE AMOUNT
+router.put('/setfareamount', authenticate, fareController.setFareAmount);
+//SET FARE AMOUNT
+router.put('/setdistance', authenticate, fareController.setDistance);
 //findAndPopulate
 router.get('/populate/:id', authenticate, fareController.findAndPopulate);
+//getTotalPrice
+router.get('/fare/price/', authenticate, fareController.getTotalPrice);
+//completeInfo
+router.get('/fare/info/', authenticate, fareController.completeInfo);
 
 module.exports = router;

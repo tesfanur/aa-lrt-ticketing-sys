@@ -1,13 +1,16 @@
-var express = require('express');
-var ProfileImage  = require('../models/profileImage');
-var router = express.Router();
+const express = require('express');
+const router  = express.Router();
 
-//1. save profile image detail info on mongodb
-module.exports.uploadImage =  function ( req, res, next){
+//load custom modules
+const UserProfile  = require('../models/user_profile');
+
+/**
+*1. save profile image detail info on mongodb
+**/
+function uploadImage ( req, res, next){
     // Create a new image model and fill the properties
     var newImg = req.file;
-    console.log("newImg=req.file",newImg)
-    var NewImage = new ProfileImage();
+    var NewImage = new UserProfile();
     NewImage.filename     = newImg.filename;
     NewImage.originalName = newImg.originalname;
     NewImage.desc         = newImg.desc
@@ -18,13 +21,15 @@ module.exports.uploadImage =  function ( req, res, next){
         res.status(201).send({profileImage : img });
         console.log(img);
     });
-};
+}
 
-//2. Get all uploaded images
-module.exports.getAllProfileImage =function(req, res, next){
+/**
+*2. Get all uploaded images
+**/
+function getAllUserProfile(req, res, next){
     // use lean() to get a plain JS object
     // remove the version key from the response
-    ProfileImage.find({}, '-__v').lean().exec((err, images) => {
+    UserProfile.find({}, '-__v').lean().exec((err, images) => {
         if (err) {
             res.sendStatus(400);
         }
@@ -35,43 +40,41 @@ module.exports.getAllProfileImage =function(req, res, next){
         }
         res.json({profileImage: images});
     })
-};
-
-//TODO:
-
-//3. update/change/edit profile image
-
-module.exports.updateImageInfo= function(req,res){
-  var updateProfileImage= req.file;
-  console.log(updateProfileImage.filename+'\n');
+}
+/**
+*3. update/change/edit profile image
+**/
+function updateImageInfo(req,res){
+  var updateUserProfile= req.file;
+  console.log(updateUserProfile.filename+'\n');
   var imageId= req.params.imageId;
   var modifiedAt = new Date();
-  ProfileImage.findOneAndUpdate({_id:imageId},
+  UserProfile.findOneAndUpdate({_id:imageId},
       {$set:{
         desc     : req.body.desc,
         originalName  : req.body.originalName,
-        filename  : updateProfileImage.filename,
+        filename  : updateUserProfile.filename,
         created : modifiedAt
         }
     },
-    {new:true},//retrn updated image info
+    {new:true},//return update user profile
 
-  function(err, updatedProfileImage){
+  function(err, updatedUserProfile){
           if(err){
             console.log('Error occurred. Detail Error message: ' +err);
           }else{
-            console.log(updatedProfileImage);
-            res.send(updatedProfileImage);
+            console.log(updatedUserProfile);
+            res.send(updatedUserProfile);
             //res.status(204);//User succesfully updated
           }
          });
-};
-
-
-//4. get image by id
-module.exports.getImageById = function(req, res){
+}
+/**
+*4. get image by id
+**/
+function getImageById(req, res){
     console.log('Getting image by id:');
-    ProfileImage.findOne({ _id:req.params.imageId}).exec(function(err,retrievedImage){
+    UserProfile.findOne({ _id:req.params.imageId}).exec(function(err,retrievedImage){
       if (err) {
         res.send('Error has occurred\n Error:' +err);
       }
@@ -80,16 +83,26 @@ module.exports.getImageById = function(req, res){
         res.json(retrievedImage);
       }
 });
-};
+}
+/**
+*5. Delete/remove profile image
+**/
 
-//5. Delete/remove profile image
-module.exports.deleteImageById= function(req,res){
+function deleteImageById(req,res){
   var imageId=req.params.imageId;
-  ProfileImage.findOneAndRemove({_id:imageId},
+  UserProfile.findOneAndRemove({_id:imageId},
          function(err, retrievedImage){
           if(err)  res.send('Error Deleteing');
            else  {res.send("No content found");
            //res.json(retrievedImage);
          }
          });
+}
+
+module.exports = {
+  uploadImage    : uploadImage,
+  getAllUser     : getAllUserProfile,
+  updateImageInfo: updateImageInfo.
+  getImageById   : getImageById,
+  deleteImageById: deleteImageById
 }
