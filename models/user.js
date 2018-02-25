@@ -4,6 +4,7 @@ bcrypt    = require('bcrypt'),
 validator = require('validator'),
 jwt       = require('jsonwebtoken'),
 _         = require('lodash'),
+moment    = require('moment'),
 config    = require('../config/config');//the higher the value the more secure hash it generates
  //find all other function that are supported by mongoose model/Schema
 //before you do from scratch
@@ -90,7 +91,11 @@ UserSchema.statics.findByCredentials = function (email, password) {
 };
 //=======================================
 UserSchema.methods.toJSON = function () {
+
+  this.createdAt  = moment(this.createdAt).format("DD-MMM-YYYY hh:mm A");
+  this.modifiedAt = moment(this.modifiedAt).format("DD-MMM-YYYY hh:mm A");
   var user = this;
+
   var userObject = user.toObject();
 
   return _.pick(userObject, ['_id', 'email','phone','userType','createdAt','modifiedAt']);

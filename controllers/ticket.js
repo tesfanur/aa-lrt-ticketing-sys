@@ -26,7 +26,7 @@ function _validateTicketRegistraionInput(req, res,next){
   req.checkBody('route','rotue of journey is required').notEmpty();
   req.checkBody('from','starting station is required').notEmpty();
   req.checkBody('to','destination station is required').notEmpty();
-  req.checkBody('price','price of journey is required').notEmpty();//remove this validation urlencoded
+  //req.checkBody('price','price of journey is required').notEmpty();//remove this validation urlencoded
   //since it is included by fetching from db calculated field
   //ticket id, status, passengerId & price are calculated fields so they already
   //not needed here for validation
@@ -51,7 +51,7 @@ function createTicket (req, res, next){
             // console.log("sourceId",sourceId)
             // console.log("destinationId",destinationId)
             var generatedStation={}
-            stationController.findByCustomId(parseInt(sourceId))
+                   StationDal.findByCustomId(parseInt(sourceId))
                              .then(station=>{
                                generatedStation=station;
                                console.log("source station",sourceId);
@@ -292,6 +292,7 @@ function generateTicketInfo(req, res, next){
                         console.log(ticket);
                       //return res.send(ticket);
                       var ticketData ={
+                        id: ticket.id,
                         route: ticket.route,
                         passengerId:ticket.passengerId,
                         from:ticket.source_id,
@@ -303,8 +304,24 @@ function generateTicketInfo(req, res, next){
                              .then(createdTicket=>{
                                console.log("createdTicket",createdTicket)
                                if(createdTicket)
-                               return res.status(201).send(ticket);
-                             })
+                                return createdTicket;
+                               //return res.status(201).send(createdTicket);
+                             }).then(
+                               generatedTicket =>{
+                               if(generatedTicket) {
+                                 TicketDal.findById({_id:generatedTicket._id})
+                                          .then(result =>{
+                                            if(result) return res.status(201).send(result)
+                                          }).catch(
+                                            err => {
+                                              res.status(500).send(err);
+                                            }
+                                          )
+                               }
+
+                             }
+
+                             )
                              .catch(err =>{
                                console.log(err);
                                res.status(500).send(err);

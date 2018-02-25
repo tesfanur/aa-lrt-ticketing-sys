@@ -1,25 +1,26 @@
 /**
-*Load module dependecies
+*Load third party module dependecies
 */
-var express = require('express');
+const express = require('express');
+/**
+*Load custom module dependencies
+*/
+const noop          = require('../lib/utils').noop;//?????????????
+//const middleware    = require('../lib/middleware/auth');
+const faqController = require('../controllers/faq');
+// const requireAuthentication = middleware.requireAuthentication;
+// const authenticate          = require('../lib/middleware/authenticate').authenticate;
 
-//var faqController = require('../controllers/faq_');
-var faqController = require('../controllers/faq');
-var noop = require('../lib/utils').noop;
-var middleware =require('../lib/middleware/auth');
-var requireAuthentication = middleware.requireAuthentication;
-var authenticate = require('../lib/middleware/authenticate').authenticate;
-
-var router = express.Router();
+const router = express.Router();
 /**
  * @api {POST} /faqs/ Create faq
- * @apiName CreateStation
- * @apiGroup Station
- * @apiDescription Creates a new Station
+ * @apiName CreateFaq
+ * @apiGroup Faq
+ * @apiDescription Creates a new Faq
  *
- * @apiParam {String} name The name of the Station
- * @apiParam {String} faqId The last name of the Station
- * @apiParam {String} route The route of the Station
+ * @apiParam {String} name The name of the Faq
+ * @apiParam {String} faqId The last name of the Faq
+ * @apiParam {String} route The route of the Faq
  * @apiParam {Number} latitude The latitude of the faq
  * @apiParam {Number} longitude The longitude of the sation
  *
@@ -40,7 +41,7 @@ var router = express.Router();
  *
  * {
  *   "_id": "5a478c962698af267483b1ee",
- *   "email": "john1@aksum.com",
+ *   "email": "evana.mangato@hotmail.com",
  *   "firstName": "John",
  *   "lastName": "Doe",
  *   "dateCreated": "2017-12-30T12:54:46.419Z",
@@ -48,72 +49,72 @@ var router = express.Router();
  *   "__v": 0
  * }
  */
-router.post('/',authenticate, faqController.create);
+router.post('/', faqController.create);
 
 /**
- * @api {GET} /faqs/ Get Stations
- * @apiName GetStations
- * @apiGroup Station
+ * @api {GET} /faqs/ Get Faqs
+ * @apiName GetFaqs
+ * @apiGroup Faq
  *
  *
  */
- router.get('/',authenticate, faqController.findAll);
+ router.get('/', faqController.findAll);
 //
 // /**
-//  * @api {GET} /faqs/paginate Station Paginate
-//  * @apiName GetStationsPaginate
-//  * @apiGroup Station
+//  * @api {GET} /faqs/paginate Faq Paginate
+//  * @apiName GetFaqsPaginate
+//  * @apiGroup Faq
 //  *
 //  * @
 //  */
-router.get('/paginate',authenticate, faqController.paginate);
+router.get('/paginate', faqController.paginate);
 /**
- * @api {PUT} /faqs/search Search Station
- * @apiName SearchStations
- * @apiGroup Station
+ * @api {PUT} /faqs/search Search Faq
+ * @apiName SearchFaqs
+ * @apiGroup Faq
  *
  * @apiParamExample Request Example
  *
- * {"email": "john1@aksum.com"}
+ * {"email": "evana.mangato@hotmail.com"}
  */
  //the following should use get http method
-router.get('/search/:name',authenticate, faqController.searchByName);
+router.get('/search/:desc', faqController.searchByDesc);
 
 /**
- * @api {GET} /faqs/:id Get Station
- * @apiName GetStation
- * @apiGroup Station
+ * @api {GET} /faqs/:id Get Faq
+ * @apiName GetFaq
+ * @apiGroup Faq
  *
  * @apiParamExample Request Example
  *
  * http://localhost:3000/faqs/5a478c962698af267483b1ee
  */
- router.get('/:id',authenticate, faqController.findById);
+ router.get('/:id', faqController.findById);
  //
 
-router.get('/customid/:cid',authenticate, faqController.findByCustomId);
+//router.get('/customid/:cid', faqController.findByCustomId);
 
 /**
- * @api {UPDATE} /faqs/:id Update Station
- * @apiName UpdateStations
- * @apiGroup Station
+ * @api {UPDATE} /faqs/:id Update Faq
+ * @apiName UpdateFaqs
+ * @apiGroup Faq
  *
  * @apiParamExample Request Example
  *
  * http://localhost:3000/faqs/5a478c962698af267483b1ee
  */
-router.put('/:id',authenticate, faqController.update);
+router.put('/:id', faqController.update);
 
 /**
- * @api {DELETE} /faqs/:id Delete Station
- * @apiName DeleteStations
- * @apiGroup Station
+ * @api {DELETE} /faqs/:id Delete Faq
+ * @apiName DeleteFaqs
+ * @apiGroup Faq
  *
  * @apiParamExample Request Example
  *
  * http://localhost:3000/faqs/5a478c962698af267483b1ee
  */
-router.delete('/:id', authenticate, faqController.delete);
+router.delete('/:id', faqController.delete);
 //router.get('/faq/:name', authenticate, faqController.findByName);
 
 module.exports = router;

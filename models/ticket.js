@@ -1,10 +1,15 @@
 var mongoose = require('mongoose');
 var paginator = require('mongoose-paginate');
+var shortid = require('shortid');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.Types.ObjectId;
 
 var TicketSchema = new Schema({
+    id      :{type:String,
+            required : true,
+            default:"no id",
+            trim:true},
     type    :{type:String,
               enum : ['for child','for adult','for handicaped'],
               default: 'for adult',
@@ -39,6 +44,13 @@ var TicketSchema = new Schema({
 
 //Add mongoose paginate
 TicketSchema.plugin(paginator);
+//presave hook for id
+//console.log(shortid.generate());
+TicketSchema.pre('save', function (next) {
+  var ticket = this;
+    ticket.id =shortid.generate();
+    next();
+});
 
 //export user model
 module.exports = mongoose.model('Ticket', TicketSchema);

@@ -63,12 +63,12 @@ function createUserProfile(req, res, next){
 *2. Find all list of userProfiles controller
 */
 function findAllUserProfile(req, res, next){
-  var alluserProfiles={};
-  UserProfileDal.findAll(alluserProfiles)
+  var allUserProfiles={};
+  UserProfileDal.findAll(allUserProfiles)
           .then((userProfiles) => {
             //if(error) return res.status(500).send({"ERROR": "Unable to fecth userProfile document!"})
-            //if(!userProfiles) return res.status(404).json({"ERROR": "NO userProfile FOUND"});
-            return res.status(200).json(userProfiles);
+            if(!userProfiles) return res.status(404).json({"ERROR": "NO userProfile FOUND"});
+            return res.json(userProfiles);
           }, function(error){
             res.status(500).send({"ERROR": "Unable to fecth userProfile document!"})
           })
@@ -77,10 +77,10 @@ function findAllUserProfile(req, res, next){
  /**
  *3. Search userProfile by query instead of req.body
  */
-  function searchUserProfileByName  (req, res, next){
-     var userProfileName = req.params.name;
+  function searchProfileByUserName  (req, res, next){
+     var username = req.params.username;
 
-     UserProfileDal.searchByName(userProfileName)
+     UserProfileDal.searchByName(username)
                .then( function(userProfile){
                     if(userProfile===404) return  res.status(404).json({"message":"No muching userProfile found"});
                    res.status(200).json(userProfile);
@@ -92,7 +92,7 @@ function findAllUserProfile(req, res, next){
 *4. Find userProfile by their ID controller
 */
 function findUserProfileById(req, res){
-  console.log('Getting userProfile by id:');
+  debug('GETTING USERPROFILE BY ID:');
   var userProfileId=req.params.id;
   //chech if userProfile ObjectId is valid or not
   var validObjectId=mongoose.Types.ObjectId.isValid(userProfileId);
@@ -133,13 +133,21 @@ function updateUserProfileInfo(req,res){
   req.body.modifiedAt=modifiedAt;
   var userProfileData= _.pick(req.body,["name","userProfileId","latitude","longitude","route","modifiedAt"]);
   console.log("userProfileData", userProfileData)
+
+  var address ={};
+     address.subcity=req.body.address.subcity;
+     address.kebele=req.body.address.kebele;
+     address.woreda=req.body.address.woreda;
+     address.st=req.body.address.st;
+
   var updates ={
     name:req.body.name,
-    userProfileId:req.body.userProfileId,
-    latitude:req.body.latitude,
-    longitude:req.body.longitude,
-    route:req.body.route,
+    userId    :req.body.userId,
+    firstName :req.body.firstName,
+    lastName  :req.body.lastName,
+    address     :address,
     modifiedAt:req.body.modifiedAt};
+
   var query         = {_id:req.params.id};
   var setUpdates    = {$set: updates };
   var updateOptions = {new: true};
@@ -156,9 +164,6 @@ function updateUserProfileInfo(req,res){
          }, function(err){
            res.status(500).json(e);
          })
-
-
-
 }
 /**
 *6. Delete userProfile Controller
@@ -206,5 +211,5 @@ module.exports = {
     paginate  : findUserProfileByPagination,
     //findByName: findUserProfileByName,
     findByCustomId:getUserProfileByCustomId,
-    searchByName : searchUserProfileByName
+    searchByUsername : searchProfileByUserName
 }

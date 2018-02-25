@@ -13,6 +13,7 @@ var ProfileSchema = new Schema({
   userId : {type: ObjectId, required: true, ref:'User'},
   username: {type: String,
       trim: true,
+      unique:true,
       required: 'please enter your username'
     },
     firstName: {type   : String,
@@ -48,7 +49,8 @@ ProfileSchema.methods.toJSON = function () {
   var userProfile = this;
   var userProfileObject = userProfile.toObject();
 
-  return _.pick(userProfileObject, ['_id','username','firstName','lastName']);
+  return _.pick(userProfileObject, ['_id','username','firstName',
+  'lastName','address','userId']);
 };
 
 

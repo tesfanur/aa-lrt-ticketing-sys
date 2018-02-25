@@ -1,17 +1,17 @@
-var config  = require('./config');
-var mongooseOpts ={ useMongoClient: true,
+const config  = require('./config');
+const mongooseOpts ={ useMongoClient: true,
 				 connectTimeoutMS: 5000  };
 //var mongooseOpts ={ useMongoClient: true}
 
 //create db connection using NODEJS NATIVE promises
-module.exports.connectMongoDB = function(mongoose){
+exports.toMongoDB =(mongoose)=>{
 
 mongoose.Promise=global.Promise;//overide deprecated promise function
 
 mongoose.connect(config.MONGO_PRO, mongooseOpts)
-    .then(function () {
+    .then(()=> {
           console.log('DB CONNECTION ESTABLISHED SUCCESSFULLY!\n');
-    }).catch(function (err) {
+    }).catch((err)=> {
         console.log("DB CONNECTION FAILED.\nPEASE CHECK YOUR MONGODB SERVER RUNNING STATUS!\n");
         console.log("ACTUAL ERROR: "+ err.message);
     })

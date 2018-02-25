@@ -6,9 +6,6 @@ var express = require('express');
 //var ticketController = require('../controllers/ticket_');
 var ticketController = require('../controllers/ticket');
 var noop = require('../lib/utils').noop;
-var middleware =require('../lib/middleware/auth');
-var requireAuthentication = middleware.requireAuthentication;
-var authenticate = require('../lib/middleware/authenticate').authenticate;
 
 var router = express.Router();
 /**
@@ -48,7 +45,7 @@ var router = express.Router();
  *   "__v": 0
  * }
  */
-router.post('/',authenticate, ticketController.create);
+router.post('/', ticketController.create);
 
 /**
  * @api {GET} /tickets/ Get Stations
@@ -57,7 +54,7 @@ router.post('/',authenticate, ticketController.create);
  *
  *
  */
- router.get('/',authenticate, ticketController.findAll);
+ router.get('/', ticketController.findAll);
 //
 // /**
 //  * @api {GET} /tickets/paginate Station Paginate
@@ -66,7 +63,7 @@ router.post('/',authenticate, ticketController.create);
 //  *
 //  * @
 //  */
-router.get('/paginate',authenticate, ticketController.paginate);
+router.get('/paginate', ticketController.paginate);
 /**
  * @api {PUT} /tickets/search Search Station
  * @apiName SearchStations
@@ -77,7 +74,7 @@ router.get('/paginate',authenticate, ticketController.paginate);
  * {"email": "john1@aksum.com"}
  */
  //the following should use get http method
-router.get('/search/:name',authenticate, ticketController.searchByName);
+router.get('/search/:name', ticketController.searchByName);
 
 /**
  * @api {GET} /tickets/:id Get Station
@@ -88,10 +85,10 @@ router.get('/search/:name',authenticate, ticketController.searchByName);
  *
  * http://localhost:3000/tickets/5a478c962698af267483b1ee
  */
- router.get('/:id',authenticate, ticketController.findById);
+ router.get('/:id', ticketController.findById);
  //
 
-router.get('/customid/:cid',authenticate, ticketController.findByCustomId);
+router.get('/customid/:cid', ticketController.findByCustomId);
 
 /**
  * @api {UPDATE} /tickets/:id Update Station
@@ -102,7 +99,7 @@ router.get('/customid/:cid',authenticate, ticketController.findByCustomId);
  *
  * http://localhost:3000/tickets/5a478c962698af267483b1ee
  */
-router.put('/:id',authenticate, ticketController.update);
+router.put('/:id', ticketController.update);
 
 /**
  * @api {DELETE} /tickets/:id Delete Station
@@ -113,9 +110,9 @@ router.put('/:id',authenticate, ticketController.update);
  *
  * http://localhost:3000/tickets/5a478c962698af267483b1ee
  */
-router.delete('/:id', authenticate, ticketController.delete);
-router.post('/ticket/info', authenticate, ticketController.generateInfo);
+router.delete('/:id', ticketController.delete);
+router.post('/ticket/info', ticketController.generateInfo);
 //findMine
-router.get('/my/tickets', authenticate, ticketController.findMine);
+router.get('/my/tickets',ticketController.findMine);
 
 module.exports = router;

@@ -1,81 +1,67 @@
-var express      = require('express'),
+/**
+*Load third party module dependecies
+*/
+var cors         = require('cors'),
 		morgan       = require('morgan'),
+		express      = require('express'),
+		passport     = require('passport'),
+		mongoose     = require('mongoose'),
+    bodyParser   = require('body-parser'),
 		debug        = require('debug')('api'),
 		cookieParser = require('cookie-parser'),
-		bodyParser   = require('body-parser'),
-	  expressValidator = require('express-validator'),
-		session    = require('express-session'),
-		passport   = require('passport'),
-		mongoose   = require('mongoose');
-
- //Load local modules
-var  db      = require('./config/connection'),
-		 config  = require('./config/config'),
-		 router  = require('./routes'),
+		session      = require('express-session'),
+		validate     = require('express-validator');
+ /**
+ *Load local module dependecies
+ */
+var  router  = require('./routes'),
+     utils   = require('./lib/utils'),
 		 User    = require('./models/user'),
-		 authenticate = require('./lib/middleware/auth').requireAuthentication,
-		 display      = require('./lib/utils').showMsg;
+		 config  = require('./config/config'),
+		 dbConnect     = require('./config/connection'),
+		 authenticate  = require('./lib/middleware/authenticate');
+		 //handleServerStartup
 
 //instantiate express -server
 var app  = express();
-		debug('AA LRT ONLINE TICKETING SYSTEM');
-		//configuration your app
-		app.set('PORT', config.PORT)
-		app.set('SECRET', config.SECRET)
+
+debug('AA LRT ONLINE TICKETING SYSTEM');
+//configuration express app
+app.set('PORT', config.PORT);
+app.set('SECRET', config.SECRET);
 
 //strat database connection
-db.connectMongoDB(mongoose);
+dbConnect.toMongoDB(mongoose);
 
 //set up express app by passing required middlewares
 app.use(bodyParser.json());// parse application/json
 app.use(bodyParser.urlencoded({ extended: true }));// parse application/x-www-form-urlencoded
-app.use(expressValidator());//use for user input validation
-app.use(morgan('dev')); //Logging HTTP Method and URL
+
+app.use(cors(config.CORS_OPTS));//prevent CORS errors
+app.use(validate());//use express validator for user input validation
+app.use(morgan('dev'));
+//Logging HTTP Method and URL
 app.use(cookieParser());
-app.use(session(
-	{secret:config.SESSION_SECRET,//use salt from bcrypt
-	resave:false,
-	saveUninitialized:true}));
+app.use(session(config.SESSION_OPTS));
 
-	//app.use(authenticate);
-			// 	app.use(function(req, res, next){
-			// 		//var path= req.protocol +'://'+ req.hostname+ req.originalUrl;
-			// 		var path= req.originalUrl
-			// 		console.log("path :", path);
-			//   if (path !== '/' && path !== '/users/signup' && path !== '/users/login')
-			//     return authenticate(req, res, next);
-			//     next();
-			// });
-
-/*
-TODO:
-authentication middleware using passportjs and third party passport strategies [facebook & google+]
-....
+app.use("/uploads",express.static('uploads'));
+//filter endpoints and Authenticate the rest
+app.use(authenticate().unless(config.UNLESS_OPTS));
+/**
+*pass express app to the routing object
 */
-
-
-
 router(app);
-
-//Handle if page requested not found
-app.use(function pageNotFound(req, res, next){
-    res.status(404)
-		   .json({status: 404,
-				      type: 'NOT_FOUND_ERROR',
-				      message: req.protocol +'://'+ req.hostname+ req.originalUrl + ' is not found! Please type the address properly'})
-  });
-
-//Handle errors
-
-app.use(function(err, req, res, next){
-	res.json({ message: err.message,
-	 Error: err });
-});
-function handleServerStartup(){
-    display("\nEXPRESS SERVER APP STARTED LISTENING REQUESTS ON PORT "+app.get('PORT')+"!");
-    display('PRESS CTRL+C TO EXIT\n');
-}
-
-app.listen(app.get('PORT'), handleServerStartup);
+/**
+*Handle if page requested not found
+*/
+app.use(utils.pageNotfound);
+/**
+*handle errors thrown from the previous middlewares
+*/
+app.use(utils.handleErrors);
+/**
+*start express server
+*/
+app.listen(app.get('PORT'), utils.handleServerStartup);
 
 module.exports=app;

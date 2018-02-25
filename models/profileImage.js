@@ -8,6 +8,7 @@ var ImageSchema = new Schema({
   filename: {type: String},
   originalName: {type: String},
   desc: {type: String},
+  imgPath: {type: String,required:true},
   created: { type: Date, default: Date.now }
 });
 

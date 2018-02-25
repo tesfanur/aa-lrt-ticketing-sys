@@ -36,10 +36,10 @@ function createUserProfile(data){
   *2. Get all UserProfileModels
   */
   function getAllUserProfiles(query){
-      debug('getting all userProfile collection');
+      debug('GETTING ALL USERPROFILE COLLECTION');
        var defferd = q.defer();
    UserProfileModel.find(query)
-            .populate('userId',["email"])//to be refactored
+            .populate('userId',"email phone")//to be refactored
             .sort({createdAt :-1})
             .exec()
             .then( (userProfiles) => {
@@ -50,21 +50,23 @@ function createUserProfile(data){
     return defferd.promise;
   }
   /**
-  *3.Get UserProfile by Id ?
+  *3.Get UserProfile by Id
   */
    function getUserProfileById(id){
         debug('GETTING STATION', id)
-        console.log("my userProfile id : " + id);
+        logMsg("my userProfile id : " + id);
 
       return new Promise((resolve, reject)=>{
-        UserProfileModel.findOne({_id : id})
-              .exec()
-              .then((result) => {
-                  if(!result) return resolve(404);//userProfile not found
-                  return resolve(result);
-              },function(err){
-                 reject(err);
-              });
+UserProfileModel.findOne({_id : id})
+                .populate('userId',"email phone")//to be refactored
+                .sort({createdAt :-1})
+                .exec()
+                .then((result) => {
+                    if(!result) return resolve(404);//userProfile not found
+                    return resolve(result);
+                },function(err){
+                   reject(err);
+                });
       })
     }
     /**
@@ -72,12 +74,12 @@ function createUserProfile(data){
     **/
   function getUserProfileByCustomId(customid){
       debug('GETTIGN STATION', customid)
-      //console.log("userProfile customid : " + customid);
+      //logMsg("userProfile customid : " + customid);
       var defferd = q.defer();
       UserProfileModel.findOne({userProfileId : customid})
           .exec()
           .then((result) => {
-              //console.log("dal result",result)
+              //logMsg("dal result",result)
               if(!result) return defferd.resolve(404);
               return defferd.resolve(result);
           },function(err){
@@ -89,12 +91,13 @@ function createUserProfile(data){
   /**
   *3. Search userProfile by query instead of req.body
   */
-function searchUserProfileByName(name){
+function searchUserProfileByName(username){
 
   return new Promise((resolve,reject)=>{
-        UserProfileModel.findOne({name:name})
+        UserProfileModel.findOne({username:username})
+                     .populate("userId","email phone")
                      .then(function(result){
-                         //if not userProfile found return 404
+                         //if no userProfile found return 404
                          if(!result) resolve(404);
                          resolve(result);
                      }, function(err){
@@ -144,13 +147,13 @@ function updateUserProfile(query, update, opts){
 
     return new Promise((resolve, reject)=>{
       UserProfileModel.findOneAndUpdate(query, update, opts)
-            .exec()
-            .then((result) => {
-                //if(!result) return resolve();//no content found
-                  resolve(result);
-            }, (err)=>{
-              reject(err)
-            });
+                      .exec()
+                      .then((result) => {
+                          //if(!result) return resolve();//no content found
+                            resolve(result);
+                      }, (err)=>{
+                        reject(err)
+                      });
     });
 
 }
@@ -159,7 +162,7 @@ function updateUserProfile(query, update, opts){
 */
 function deleteUserProfile(query){
     debug('DELETING STATION');
-    var defferd =q.defer();
+
     return new Promise((resolve, reject)=>{
       UserProfileModel.findOneAndRemove(query)
                .then((result)=>{
@@ -168,7 +171,6 @@ function deleteUserProfile(query){
                  }, err=>{
                    reject(err);
                  });
-           //return defferd.promise;
     })
 
 
@@ -198,7 +200,7 @@ function getUserProfileByPagination(query, qs){
             per_page: data.limit,
             docs: data.docs
         };
-       if(data) return defferd.resolve(response);
+       return defferd.resolve(response);
     });
     return defferd.promise;
 }
@@ -207,8 +209,9 @@ function getUserProfileByPagination(query, qs){
 /**
 *6.return UserProfileDalModule public APIs
 */
-  return {create : createUserProfile,
-  findAll : getAllUserProfiles,
+  return {
+  create   : createUserProfile,
+  findAll  : getAllUserProfiles,
   findById : getUserProfileById,
   update : updateUserProfile,
   delete : deleteUserProfile,

@@ -220,18 +220,18 @@ function getFareByPagination (req, res, next){
 function findFareAndPopulate (req, res, next){
       //var fareId = req.params.id.trim
       //var fareId = mongoose.Types.ObjectId(req.params.id);
-      var fareId = mongoose.mongo.ObjectId( req.params.id.trim());
+      var fareId = mongoose.mongo.ObjectId(req.params.id.trim());
     console.log(typeof fareId)
 
-    FareDal.findAndPopulate({_id : fareId}, function(err, fare){
-        if(err){
-            customError.type = 'GET_FARE_ERROR';
-            logMsg(err);
-            return handleError(res, err, customError);
-        }
-        if(!fare) return res.status(404).json({"error":"Bad request"});
-        res.status(200).json(fare || {});
-    })
+    FareDal.findAndPopulate({_id : fareId})
+            .then( function(fare){
+                if(fare===404) return res.status(404).json({"error":"No muching fare document found"});
+                res.json(fare);
+            })
+            .catch( (err)=>{
+                  res.satus(500).send(err);
+              })
+
 }
 function getTotalPrice(req, res, next){
   FareDal.getTotalPrice()

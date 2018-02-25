@@ -9,9 +9,8 @@ const moment  = require('moment');
 *Load custom module dependecies
 */
 const ScheduleModel = require('../models/schedule');
-const StationDal   = require('../dal/schedule');
-const logMsg = require('../lib/utils').showMsg;
-const errorHandler = require('../lib/utils').errorHandler;
+const StationDal    = require('../dal/schedule');
+const logMsg        = require('../lib/utils').showMsg;
 
 var returnFields = ScheduleModel.whitelist;
 // var population = [{

@@ -6,9 +6,9 @@ var express = require('express');
 //var fareController = require('../controllers/fare_');
 var fareController = require('../controllers/fare');
 var noop = require('../lib/utils').noop;
-var middleware =require('../lib/middleware/auth');
-var requireAuthentication = middleware.requireAuthentication;
-var authenticate =require('../lib/middleware/authenticate').authenticate;
+//var middleware =require('../lib/middleware/auth');
+//var requireAuthentication = middleware.requireAuthentication;
+//var authenticate =require('../lib/middleware/authenticate').authenticate;
 
 var router = express.Router();
 /**
@@ -43,7 +43,7 @@ var router = express.Router();
  *   "__v": 0
  * }
  */
-router.post('/',authenticate, fareController.create);
+router.post('/', fareController.create);
 
 /**
  * @api {GET} /fares/ Get Stations
@@ -52,7 +52,7 @@ router.post('/',authenticate, fareController.create);
  *
  *
  */
- router.get('/',authenticate, fareController.getAll);
+ router.get('/',fareController.getAll);
 //
 // /**
 //  * @api {GET} /fares/paginate Station Paginate
@@ -61,7 +61,7 @@ router.post('/',authenticate, fareController.create);
 //  *
 //  * @
 //  */
-router.get('/paginate',authenticate, fareController.paginate);
+router.get('/paginate', fareController.paginate);
 /**
  * @api {PUT} /fares/search Search Station
  * @apiName SearchStations
@@ -72,7 +72,7 @@ router.get('/paginate',authenticate, fareController.paginate);
  * {"email": "john1@aksum.com"}
  */
  //the following should use get http method
-router.put('/search',authenticate, fareController.search);
+router.put('/search', fareController.search);
 
 /**
  * @api {GET} /fares/:id Get Station
@@ -83,7 +83,7 @@ router.put('/search',authenticate, fareController.search);
  *
  * http://localhost:3000/fares/5a478c962698af267483b1ee
  */
-router.get('/:id',authenticate, fareController.getById);
+router.get('/:id', fareController.getById);
 
 /**
  * @api {UPDATE} /fares/:id Update Station
@@ -94,7 +94,7 @@ router.get('/:id',authenticate, fareController.getById);
  *
  * http://localhost:3000/fares/5a478c962698af267483b1ee
  */
-router.put('/:id',authenticate, fareController.update);
+router.put('/:id', fareController.update);
 
 /**
  * @api {DELETE} /fares/:id Delete Station
@@ -105,16 +105,16 @@ router.put('/:id',authenticate, fareController.update);
  *
  * http://localhost:3000/fares/5a478c962698af267483b1ee
  */
-router.delete('/:id', authenticate, fareController.delete);
+router.delete('/:id', fareController.delete);
 //SET FARE AMOUNT
-router.put('/setfareamount', authenticate, fareController.setFareAmount);
+router.put('/setfareamount', fareController.setFareAmount);
 //SET FARE AMOUNT
-router.put('/setdistance', authenticate, fareController.setDistance);
+router.put('/setdistance',  fareController.setDistance);
 //findAndPopulate
-router.get('/populate/:id', authenticate, fareController.findAndPopulate);
+router.get('/populate/:id', fareController.findAndPopulate);
 //getTotalPrice
-router.get('/fare/price/', authenticate, fareController.getTotalPrice);
+router.get('/fare/price/',  fareController.getTotalPrice);
 //completeInfo
-router.get('/fare/info/', authenticate, fareController.completeInfo);
+router.get('/fare/info/', fareController.completeInfo);
 
 module.exports = router;

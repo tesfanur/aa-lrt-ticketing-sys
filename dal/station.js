@@ -20,13 +20,17 @@ function createStation(data){
       StationModel.findOne({stationId:data.stationId})
                    .exec()
                    .then(result => {
-                     if(result) return resolve(400);//bad request to create station that already exists
+                     if(!result){ //return resolve(400);//bad request to create station that already exists
                      station.save()
                          .then((result) => {
                             resolve(result);
                           }, function(err){
                             return reject(err);
                           })
+                        }
+                        else {
+                          resolve(400)
+                        }
                    });
                   })
 
@@ -39,12 +43,13 @@ function createStation(data){
       debug('getting all station collection');
        var defferd = q.defer();
    StationModel.find(query)
-            .populate('userId',["email"])
+            //.select("stationId name userId longitude longitude createdAt")
+            .populate('userId')
             .sort({createdAt :-1})
             .exec()
             .then( (stations) => {
               defferd.resolve(stations);
-           }, function(err) {
+           }, (err)=> {
              defferd.reject(err);
            });
 
@@ -58,12 +63,12 @@ function createStation(data){
         console.log("my station id : " + id);
 
       return new Promise((resolve, reject)=>{
-        StationModel.findOne({_id : id})
+        StationModel.findById(id)
+              .populate("userId")
               .exec()
               .then((result) => {
-                  if(!result) return resolve(404);//station not found
                   return resolve(result);
-              },function(err){
+              },(err)=>{
                  reject(err);
               });
       })
@@ -74,35 +79,46 @@ function createStation(data){
   function getStationByCustomId(customid){
       debug('GETTIGN STATION', customid)
       //console.log("station customid : " + customid);
-      var defferd = q.defer();
-      StationModel.findOne({stationId : customid})
-          .exec()
-          .then((result) => {
-              //console.log("dal result",result)
-              if(!result) return defferd.resolve(404);
-              return defferd.resolve(result);
-          },function(err){
-            defferd.reject(err);
-          });
-      return defferd.promise
+
+      return new Promise((resolve, reject)=>{
+        StationModel.findOne({stationId : customid})
+            .populate("userId")
+            .exec()
+            .then((result) => {
+                resolve(result);
+            },function(err){
+              reject(err);
+            });
+
+      });
+
   }
 
   /**
   *3. Search station by query instead of req.body
   */
 function searchStationByName(name){
-
-  return new Promise((resolve,reject)=>{
-        StationModel.findOne({name:name})
-                     .then(function(result){
-                         //if not station found return 404
-                         if(!result) resolve(404);
-                         resolve(result);
-                     }, function(err){
-                       reject(err)
-                     })
-  });
-  }
+var filterdStations =[];
+ return new Promise((resolve,reject)=>{
+      StationModel.find({})
+                  .populate("question.askedBy")
+                  .populate("answer.answerdBy")
+                  .exec()
+                  .then(function(result){
+                       //if not station found return 404
+                       if(!result) return resolve(404);
+                       filterdStations = _.filter(result, station =>{
+                        return station.name
+                                  .toLowerCase()
+                                  .indexOf(name)>-1;
+                       })
+                       if(filterdStations.length===0) return resolve(404);
+                       resolve(filterdStations);
+                   }, function(err){
+                     reject(err)
+                   })
+});
+}
 
 function stationExist(stationId){
    debug('CHECKING STATION EXISTENCE');
@@ -164,7 +180,7 @@ function deleteStation(query){
     return new Promise((resolve, reject)=>{
       StationModel.findOneAndRemove(query)
                .then((result)=>{
-                   if(!result) return resolve(404);
+                   //if(!result) return resolve(404);
                    resolve(result)
                  }, err=>{
                    reject(err);
@@ -186,21 +202,23 @@ function getStationByPagination(query, qs){
         page: qs.page || 1,
         limit: qs.per_page || 10
     };
+    StationModel.paginate(query, opts)
+                .then((stations)=>{
+                    if(!stations)
+                    return defferd.reject("Station not found");
 
-    StationModel.paginate(query, opts, (err, data)=>{
-        if(err) return defferd.reject(err);
-
-        if(!data) return defferd.reject("Station not found");
-
-        var response = {
-            page: data.page,
-            total_docs: data.total,
-            total_pages: data.pages,
-            per_page: data.limit,
-            docs: data.docs
-        };
-       if(data) return defferd.resolve(response);
-    });
+                    var response = {
+                        page       : stations.page,
+                        total_docs : stations.total,
+                        total_pages: stations.pages,
+                        per_page   : stations.limit,
+                        docs       : stations.docs
+                    };
+                  return defferd.resolve(response);
+                })
+                .catch(err =>{
+                  defferd.reject(err);
+                });
     return defferd.promise;
 }
 
@@ -208,15 +226,16 @@ function getStationByPagination(query, qs){
 /**
 *6.return StationDalModule public APIs
 */
-  return {create : createStation,
-  findAll : getAllStations,
+  return {
+  create   : createStation,
+  findAll  : getAllStations,
   findById : getStationById,
-  update : updateStation,
-  delete : deleteStation,
+  update   : updateStation,
+  delete   : deleteStation,
   paginate : getStationByPagination,
-  stationExist: stationExist,
-  findByCustomId:getStationByCustomId,
-  searchByName:searchStationByName
+  stationExist  : stationExist,
+  findByCustomId: getStationByCustomId,
+  searchByName  : searchStationByName
 };
 }(StationModel));
 

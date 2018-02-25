@@ -6,9 +6,9 @@ var express = require('express');
 //var stationController = require('../controllers/station_');
 var stationController = require('../controllers/station');
 var noop = require('../lib/utils').noop;
-var middleware =require('../lib/middleware/auth');
-var requireAuthentication = middleware.requireAuthentication;
-var authenticate = require('../lib/middleware/authenticate').authenticate;
+// var middleware =require('../lib/middleware/auth');
+// var requireAuthentication = middleware.requireAuthentication;
+// var authenticate = require('../lib/middleware/authenticate').authenticate;
 
 var router = express.Router();
 /**
@@ -48,7 +48,7 @@ var router = express.Router();
  *   "__v": 0
  * }
  */
-router.post('/',authenticate, stationController.create);
+router.post('/', stationController.create);
 
 /**
  * @api {GET} /stations/ Get Stations
@@ -57,7 +57,7 @@ router.post('/',authenticate, stationController.create);
  *
  *
  */
- router.get('/',authenticate, stationController.findAll);
+ router.get('/', stationController.findAll);
 //
 // /**
 //  * @api {GET} /stations/paginate Station Paginate
@@ -66,7 +66,7 @@ router.post('/',authenticate, stationController.create);
 //  *
 //  * @
 //  */
-router.get('/paginate',authenticate, stationController.paginate);
+router.get('/paginate', stationController.paginate);
 /**
  * @api {PUT} /stations/search Search Station
  * @apiName SearchStations
@@ -77,7 +77,7 @@ router.get('/paginate',authenticate, stationController.paginate);
  * {"email": "john1@aksum.com"}
  */
  //the following should use get http method
-router.get('/search/:name',authenticate, stationController.searchByName);
+router.get('/search/:name', stationController.searchByName);
 
 /**
  * @api {GET} /stations/:id Get Station
@@ -88,10 +88,10 @@ router.get('/search/:name',authenticate, stationController.searchByName);
  *
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
- router.get('/:id',authenticate, stationController.findById);
+ router.get('/:id', stationController.findById);
  //
 
-router.get('/customid/:cid',authenticate, stationController.findByCustomId);
+router.get('/customid/:cid', stationController.findByCustomId);
 
 /**
  * @api {UPDATE} /stations/:id Update Station
@@ -102,7 +102,7 @@ router.get('/customid/:cid',authenticate, stationController.findByCustomId);
  *
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
-router.put('/:id',authenticate, stationController.update);
+router.put('/:id', stationController.update);
 
 /**
  * @api {DELETE} /stations/:id Delete Station
@@ -113,7 +113,7 @@ router.put('/:id',authenticate, stationController.update);
  *
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
-router.delete('/:id', authenticate, stationController.delete);
+router.delete('/:id', stationController.delete);
 //router.get('/station/:name', authenticate, stationController.findByName);
 
 module.exports = router;

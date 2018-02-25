@@ -5,12 +5,10 @@ var debug    = require('debug');
 var moment   = require('moment');
 var mongoose = require('mongoose');
 var _        = require('lodash');//lodash can also do the same.check?
-var Station  = require('../models/station'); 
+var Station  = require('../models/station');
 
 var StationDal   = require('../dal/station');
-var handleError  = require('../lib/utils').handleError;
-var errorHandler = require('../lib/utils').errorHandler;
-var logMsg       = require('../lib/utils').showMsg;
+var utils        = require('../lib/utils');
 
 //private members
 function _validateStationRegistationInput(req, res,next){
@@ -21,6 +19,7 @@ function _validateStationRegistationInput(req, res,next){
   req.checkBody('longitude','longitude is required').notEmpty();
     var errors = req.validationErrors();
     if(errors){
+      //refactor this to pass it to the error handling middlewrare
       console.log("errors",errors);
      return res.status(400).json(errors);
      }
@@ -28,6 +27,27 @@ function _validateStationRegistationInput(req, res,next){
 /**
 *1. create new station
 */
+function getStationAttributes(req,method,station){
+  if(!station) return {};
+  var url = req.protocol +'://'+
+            req.hostname+ req.originalUrl;
+  var createdAt  = moment(station.createdAt).format("DD-MMM-YYYY hh:mm A");
+  var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY hh:mm A");
+  var user       = station.userId;
+  return  {
+               _id       : station._id,
+               createdBy : user,//user should be admin
+               stationId : station.stationId,
+               name      : station.name,
+               route     : station.route,
+               longitude : station.longitude,
+               latitude  : station.latitude,
+               createdAt : createdAt,
+               modifiedAt:modifiedAt,
+              request: {method,url}
+            };
+
+}
 
 function createStation (req, res, next){
         _validateStationRegistationInput(req, res, next);
@@ -39,12 +59,14 @@ function createStation (req, res, next){
         //console.log("body",body);
                   //  create if fare doesn't exists from to station
                  StationDal.create(body)
-                           .then((retrievedStation)=> {
-                             console.log("station :: ",retrievedStation)
-                                if(retrievedStation==400) return res.status(400).send({"message":body.stationId +" station already exists"});
-                                return res.status(201).json(retrievedStation);//station created succesfully
-                           }, function(err){
-                             res.send(err)
+                           .then((createdStation)=> {
+                             console.log("station :: ",createdStation)
+                                if(createdStation===400)
+                                return res.status(400).send({"message":body.stationId +" station already exists"});
+                                var response =getStationAttributes(req,"POST",createdStation);
+                                utils.handleResponse(res,201,response);//station created succesfully
+                           }, (error)=>{
+                             next(error);
                            })
 }
 /**
@@ -54,33 +76,50 @@ function findAllStation(req, res, next){
   var allstations={};
   StationDal.findAll(allstations)
           .then((stations) => {
-            //if(error) return res.status(500).send({"ERROR": "Unable to fecth station document!"})
-            //if(!stations) return res.status(404).json({"ERROR": "NO station FOUND"});
-            return res.status(200).json(stations);
-          }, function(error){
-            res.status(500).send({"ERROR": "Unable to fecth station document!"})
+            if(!stations) return res.status(404).json({"ERROR": "NO station FOUND"});
+            var stationCount =stations.length;
+            var response = {
+              stationCount:stationCount,
+              stations: stations.map((st)=>{
+                      return getStationAttributes(req,"GET",st);
+              })
+            }
+            //return res.status(200).json(response});
+            utils.handleResponse(res,200,response);
+          }, (error)=>{
+            next(error);
           })
    }
 
  /**
  *3. Search station by query instead of req.body
  */
-  function searchStationByName  (req, res, next){
-     var stationName = req.params.name;
+ function searchStationByName(req, res, next){
+    var name = req.params.name.trim().toLowerCase();
+        StationDal.searchByName(name)
+              .then((stations)=>{
+                   if(stations===404)
+                   return  res.status(404).json({"message":"No muching station found"});
+                   var response = {
+                     stationCount:stations.legnth,
+                     stations   : stations.map((faq)=>{
+                             return getStationAttributes(req,"GET",faq);
+                     })
+                   }
+                   //return res.status(200).json(response});
+                   utils.handleResponse(res,200,response);
 
-     StationDal.searchByName(stationName)
-               .then( function(station){
-                    if(station===404) return  res.status(404).json({"message":"No muching station found"});
-                   res.status(200).json(station);
-               },function(err){
-                 res.status(500).send({"Error":"Unable to find station"})
-               })
+                   //utils.handleResponse(res,200,getStationAttributes(req,"GET",stations));
+              },(error)=>{
+                next(error);
+              })
  }
+
 /**
 *4. Find station by their ID controller
 */
-function findStationById(req, res){
-  console.log('Getting station by id:');
+function findStationById(req, res,next){
+  console.log('GETTING STATION BY ID:');
   var stationId=req.params.id;
   //chech if station ObjectId is valid or not
   var validObjectId=mongoose.Types.ObjectId.isValid(stationId);
@@ -88,10 +127,19 @@ function findStationById(req, res){
   if(validObjectId){
     StationDal.findById(stationId)
             .then(station => {
-              if(station===404) return res.status(404).send({"message":"No muching station found"});
-               res.json(station);
-            },function(err){
-              res.status(500).sendStatus(err);
+    if(station){
+                var token =req.token;
+              var response = getStationAttributes(req,"GET",station);
+                //set header
+                //console.log("token",token);
+                  // res.header("x-auth",token);
+                  // res.rediret("http://localhost:5000/stations/"+stationId)
+                return utils.handleResponse(res,200,response);
+              }
+              //else
+              return utils.handleResponse(res,404,null);
+            },(error)=>{
+              next(error);
             })
 
       } else{
@@ -99,18 +147,19 @@ function findStationById(req, res){
       }
    }
 
-function getStationByCustomId(req,res){
+function getStationByCustomId(req,res,next){
        debug('GETTIGN STATION')
        var customid = req.params.cid;
        //console.log("my station id : " + customid);
 
  StationDal.findByCustomId(customid)
            .then((station) => {
-               if(station===404) return res.status(404).send({"message":"No muching station found"});
-               console.log(station)
-               res.status(200).send(station);
+               if(!station) return res.status(404).send({"message":"No muching station found"});
+               //console.log(station)
+              return res.send(getStationAttributes(req,"GET",station));
            },function(err){
-             res.status(500).send({"message":"unable to find station"});
+             next(err);
+             //res.status(500).send({"message":"unable to find station"});
            });
    }
 /**
@@ -139,10 +188,9 @@ function updateStationInfo(req,res){
            //use 204 instead of 404 for update operation if the document to be updates
            //didn't exist
            return res.status(404).send({"Message": "No content found to update"});
-
-           res.send(updatedstation);
+           res.send(getStationAttributes(req,"PUT",updatedstation));
          }, function(err){
-           res.status(500).json(e);
+           res.status(500).json(err);
          })
 
 
@@ -155,10 +203,12 @@ function deleteStationById(req,res){
   var query= {_id:req.params.id};
   StationDal.delete(query)
          .then(station => {
-           if(station===404) return res.status(404).send({"message":"Content already removed"});
-           return res.send({"message":"succesfully removed",station});
-         }, err=>{
-           res.status(404).send({"error":e});
+           if(!station)
+           return utils.handleResponse(res,404,{"message":"Content already removed"});
+           //else
+           utils.handleResponse(res,200,{"message":"succesfully removed",station})
+         }, error=>{
+             next(error);
          })
 
 }
@@ -175,10 +225,8 @@ function findStationByPagination (req, res, next){
               .then(function(docs){
                   if(docs) return res.json(docs);
               })
-              .catch(err=>{
-                  customError.type = 'GET_STATIONs_PAGINATE_ERROR';
-                  //return handleError(res, err, errorObj);
-                  return errorHandler(res, customError);
+              .catch(error=>{
+                  next(error);
               });
 }
 

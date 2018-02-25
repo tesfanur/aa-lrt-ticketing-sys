@@ -1,16 +1,17 @@
-// Load Module Dependencies
-
-var authenticate   = require('../lib/middleware/authenticate').authenticate;
-var home           = require('../lib/utils').root;
-var userRouter     = require('./user');
-var scheduleRouter = require('./schedule');
-var stationRouter  = require('./station');
-var fareRouter     = require('./fare');
-var ticketRouter   = require('./ticket');
-var userProfileRouter   = require('./user_profile');
-//var courseRouter = require('./course');
-var profileImageRouter = require('./profileimage');
-
+// Load custom Module Dependencies
+//const authenticate = require('../lib/middleware/authenticate').authenticate;
+const home         = require('../lib/utils').root;
+/**
+*load all routes
+*/
+const userRouter     = require('./user');
+const fareRouter     = require('./fare');
+const faqRouter     = require('./faq');
+const ticketRouter   = require('./ticket');
+const stationRouter  = require('./station');
+const scheduleRouter = require('./schedule');
+const userProfileRouter   = require('./user_profile');
+const profileImageRouter = require('./profileimage');
 
 module.exports = function appRouter(app) {
 
@@ -26,6 +27,8 @@ module.exports = function appRouter(app) {
 	app.use('/tickets', ticketRouter);
 	//Fare/Payment routes
 	app.use('/fares', fareRouter);
+	//Frequently asked questions faq routes
+	app.use('/faqs', faqRouter);
 	//User Profile routes
 	app.use('/profiles', userProfileRouter);
  //get home page

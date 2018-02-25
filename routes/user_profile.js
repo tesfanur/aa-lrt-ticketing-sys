@@ -4,39 +4,28 @@ var express = require('express');
 //load local/custom module dependecies
 var UserProfileController = require('../controllers/user_profile');
 var uploadImage = require('../controllers/imageupload');
-var authenticate = require('../lib/middleware/authenticate').authenticate;
 
 //instantiate router object
 var router  = express.Router();
-// module.exports = {
-//     create    : createUserProfile,
-//     findAll   : findAllUserProfile,
-//     findById  : findUserProfileById,
-//     update    : updateUserProfileInfo,
-//     delete    : deleteUserProfileById,
-//     paginate  : findUserProfileByPagination,
-//     //findByName: findUserProfileByName,
-//     findByCustomId:getUserProfileByCustomId,
-//     searchByName : searchUserProfileByName
-// }
 
 //create  new Profile using validation
 //router.post('/', uploadImage, UserProfileController.uploadImage);
-router.post('/', authenticate, UserProfileController.create);
+router.post('/',  UserProfileController.create);
 
 // Retrieve all Profiles
-router.get('/',authenticate,UserProfileController.findAll);
+router.get('/',UserProfileController.findAll);
 
 // Retrieve single Profile with UserProfileControllerId
-router.get('/:id',authenticate, UserProfileController.findById);
+router.get('/:id', UserProfileController.findById);
 
 // Update Profile with userProfileId
-router.put('/:id',authenticate, UserProfileController.update);
+router.put('/:id', UserProfileController.update);
 
 // Delete Profile with userProfileId
 router.delete('/:id', UserProfileController.delete);
 
-//router.get('/', UserProfileController.homepage);
+//search user profile by username
+router.get('/search/:username', UserProfileController.searchByUsername);
 
 //expose router to other files
 module.exports =router;

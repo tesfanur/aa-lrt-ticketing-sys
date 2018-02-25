@@ -10,7 +10,8 @@ module.exports.uploadImage =  function ( req, res, next){
     var NewImage = new ProfileImage();
     NewImage.filename     = newImg.filename;
     NewImage.originalName = newImg.originalname;
-    NewImage.desc         = newImg.desc
+    NewImage.desc         = newImg.desc;
+    NewImage.imgPath      = newImg.path;
     NewImage.save(function(err,img) {
         if (err) {
             return res.sendStatus(400);

@@ -7,7 +7,6 @@ var router  = express.Router();
 *load local/custom modules
 */
 var userController = require('../controllers/user');
-var authenticate =require('../lib/middleware/authenticate').authenticate;
 
 /**
  * @api {POST} /Users/signup signup User
@@ -144,7 +143,7 @@ router.post('/login', userController.login);
   *
  */
 
-router.get('/',authenticate, userController.findAll);
+router.get('/',userController.findAll);
 /**
  * @api {GET} /Users/:userId get User
  * @apiName findById
@@ -167,7 +166,7 @@ router.get('/',authenticate, userController.findAll);
  * }
  */
 // Retrieve single user with userControllerId
-router.get('/:userId',authenticate, userController.findById);
+router.get('/:userId',userController.findById);
 /**
  * @api {POST} /Users/:userId update User
  * @apiName update
@@ -191,10 +190,10 @@ router.get('/:userId',authenticate, userController.findById);
  *    "modifiedAt": "2018-02-14T15:14:44.974Z"
  * }
  */
-router.put('/:userId',authenticate, userController.update);
+router.put('/:userId', userController.update);
 
 // Delete user with userId
-router.delete('/:userId',authenticate, userController.delete);
+router.delete('/:userId', userController.delete);
 
 
 //router.get('/', userController.homepage);

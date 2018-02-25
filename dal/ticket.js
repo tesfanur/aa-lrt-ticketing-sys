@@ -44,7 +44,7 @@ function createTicket(data){
                if(tickets){
                  var publickTicket=tickets;
                 publickTicket.createdAt =moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
-                 console.log(tickets.createdAt);
+                 logMsg(tickets.createdAt);
               defferd.resolve(publickTicket);
             }
            }, function(err) {
@@ -78,14 +78,13 @@ function createTicket(data){
   */
    function getTicketById(id){
         debug('GETTIGN STATION', id)
-        console.log("my ticket id : " + id);
+        logMsg("my ticket id : " + id);
 
       return new Promise((resolve, reject)=>{
    TicketModel.findOne({_id : id})
               .populate('from',"name route stationId")
               .populate('to',"name route stationId")
               .populate('passengerId',"email phone")
-              .sort({createdAt:-1})
               .exec()
               .then((result) => {
                   if(!result) return resolve(404);//ticket not found
@@ -99,9 +98,12 @@ function createTicket(data){
 
   function getTicketByCustomId(id){
       debug('GETTIGN STATION', id)
-      console.log("my ticket id : " + id);
+      logMsg("my ticket id : " + id);
       var defferd = q.defer();
-      TicketModel.findOne({ticketId : id})
+      TicketModel.findOne({id : id})
+          .populate('from',"name route stationId")
+          .populate('to',"name route stationId")
+          .populate('passengerId',"email phone")
           .exec()
           .then((result) => {
               if(!result) return defferd.resolve(404);
@@ -233,16 +235,17 @@ function getTicketByPagination(query, qs){
 /**
 *6.return TicketDalModule public APIs
 */
-  return {create : createTicket,
+  return {
+  create   : createTicket,
   findAll  : getAllTickets,
   fineMine : getAllMyTickets,
   findById : getTicketById,
-  update : updateTicket,
-  delete : deleteTicket,
-  paginate : getTicketByPagination,
+  update   : updateTicket,
+  delete   : deleteTicket,
+  paginate   : getTicketByPagination,
   ticketExist: ticketExist,
   findByCustomId:getTicketByCustomId,
-  searchByName:searchTicketByName
+  searchByName  :searchTicketByName
 };
 }(TicketModel));
 

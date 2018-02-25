@@ -150,6 +150,9 @@ function getFareById(fareId){
     debug('getting a fare', fareId);
     var defferd = q.defer();
  FareModel.findOne({_id:fareId})
+          .populate("from","name")
+          .populate("to","name")
+          .populate("userId","email phone")
           .exec()
           .then(fare => {
              if(fare) return defferd.resolve(fare);;
@@ -222,17 +225,22 @@ function getFareByPagination(query, qs, cb){
 /**
 *10.Get Fare by Id  cb({error},{result}) ???
 */
-function getFareByIdAndPopulate(query, cb){
- FareModel.findOne(query,{_id:0})
-          .populate('from',["name"])
-          .populate('to',["name"])
-          .exec()
-          .then(fare => {
-             if(!fare) return cb({"error": "No record found"},null);
-               //no error
-              cb(null, fare);})
-          .catch(err => {
-              return cb(err,null)});
+function getFareByIdAndPopulate(query){
+  return new Promise((resolve, reject)=>{
+    FareModel.findOne(query,{_id:0})
+             .populate('from',"name")
+             .populate('to',"name")
+             .populate('userId',"email phone")
+             .exec()
+             .then(fare => {
+                if(!fare) return resolve(404);
+                resolve(fare);
+             },
+             err => {
+                 res.status(500).send({"error":err})}
+            );
+  })
+
 }
 
 //Aggregation function
