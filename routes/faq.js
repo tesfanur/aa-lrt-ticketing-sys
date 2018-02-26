@@ -5,13 +5,10 @@ const express = require('express');
 /**
 *Load custom module dependencies
 */
-const noop          = require('../lib/utils').noop;//?????????????
-//const middleware    = require('../lib/middleware/auth');
 const faqController = require('../controllers/faq');
-// const requireAuthentication = middleware.requireAuthentication;
-// const authenticate          = require('../lib/middleware/authenticate').authenticate;
 
 const router = express.Router();
+
 /**
  * @api {POST} /faqs/ Create faq
  * @apiName CreateFaq
@@ -90,9 +87,6 @@ router.get('/search/:desc', faqController.searchByDesc);
  * http://localhost:3000/faqs/5a478c962698af267483b1ee
  */
  router.get('/:id', faqController.findById);
- //
-
-//router.get('/customid/:cid', faqController.findByCustomId);
 
 /**
  * @api {UPDATE} /faqs/:id Update Faq
@@ -115,6 +109,5 @@ router.put('/:id', faqController.update);
  * http://localhost:3000/faqs/5a478c962698af267483b1ee
  */
 router.delete('/:id', faqController.delete);
-//router.get('/faq/:name', authenticate, faqController.findByName);
 
 module.exports = router;

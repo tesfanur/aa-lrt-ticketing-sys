@@ -1,22 +1,16 @@
 /**
-*Load module dependecies
+*Load third party module dependecies
 */
 const debug    = require('debug');
 const moment   = require('moment');
 const mongoose = require('mongoose');
 const _        = require('lodash');//lodash can also do the same.check?
 const q        = require('q');
-
+/**
+*Load lcoal module dependecies
+*/
 const FaqDal   = require('../dal/faq');
 const utils    = require('../lib/utils');
-
-
-var customError = {
-    status : 500,
-    type : "FARE_ERROR",
-    message:""
-}
-
 //create global faq object and attach any required fields to it
 //then export the object to expose its feature from other source Profile
 
@@ -31,6 +25,14 @@ var FaqControllerModule = (function (FaqDal) {
        return res.status(400).json(errors);
        }
 
+  }
+/**
+*Handle faq responses
+**/
+  function handleFaqResponse(res,method, ticket){
+    if(!ticket || ticket===404) return utils.handleResponse(res,404,ticket);
+     if(method==="POST") return utils.handleResponse(res,201,ticket);
+     return utils.handleResponse(res,200,ticket);
   }
 
   var getFaqsAttributes=(req,method,faq)=>{
@@ -78,8 +80,7 @@ function createFaq (req, res, next){
         //validate source and destination id
                    FaqDal.create(body)
                          .then((faq)=> {
-                              if(!faq) return utils.handleResponse(res,404,faq);
-                              utils.handleResponse(res,201,faq);
+                              handleFaqResponse(res,req.method,faq);
                          })
                          .catch((err)=>next(err));
                          //TODO:user catch(next)//a short form to propagate errors to error handling
@@ -92,7 +93,7 @@ function createFaq (req, res, next){
 function getAllFaqs(req, res, next){
     FaqDal.findAll({})
           .then(faqs=>{
-              res.send(faqs);
+                handleFaqResponse(res,req.method,{"toal number of questions":faqs.length,faqs});
           })
           .catch(err => { res.status(500).send(err);
           });
@@ -108,11 +109,9 @@ function getFaqById(req, res, next){
    if(validObjectId){
     FaqDal.findById(faqId)
            .then((faq)=>{
-               if(!faq) return utils.handleResponse(res,404,faq);
-               faq =getFaqsAttributes(req,"GET",faq);
-               utils.handleResponse(res,200,faq);
+               handleFaqResponse(res,req.method,faq);
            })
-           .catch((err)=>next(err));
+           .catch((error)=>next(error));
       }else{
         res.status(400).json({"error":"Invalid Object Id"});
       }
@@ -129,16 +128,12 @@ function searchFaqByDesc  (req, res, next){
                   var response = {
                     faqCount:faqs.legnth,
                     faqs   : faqs.map((faq)=>{
-                            return getFaqsAttributes(req,"GET",faq);
+                            return getFaqsAttributes(req,req.method,faq);
                     })
                   }
-                  //return res.status(200).json(response});
                   utils.handleResponse(res,200,response);
-
-                  utils.handleResponse(res,200,getFaqsAttributes(req,"GET",faqs));
-             },(error)=>{
-               next(error);
              })
+              .catch(error=>next(error));
 }
 /**
 *7. CONTROLLER TO UPDATE FARE DOCUMENT INFO
@@ -147,7 +142,7 @@ function updateFaq(req,res){
   var modifiedAt = new Date();
   req.body.modifiedAt=modifiedAt;
   var faqData= _.pick(req.body,["body","question","modifiedAt"]);
-  console.log("faqData", faqData)
+  
   var updates ={
     "question.description":req.body.question.description,
     modifiedAt:req.body.modifiedAt};
@@ -155,37 +150,27 @@ function updateFaq(req,res){
   var query         = {_id:req.params.id};
   var setUpdates    = {$set: updates };
   var updateOptions = {new: true};
-
+  var method =req.method;
   FaqDal.update(query,setUpdates,updateOptions)
          .then(updatedfaq => {
-           //no content found
-           if(!updatedfaq)
-           //use 204 instead of 404 for update operation if the document to be updates
-           //didn't exist
-           return res.status(404).send({"Message": "No content found to update"});
-           res.send(getFaqsAttributes(req,"PUT",updatedfaq));
-         }, function(err){
-           res.status(500).json(err);
+            updatedfaq=getFaqsAttributes(req,method,updatedfaq);
+            handleFaqResponse(res,method,updatedfaq);
          })
+         .catch(error=>next(error));
 }
 
 /**
 *8. CONTROLLER TO DELETE/REMOVE FARE DOCUMENT
 */
-function deleteFaq (req, res, next){
-    var faqId = req.params.id;
+ function deleteFaqById(req,res){
+  var query= {_id:req.params.id};
+  var method=req.method;
+   FaqDal.delete(query)
+         .then(faq => {
+           handleFaqResponse(res,method,faq);
+         })
+         .catch(error=>next(error));
 
-    FaqDal.delete({_id: faqId}, function(err, faq){
-        if(err){
-            customError.type = 'DELETE_FARE_ERROR';
-            customError.status=404;
-            return handleError(res, err, customError);
-        }
-        res.json(faq || {});
-        if(!faq)
-        res.status(404).json({"message":"No faq found with id " +faqId});
-
-    })
 }
 /**
 *9. CONTROLLER TO GET FARE DOCUMENTS BY PAGINATION
@@ -194,16 +179,13 @@ function getFaqByPagination(req, res, next){
     debug('GET FAQ COLLECTION BY PAGINATION');
     var query = req.query.query || {};//default query: find all
     var queryParams = req.query;
+    var method = req.method;
 
     FaqDal.paginate(query, queryParams)
               .then(function(docs){
-                  if(docs)
-                  return utils.handleResponse(res,200,docs)
-                  utils.handleResponse(res,404,{});
+               handleFaqResponse(res,method,docs);
               })
-              .catch(error=>{
-                  next(error);
-              });
+              .catch(error=>next(error));
 }
 
 /**
@@ -214,7 +196,7 @@ function getFaqByPagination(req, res, next){
         findAll   : getAllFaqs,
         findById  : getFaqById,
         update   : updateFaq,
-        delete   : deleteFaq,
+        delete   : deleteFaqById,
         paginate : getFaqByPagination,
         searchByDesc:searchFaqByDesc
       };

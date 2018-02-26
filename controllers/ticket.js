@@ -1,23 +1,22 @@
 /**
 *Load module dependecies
 */
-var debug    = require('debug');
-var moment   = require('moment');
-var mongoose = require('mongoose');
-var ObjectID = require('mongodb').ObjectID;
-var _        = require('lodash');//lodash can also do the same.check?
-var Ticket  = require('../models/ticket');
-//Data Access Layers
-var TicketDal    = require('../dal/ticket');
-var FareDal      = require('../dal/fare');
-var StationDal   = require('../dal/station');
-//controllers
-var stationController = require('./station');
-
-//utility module
-var handleError  = require('../lib/utils').handleError;
-var errorHandler = require('../lib/utils').errorHandler;
-var logMsg       = require('../lib/utils').showMsg;
+const debug    = require('debug');
+const moment   = require('moment');
+const mongoose = require('mongoose');
+const ObjectID = require('mongodb').ObjectID;
+const _        = require('lodash');//lodash can also do the same.check?
+const Ticket  = require('../models/ticket');
+/**
+*Load local data access layer(dal) module dependecies
+*/
+const FareDal      = require('../dal/fare');
+const TicketDal    = require('../dal/ticket');
+const StationDal   = require('../dal/station');
+/**
+*Load custom utility module dependecies
+*/
+const utils      = require('../lib/utils');
 
 //private members
 function _validateTicketRegistraionInput(req, res,next){
@@ -36,221 +35,15 @@ function _validateTicketRegistraionInput(req, res,next){
      return res.status(400).json(errors);
      }
    }
+function handleTicketResponse(res,ticket){
+  if(!ticket || ticket===404) return utils.handleResponse(res,404,ticket);
+   return utils.handleResponse(res,200,ticket);
+}
 /**
 *1. create new ticket
 */
 
-function createTicket (req, res, next){
-
-        var body = req.body;
-            body.passengerId = req.user._id;
-            //since mongoose ObjectId validator uses string as input otherwise its result is true for any Number
-            var sourceId=body.from.toString();
-            var destinationId=body.to.toString();
-
-            // console.log("sourceId",sourceId)
-            // console.log("destinationId",destinationId)
-            var generatedStation={}
-                   StationDal.findByCustomId(parseInt(sourceId))
-                             .then(station=>{
-                               generatedStation=station;
-                               console.log("source station",sourceId);
-                               if(station) return res.send(station);
-                             })
-                             .catch(err=> {
-                               console.log(err);
-                               res.status(500).send(err)
-                             });
-            console.log("generatedStation",generatedStation);
-
-            //chech if station ObjectId is valid or not
-            //var validSourceId=mongoose.Types.ObjectId.isValid(sourceId);
-            var validSourceId=ObjectID.isValid(sourceId);
-            var validDestinationId=ObjectID.isValid(destinationId);
-
-            // console.log("validSourceId",validSourceId)
-            // console.log("validDestinationId",validDestinationId)
-
-        //find the price from the fare document
-        //pick only the required attributes from the body
-        //var body = _.pick(req.body,["type","route","from","to"]);
-        var body = _.pick(req.body,["route","from","to","price","passengerId"]);
-        _validateTicketRegistraionInput(req, res, next);
-        //console.log("body",body);
-               if(!(validSourceId && validDestinationId)){
-                  return  res.status(400).send({"message":"Source and/or station Ids is/are not valid"});
-               } else{
-                 //console.log("!(validSourceId && validDestinationId)",(validSourceId && validDestinationId));
-                  //  create if fare doesn't exists from to ticket
-                 TicketDal.create(body)
-                           .then((retrievedTicket)=> {
-                             console.log("ticket :: ",retrievedTicket)
-                                if(retrievedTicket==400) return res.status(400).send({"message":"Hello Mr "+userEmail+" you have already bought a ticket at  specify time from ticke info "+body.from +" "+ body.to +". Do you want to buy again"});
-                                return res.status(201).json(retrievedTicket);//ticket created succesfully
-                           }, function(err){
-                             res.send(err)
-                           });
-                  }
-}
-
-function calculateTicketPrice(from, to){
-
-
-}
-/**
-*2. Find all list of tickets controller
-*/
-function findAllTicket(req, res, next){
-  var alltickets={};
-  TicketDal.findAll(alltickets)
-          .then((tickets) => {
-            //if(error) return res.status(500).send({"ERROR": "Unable to fecth ticket document!"})
-            //if(!tickets) return res.status(404).json({"ERROR": "NO ticket FOUND"});
-            return res.status(200).json(tickets);
-          }, function(error){
-            res.status(500).send({"ERROR": "Unable to fecth ticket document!"})
-          })
-   }
-   //fineMine
-   /**
-   *2. Find all list of my tickets controller
-   */
-   function findAllMyTicket(req, res, next){
-     var passengerId=req.user._id
-     var allMyTickets={passengerId:passengerId};
-     TicketDal.findAll(allMyTickets)
-             .then((tickets) => {
-               //if(error) return res.status(500).send({"ERROR": "Unable to fecth ticket document!"})
-               //if(!tickets) return res.status(404).json({"ERROR": "NO ticket FOUND"});
-               return res.status(200).json(tickets);
-             }, function(error){
-               res.status(500).send({"ERROR": "Unable to fecth ticket document!"})
-             })
-      }
-
- /**
- *3. Search ticket by query instead of req.body
- */
-  function searchTicketByName  (req, res, next){
-     var ticketName = req.params.name;
-
-     TicketDal.searchByName(ticketName)
-               .then( function(ticket){
-                    if(ticket===404) return  res.status(404).json({"message":"No muching ticket found"});
-                   res.status(200).json(ticket);
-               },function(err){
-                 res.status(500).send({"Error":"Unable to find ticket"})
-               })
- }
-/**
-*4. Find ticket by their ID controller
-*/
-function findTicketById(req, res){
-  console.log('Getting ticket by id:');
-  var ticketId=req.params.id;
-  //chech if ticket ObjectId is valid or not
-  var validObjectId=mongoose.Types.ObjectId.isValid(ticketId);
-
-  if(validObjectId){
-    TicketDal.findById(ticketId)
-            .then(ticket => {
-              if(ticket===404) return res.status(404).send({"message":"No muching ticket found"});
-               res.json(ticket);
-            },function(err){
-              res.status(500).sendStatus(err);
-            })
-
-      } else{
-        res.status(400).send({"message":"Ticket Id is not valid"});
-      }
-   }
-
-function findTicketByCustomId(req,res){
-       debug('GETTIGN STATION')
-       var customid = req.params.cid;
-       //console.log("my ticket id : " + customid);
-
- TicketDal.findByCustomId(customid)
-           .then((ticket) => {
-               if(ticket===404) return res.status(404).send({"message":"No muching ticket found"});
-               console.log(ticket)
-               res.status(200).send(ticket);
-           },function(err){
-             res.status(500).send({"message":"unable to find ticket"});
-           });
-   }
-/**
-*5. Update ticket Info Controller
-*/
-function updateTicketInfo(req,res){
-  var modifiedAt = new Date();
-  req.body.modifiedAt=modifiedAt;
-  var ticketData= _.pick(req.body,["name","ticketId","latitude","longitude","route","modifiedAt"]);
-  console.log("ticketData", ticketData)
-  var updates ={
-    name:req.body.name,
-    ticketId:req.body.ticketId,
-    latitude:req.body.latitude,
-    longitude:req.body.longitude,
-    route:req.body.route,
-    modifiedAt:req.body.modifiedAt};
-  var query         = {_id:req.params.id};
-  var setUpdates    = {$set: updates };
-  var updateOptions = {new: true};
-
-  TicketDal.update(query,setUpdates,updateOptions)
-         .then(updatedticket => {
-           //no content found
-           if(!updatedticket)
-           //use 204 instead of 404 for update operation if the document to be updates
-           //didn't exist
-           return res.status(404).send({"Message": "No content found to update"});
-
-           res.send(updatedticket);
-         }, function(err){
-           res.status(500).json(e);
-         })
-
-
-
-}
-/**
-*6. Delete ticket Controller
-*/
-function deleteTicketById(req,res){
-  var query= {_id:req.params.id};
-  TicketDal.delete(query)
-         .then(ticket => {
-           if(ticket===404) return res.status(404).send({"message":"Content already removed"});
-           return res.send({"message":"succesfully removed",ticket});
-         }, err=>{
-           res.status(404).send({"error":e});
-         })
-
-}
-/**
-*7. Get collection paginate
-*/
-function findTicketByPagination (req, res, next){
-    debug('GET STATION COLLECTION BY PAGINATION');
-
-    var query = req.query.query || {};
-    var qs = req.query;
-
-    TicketDal.paginate(query, qs)
-              .then(function(docs){
-                  if(docs) return res.json(docs);
-              })
-              .catch(err=>{
-                  customError.type = 'GET_STATIONs_PAGINATE_ERROR';
-                  //return handleError(res, err, errorObj);
-                  return errorHandler(res, customError);
-              });
-}
-/**
-*calculate ticket price
-**/
-function generateTicketInfo(req, res, next){
+function createTicket(req, res, next){
   //use station customid to buy ticket
   //front end guy can use station for final users
   var from=parseInt(req.body.from);
@@ -335,20 +128,135 @@ function generateTicketInfo(req, res, next){
       }
 
 }
+
+/**
+*2. Find all list of tickets controller
+*/
+function findAllTicket(req, res, next){
+  var alltickets={};
+  TicketDal.findAll(alltickets)
+          .then((tickets) => {
+            handleTicketResponse(res,tickets);
+          })
+          .catch(error => next(error));
+   }
+   //fineMine
+   /**
+   *2. Find all list of my tickets controller
+   */
+   function findAllMyTicket(req, res, next){
+     var passengerId=req.user._id
+     var allMyTickets={passengerId:passengerId};
+     TicketDal.findAll(allMyTickets)
+             .then((tickets) => {
+               handleTicketResponse(res,tickets);
+             })
+             .catch(error => next(error));
+
+      }
+/**
+*4. Find ticket by their ID controller
+*/
+function findTicketById(req, res,next){
+  console.log('Getting ticket by id:');
+  var ticketId=req.params.id;
+  //chech if ticket ObjectId is valid or not
+  var validObjectId=mongoose.Types.ObjectId.isValid(ticketId);
+
+  if(validObjectId){
+    TicketDal.findById(ticketId)
+            .then(ticket => {
+                 handleTicketResponse(res,ticket);
+            })
+            .catch(error => next(error));
+
+      } else{
+        res.status(400).send({"message":"Ticket Id is not valid"});
+      }
+   }
+
+function findTicketByCustomId(req,res,next){
+       debug('GETTIGN STATION')
+       var customid = req.params.cid;
+       //console.log("my ticket id : " + customid);
+
+ TicketDal.findByCustomId(customid)
+           .then((ticket) => {
+            handleTicketResponse(res,ticket);
+           })
+           .catch(error => next(error));
+   }
+/**
+*5. Update ticket Info Controller
+*/
+function updateTicketInfo(req,res,next){
+  var modifiedAt = new Date();
+  req.body.modifiedAt=modifiedAt;
+  var ticketData= _.pick(req.body,["name","ticketId","latitude","longitude","route","modifiedAt"]);
+  console.log("ticketData", ticketData)
+  var updates ={
+    name:req.body.name,
+    ticketId:req.body.ticketId,
+    latitude:req.body.latitude,
+    longitude:req.body.longitude,
+    route:req.body.route,
+    modifiedAt:req.body.modifiedAt};
+  var query         = {_id:req.params.id};
+  var setUpdates    = {$set: updates };
+  var updateOptions = {new: true};
+
+  TicketDal.update(query,setUpdates,updateOptions)
+           .then(updatedticket => {
+               handleTicketResponse(res,updatedticket);
+           })
+           .catch(error => next(error));
+}
+/**
+*6. Delete ticket Controller
+*/
+function deleteTicketById(req,res,next){
+  var ticketId=req.params.id;
+  //chech if ticket ObjectId is valid or not
+  var validObjectId=mongoose.Types.ObjectId.isValid(ticketId);
+
+  if(validObjectId){
+  var query= {_id:req.params.id};
+  TicketDal.delete(query)
+         .then(ticket => {
+          handleTicketResponse(res,ticket);
+         })
+         .catch(error => next(error));
+      }
+      else{
+        res.status(400).send({"message":"Invalid ticket Object Id"})
+      }
+
+}
+/**
+*7. Get ticket documents by pagination
+*/
+function findTicketByPagination (req, res, next){
+    debug('GET STATION COLLECTION BY PAGINATION');
+
+    var query = req.query.query || {};//default : find all tickets
+    var queryParams = req.query;
+
+    TicketDal.paginate(query, queryParams)
+              .then(function(docs){
+                handleTicketResponse(res,docs);
+              })
+              .catch(error=>next(error));
+}
 /**
 *II. Export ticket Controllers
 */
 module.exports = {
-    //create    : create_ticket,
-    create       : createTicket,
-    searchByName : searchTicketByName,
+    create    : createTicket,
     findAll   : findAllTicket,
     findMine  : findAllMyTicket,
     findById  : findTicketById,
     update    : updateTicketInfo,
     delete    : deleteTicketById,
     paginate  : findTicketByPagination,
-    //findByName: findTicketByName,
-    findByCustomId:findTicketByCustomId,
-    generateInfo  :generateTicketInfo
+    findByCustomId:findTicketByCustomId
 }

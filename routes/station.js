@@ -114,6 +114,5 @@ router.put('/:id', stationController.update);
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
 router.delete('/:id', stationController.delete);
-//router.get('/station/:name', authenticate, stationController.findByName);
 
 module.exports = router;

@@ -1,11 +1,11 @@
 /**
-*Load module dependecies
+*Load third party module dependecies
 */
 var express = require('express');
-
-//var ticketController = require('../controllers/ticket_');
+/**
+*Load ticket controller module
+*/
 var ticketController = require('../controllers/ticket');
-var noop = require('../lib/utils').noop;
 
 var router = express.Router();
 /**
@@ -55,26 +55,14 @@ router.post('/', ticketController.create);
  *
  */
  router.get('/', ticketController.findAll);
-//
-// /**
-//  * @api {GET} /tickets/paginate Station Paginate
-//  * @apiName GetStationsPaginate
-//  * @apiGroup Station
-//  *
-//  * @
-//  */
-router.get('/paginate', ticketController.paginate);
 /**
- * @api {PUT} /tickets/search Search Station
- * @apiName SearchStations
+ * @api {GET} /tickets/paginate Station Paginate
+ * @apiName GetStationsPaginate
  * @apiGroup Station
  *
- * @apiParamExample Request Example
- *
- * {"email": "john1@aksum.com"}
+ * @
  */
- //the following should use get http method
-router.get('/search/:name', ticketController.searchByName);
+router.get('/paginate', ticketController.paginate);
 
 /**
  * @api {GET} /tickets/:id Get Station
@@ -86,7 +74,6 @@ router.get('/search/:name', ticketController.searchByName);
  * http://localhost:3000/tickets/5a478c962698af267483b1ee
  */
  router.get('/:id', ticketController.findById);
- //
 
 router.get('/customid/:cid', ticketController.findByCustomId);
 
@@ -111,7 +98,6 @@ router.put('/:id', ticketController.update);
  * http://localhost:3000/tickets/5a478c962698af267483b1ee
  */
 router.delete('/:id', ticketController.delete);
-router.post('/ticket/info', ticketController.generateInfo);
 //findMine
 router.get('/my/tickets',ticketController.findMine);
 

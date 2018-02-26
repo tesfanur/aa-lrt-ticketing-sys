@@ -2,13 +2,10 @@
 *Load module dependecies
 */
 var express = require('express');
-
-//var fareController = require('../controllers/fare_');
+/**
+*Load local module dependecies
+*/
 var fareController = require('../controllers/fare');
-var noop = require('../lib/utils').noop;
-//var middleware =require('../lib/middleware/auth');
-//var requireAuthentication = middleware.requireAuthentication;
-//var authenticate =require('../lib/middleware/authenticate').authenticate;
 
 var router = express.Router();
 /**

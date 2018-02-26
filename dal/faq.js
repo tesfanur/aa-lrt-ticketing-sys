@@ -65,7 +65,7 @@ var filterdFaqs =[];
                     .exec()
                     .then(function(result){
                          //if not faq found return 404
-                         if(!result) return resolve(404);
+                         if(result===404) return resolve(404);
                          filterdFaqs = _.filter(result, faq =>{
                           return faq.question
                                     .description

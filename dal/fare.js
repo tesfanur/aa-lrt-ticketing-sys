@@ -8,16 +8,10 @@ const moment  = require('moment');
 /**
 *Load custom module dependecies
 */
-const FareModel = require('../models/fare');
-const StationDal   = require('../dal/station');
-const logMsg = require('../lib/utils').showMsg;
-const errorHandler = require('../lib/utils').errorHandler;
-
-var returnFields = FareModel.whitelist;
-// var population = [{
-//   path: 'user',
-//   select: User.whitelist
-// }];
+const FareModel  = require('../models/fare');
+const StationDal = require('../dal/station');
+const logMsg     = require('../lib/utils').showMsg;
+const utils      = require('../lib/utils');
 
 const FareDalModule = (function(FareModel){
   'use strict';
@@ -122,7 +116,7 @@ function setDistance(from, to, distance){
 function getAllFares(query){
     debug('GETTING ALL FARE COLLECTION');
     var defferd =q.defer();
- FareModel.find(query,returnFields)
+ FareModel.find(query)
           .populate('from',"name route")
           .populate('to',"name route")
           .populate('userId',"email")

@@ -131,19 +131,27 @@ function getUserByPagination(query, qs, cb){
     });
 }
 function userLogin (userData){
-  var defferd = q.defer();
+  return new Promise((resolve, reject)=>{
+
   UserModel.findByCredentials(userData.email, userData.password)
            .then((user) => {
-            return user.generateAuthToken().then((token) => {
+               //console.log("user", user)
+               if(!user || user===404) return resolve(403);
+              return user.generateAuthToken().then((token) => {
               var result =[token,user];
               // result[0]=token;
               // result[1]=user;
-              defferd.resolve(result);
+               console.log("token", token)
+              if(!token) {
+                console.log("token", "no token")
+                return resolve(token);
+              }
+
+              resolve(result);
             });
-          }).catch((e) => {
-            defferd.reject(e);
-  });
-  return defferd.promise;
+          }).catch(e=>reject(e));
+
+});
 }
 /**
 * return UserDalModule public APIs

@@ -13,6 +13,7 @@ var StationDal      = require('../dal/station');
 var handleError  = require('../lib/utils').handleError;
 var errorHandler = require('../lib/utils').errorHandler;
 var logMsg       = require('../lib/utils').showMsg;
+var utils       = require('../lib/utils');
 
 
 var customError = {
@@ -38,6 +39,14 @@ var FareModule = (function (FareDal) {
        }
 
   }
+  /**
+  *Handle fare responses
+  **/
+    function handleFareResponse(res,method, doc){
+      if(!doc || doc===404) return utils.handleResponse(res,404,doc);
+       if(method==="POST") return utils.handleResponse(res,201,doc);
+       return utils.handleResponse(res,200,doc);
+    }
 /**
 *1. CONTROLLER TO CREATE FARE DOCUMENT
 */
@@ -48,7 +57,7 @@ function createFare (req, res, next){
         var from = body.from;
         var to = body.to;
         //pick only the required attributes from the body
-        var body = _.pick(req.body,["userId","from","to","distance"]);
+        var body = _.pick(req.body,["userId","from","to","distance","route"]);
         console.log("body",body);
         //validate source and destination id
         var sourceId=from;
@@ -67,19 +76,11 @@ function createFare (req, res, next){
                   else{
                     //  create if fare doesn't exists from to station
                   FareDal.create(body)
-                         .then((fare)=> {
-                               //if(!fare) return res.status(500).send("UNABLE TO CREATE FARE DATA");
-                              res.status(201).json(fare);//fare created succesfully
-                         })
-                         .catch(err => {
-                              res.status(500).send(err);
-                         });
+                         .then(fare   => handleFareResponse(res,req.method,fare))
+                         .catch(error => next(error));
                   }
                 })
-                .catch(e=>{
-                  //console.log("e",e);
-                  res.status(500).send(e);
-                })
+                .catch(error => next(error));
         }
         else{
           res.status(400).send({"Message":"Source or Destination Id is invalid"});
@@ -118,10 +119,10 @@ function setDistance(){
 function getAllFares(req, res, next){
     FareDal.getAll({})
           .then(fares=>{
-              res.send(fares);
+              if(fares) fares= {"total number of fare documents":fares.length,fares}
+              handleFareResponse(res,req.method,fares);
           })
-          .catch(err => { res.status(500).send(err);
-          });
+          .catch(error => next(error));
 }
 /**
 *5. CONTROLLER TO GET FARE DOCUMENT BY ID
@@ -133,17 +134,11 @@ function getFareById (req, res, next){
     console.log(typeof fareId)
 
     FareDal.getById(fareId)
-           .then((fare)=>{
-               if(fare) return res.send(fare);
-               res.status(404).send({"message":"No muching document found."});
-           })
-           .catch(
-               (err)=>{
-                res.status(500).json({"error":"SERVER ERROR"});
-               });
+           .then(fare=>handleFareResponse(res,req.method,fare))
+           .catch(error=>next(error));
 }
 /**
-*6. CONTROLLER TO SEARCH FARE DOCUMENT BY ???
+*6. CONTROLLER TO SEARCH FARE DOCUMENT BY ???//refactor the following code
 */
  function searchFare(req, res, next){
     var query = req.body;
@@ -161,7 +156,7 @@ function getFareById (req, res, next){
     })
 }
 /**
-*7. CONTROLLER TO UPDATE FARE DOCUMENT INFO
+*7. CONTROLLER TO UPDATE FARE DOCUMENT INFO//refactor this too
 */
 function updateFare (req, res, next){
     var fareId = req.params.id;
@@ -179,7 +174,7 @@ function updateFare (req, res, next){
     })
 }
 /**
-*8. CONTROLLER TO DELETE/REMOVE FARE DOCUMENT
+*8. CONTROLLER TO DELETE/REMOVE FARE DOCUMENT//refactor this too
 */
 function deleteFare (req, res, next){
     var fareId = req.params.id;
@@ -197,7 +192,7 @@ function deleteFare (req, res, next){
     })
 }
 /**
-*9. CONTROLLER TO GET FARE DOCUMENTS BY PAGINATION
+*9. CONTROLLER TO GET FARE DOCUMENTS BY PAGINATION//refactor this too
 */
 function getFareByPagination (req, res, next){
     debug('Get fare collection by pagination');
@@ -225,14 +220,14 @@ function findFareAndPopulate (req, res, next){
 
     FareDal.findAndPopulate({_id : fareId})
             .then( function(fare){
-                if(fare===404) return res.status(404).json({"error":"No muching fare document found"});
-                res.json(fare);
+                  handleFareResponse(res,req.method,fare);
             })
-            .catch( (err)=>{
-                  res.satus(500).send(err);
-              })
+            .catch(error=>next(error))
 
 }
+/**
+*Get total ticket price
+*/
 function getTotalPrice(req, res, next){
   FareDal.getTotalPrice()
         .then((price)=>{
@@ -342,9 +337,9 @@ function getCompleteFareInfo(req, res, next){
         paginate : getFareByPagination,
         findAndPopulate:findFareAndPopulate,
         setFareAmount:setFareAmount,
-        setDistance : setDistance,
+        setDistance  : setDistance,
         getTotalPrice:getTotalPrice,
-        completeInfo:getCompleteFareInfo
+        completeInfo :getCompleteFareInfo
       };
 
 }(FareDal));

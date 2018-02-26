@@ -27,6 +27,14 @@ function _validateStationRegistationInput(req, res,next){
 /**
 *1. create new station
 */
+/**
+*Handle faq responses
+**/
+  function handleStationResponse(res,method, doc){
+    if(!doc || doc===404) return utils.handleResponse(res,404,doc);
+     if(method==="POST") return utils.handleResponse(res,201,doc);
+     return utils.handleResponse(res,200,doc);
+  }
 function getStationAttributes(req,method,station){
   if(!station) return {};
   var url = req.protocol +'://'+
@@ -48,7 +56,9 @@ function getStationAttributes(req,method,station){
             };
 
 }
-
+/**
+*2.Create new station controller
+*/
 function createStation (req, res, next){
         _validateStationRegistationInput(req, res, next);
         var body = req.body;
@@ -99,17 +109,15 @@ function findAllStation(req, res, next){
         StationDal.searchByName(name)
               .then((stations)=>{
                    if(stations===404)
-                   return  res.status(404).json({"message":"No muching station found"});
+                   return  utils.handleResponse(res,404,stations)
                    var response = {
                      stationCount:stations.legnth,
                      stations   : stations.map((faq)=>{
                              return getStationAttributes(req,"GET",faq);
                      })
                    }
-                   //return res.status(200).json(response});
-                   utils.handleResponse(res,200,response);
 
-                   //utils.handleResponse(res,200,getStationAttributes(req,"GET",stations));
+                   utils.handleResponse(res,200,response);
               },(error)=>{
                 next(error);
               })
@@ -128,7 +136,7 @@ function findStationById(req, res,next){
     StationDal.findById(stationId)
             .then(station => {
     if(station){
-                var token =req.token;
+              var token =req.token;
               var response = getStationAttributes(req,"GET",station);
                 //set header
                 //console.log("token",token);
@@ -137,7 +145,7 @@ function findStationById(req, res,next){
                 return utils.handleResponse(res,200,response);
               }
               //else
-              return utils.handleResponse(res,404,null);
+              return utils.handleResponse(res,404,station);
             },(error)=>{
               next(error);
             })
@@ -165,7 +173,7 @@ function getStationByCustomId(req,res,next){
 /**
 *5. Update station Info Controller
 */
-function updateStationInfo(req,res){
+function updateStationInfo(req,res,next){
   var modifiedAt = new Date();
   req.body.modifiedAt=modifiedAt;
   var stationData= _.pick(req.body,["name","stationId","latitude","longitude","route","modifiedAt"]);
@@ -199,12 +207,13 @@ function updateStationInfo(req,res){
 /**
 *6. Delete station Controller
 */
-function deleteStationById(req,res){
+function deleteStationById(req,res,next){
   var query= {_id:req.params.id};
+
   StationDal.delete(query)
          .then(station => {
-           if(!station)
-           return utils.handleResponse(res,404,{"message":"Content already removed"});
+           if(!station || station ===404)
+           return utils.handleResponse(res,404,station);
            //else
            utils.handleResponse(res,200,{"message":"succesfully removed",station})
          }, error=>{
