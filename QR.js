@@ -6,7 +6,7 @@ const cryptoJS = require("crypto-js");
 //step to convert
 /**
 *1. get/generate ticket info/object
-*2. convert into string
+*2. convert it into string
 *3. encrypt the text by cryptojs AES encryption feature
 *4. convert the encrypted ticket into qr code/image
 *5. send the qr code/image to the user

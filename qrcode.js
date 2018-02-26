@@ -20,8 +20,8 @@ function decodeQrCode(imagePath){
     qrdecoder.decode(imagePath,
       function(err, decodedResult) {
         if(err) return reject("couldn't get image file from " +imagePath)
-        var  bytes  = cryptoJS.AES.decrypt(decodedResult, 'secret key 123');
-          decryptedData = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+          var  bytes  = cryptoJS.AES.decrypt(decodedResult, 'secret key 123');
+          var decryptedData = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
           var result ={
             encryptedTicket : decodedResult,
             decryptedTicket : decryptedData

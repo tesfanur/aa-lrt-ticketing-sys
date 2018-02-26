@@ -18,9 +18,8 @@ var  router  = require('./routes'),
      utils   = require('./lib/utils'),
 		 User    = require('./models/user'),
 		 config  = require('./config/config'),
-		 dbConnect     = require('./config/connection'),
+		 connect     = require('./config/connection'),
 		 authenticate  = require('./lib/middleware/authenticate');
-		 //handleServerStartup
 
 //instantiate express -server
 var app  = express();
@@ -31,14 +30,17 @@ app.set('PORT', config.PORT);
 app.set('SECRET', config.SECRET);
 
 //strat database connection
-dbConnect.toMongoDB(mongoose);
+connect.toMongoDB(mongoose);
 
 //set up express app by passing required middlewares
-app.use(bodyParser.json());// parse application/json
-app.use(bodyParser.urlencoded({ extended: true }));// parse application/x-www-form-urlencoded
+// parse application/json
+app.use(bodyParser.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors(config.CORS_OPTS));//prevent CORS errors
-app.use(validate());//use express validator for user input validation
+
+app.use(validate());
 app.use(morgan('dev'));
 //Logging HTTP Method and URL
 app.use(cookieParser());

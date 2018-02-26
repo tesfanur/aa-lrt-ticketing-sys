@@ -4,9 +4,13 @@
 const debug   = require('debug')('api:ticket-dal');
 const q       = require('q');
 const moment  = require('moment');
+const cryptoJS = require("crypto-js");
+const nodeZxing = require('node-zxing');
 
 const TicketModel = require('../models/ticket');
 const logMsg  = require('../lib/utils').showMsg;
+//instantiate qr encoder module
+var qrdecoder = nodeZxing();
 
 const TicketDalModule = (function(TicketModel){
   'use strict';
@@ -78,7 +82,7 @@ function createTicket(data){
   */
    function getTicketById(id){
         debug('GETTIGN STATION', id)
-        logMsg("my ticket id : " + id);
+        console.log("my ticket id : ", id);
 
       return new Promise((resolve, reject)=>{
    TicketModel.findOne({_id : id})
@@ -231,7 +235,30 @@ function getTicketByPagination(query, qs){
     return defferd.promise;
 }
 
-//
+/*
+*QR decoder/Converts qr image into text
+*/
+function decodeQrCode(imagePath){
+  //validate image path
+  //invalid path....
+  return new Promise((resolve, reject)=>{
+    qrdecoder.decode(imagePath,
+      function(err, decodedResult) {
+        if(err) return reject("couldn't get image file from " +imagePath)
+          var bytes  = cryptoJS.AES.decrypt(decodedResult, 'secret key 123');
+          var decryptedData = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+          var result ={
+            encryptedTicket : decodedResult,
+            decryptedTicket : decryptedData
+          }
+
+          resolve(result)
+      }
+    );
+
+  })
+}
+
 /**
 *6.return TicketDalModule public APIs
 */
@@ -245,7 +272,8 @@ function getTicketByPagination(query, qs){
   paginate   : getTicketByPagination,
   ticketExist: ticketExist,
   findByCustomId:getTicketByCustomId,
-  searchByName  :searchTicketByName
+  searchByName  :searchTicketByName,
+  decodeQrCode:decodeQrCode
 };
 }(TicketModel));
 

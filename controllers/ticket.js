@@ -1,22 +1,97 @@
 /**
 *Load module dependecies
 */
-const debug    = require('debug');
+const fs       = require('fs');
+const qr       = require('qr-image');
+const cryptoJS = require("crypto-js");
 const moment   = require('moment');
 const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 const _        = require('lodash');//lodash can also do the same.check?
-const Ticket  = require('../models/ticket');
+const debug    = require('debug')('Ticket-api');
+
+/**
+*Steps to convert Ticket object into qr code
+*1. get/generate ticket info/object
+*2. convert it into string/stringify it
+*3. encrypt the text by cryptojs AES encryption feature
+*4. convert the encrypted ticket into qr code/image
+*5. send the qr code/image to the user/passenger
+*6. check the validity of the qr coded ticket using the ff sub steps
+*6.1 decode the qr image into its equivalent text
+*6.2 then decrypt the result into its equivalent original
+*    ticket info using cryptojs decryption feature
+*6.3 compare the result with the data recorded inside the db
+*/
 /**
 *Load local data access layer(dal) module dependecies
 */
-const FareDal      = require('../dal/fare');
-const TicketDal    = require('../dal/ticket');
-const StationDal   = require('../dal/station');
+const config     = require('../config/config');
+const FareDal    = require('../dal/fare');
+const TicketDal  = require('../dal/ticket');
+const StationDal = require('../dal/station');
+//const Ticket   = require('../models/ticket');
 /**
 *Load custom utility module dependecies
 */
 const utils      = require('../lib/utils');
+/**
+*
+*******/
+function encryptTicket(ticket){
+  // Encrypt
+  ciphertext = cryptoJS.AES.encrypt(JSON.stringify(ticket), config.CRYPTO_SECRET);
+  return ciphertext.toString();
+}
+
+/**
+*Convert encrypted data into QR image
+**/
+var ticket ={"name":"Tesfaye Belachew Abebe",
+"profession":"Developer"};
+
+var encryptedTicket =encryptTicket(ticket);
+//console.log(encryptedTicket);
+// var decryptedTicket =decryptTicket(encryptedTicket).decryptedTicket;
+// console.log(decryptedTicket);
+
+
+function encodeQRcode(encryptedData){
+  // Encrypt
+  var cryptojs=cryptoJS.AES;
+  var encryptedText =JSON.stringify(encryptedData);
+  var ciphertext = cryptojs.encrypt(encryptedText, config.CRYPTO_SECRET);
+  var qr_png = qr.image(ciphertext.toString(), { type: 'png' });
+  //get the file name for QR image from ticket ID
+  var ticketId ="r1NHbR5Pf"
+  qr_png.pipe(fs.createWriteStream("./uploads/"+ticketId+".png"));
+}
+encodeQRcode(encryptedTicket);
+
+function decryptTicket(encryptedTicket){
+  var  bytes  = cryptoJS.AES.decrypt(encryptedTicket,  config.CRYPTO_SECRET);
+  var decryptedTicket = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+  var result ={
+    encryptedTicket : encryptedTicket,
+    decryptedTicket : decryptedTicket
+  }
+  return result;
+}
+
+var imagePath = "./images/ante.png";
+/**
+*Convert decrypte QR image into text/which
+*is the encrypted version of the ticket
+**/
+function decodeQrCode(req, res, next){
+TicketDal.decodeQrCode(imagePath)
+            .then(ticket=>{
+              console.log(ticket);
+            })
+            .catch(err =>{
+              console.log(err)
+            })
+}
 
 //private members
 function _validateTicketRegistraionInput(req, res,next){
@@ -102,9 +177,15 @@ function createTicket(req, res, next){
                              }).then(
                                generatedTicket =>{
                                if(generatedTicket) {
+                                   console.log("generatedTicket_id:::",generatedTicket._id)
                                  TicketDal.findById({_id:generatedTicket._id})
                                           .then(result =>{
-                                            if(result) return res.status(201).send(result)
+                                            //tesfaye todo
+                                            var newResult=encryptTicket(result)
+                                            console.log(decryptTicket(newResult))
+                                            if(result)
+                                            return res.status(201)
+                                                      .send(decryptTicket(newResult).encryptedTicket)
                                           }).catch(
                                             err => {
                                               res.status(500).send(err);
