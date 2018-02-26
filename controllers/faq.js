@@ -29,10 +29,10 @@ var FaqControllerModule = (function (FaqDal) {
 /**
 *Handle faq responses
 **/
-  function handleFaqResponse(res,method, ticket){
-    if(!ticket || ticket===404) return utils.handleResponse(res,404,ticket);
-     if(method==="POST") return utils.handleResponse(res,201,ticket);
-     return utils.handleResponse(res,200,ticket);
+  function handleFaqResponse(res,method, doc){
+    if(!doc || doc===404) return utils.handleResponse(res,404,doc);
+     if(method==="POST") return utils.handleResponse(res,201,doc);
+     return utils.handleResponse(res,200,doc);
   }
 
   var getFaqsAttributes=(req,method,faq)=>{
@@ -79,9 +79,7 @@ function createFaq (req, res, next){
           _validateUserFaqInput(req, res, next);
         //validate source and destination id
                    FaqDal.create(body)
-                         .then((faq)=> {
-                              handleFaqResponse(res,req.method,faq);
-                         })
+                         .then((faq)=>handleFaqResponse(res,req.method,faq))
                          .catch((err)=>next(err));
                          //TODO:user catch(next)//a short form to propagate errors to error handling
                          //middleware
@@ -92,9 +90,8 @@ function createFaq (req, res, next){
 */
 function getAllFaqs(req, res, next){
     FaqDal.findAll({})
-          .then(faqs=>{
-                handleFaqResponse(res,req.method,{"toal number of questions":faqs.length,faqs});
-          })
+          .then(faqs=>handleFaqResponse(res,req.method,
+            {"toal number of questions":faqs.length,faqs}))
           .catch(err => { res.status(500).send(err);
           });
 }
@@ -108,9 +105,7 @@ function getFaqById(req, res, next){
 
    if(validObjectId){
     FaqDal.findById(faqId)
-           .then((faq)=>{
-               handleFaqResponse(res,req.method,faq);
-           })
+           .then((faq)=>handleFaqResponse(res,req.method,faq))
            .catch((error)=>next(error));
       }else{
         res.status(400).json({"error":"Invalid Object Id"});
@@ -138,11 +133,11 @@ function searchFaqByDesc  (req, res, next){
 /**
 *7. CONTROLLER TO UPDATE FARE DOCUMENT INFO
 */
-function updateFaq(req,res){
+function updateFaq(req,res,next){
   var modifiedAt = new Date();
   req.body.modifiedAt=modifiedAt;
   var faqData= _.pick(req.body,["body","question","modifiedAt"]);
-  
+
   var updates ={
     "question.description":req.body.question.description,
     modifiedAt:req.body.modifiedAt};
@@ -151,26 +146,21 @@ function updateFaq(req,res){
   var setUpdates    = {$set: updates };
   var updateOptions = {new: true};
   var method =req.method;
-  FaqDal.update(query,setUpdates,updateOptions)
-         .then(updatedfaq => {
-            updatedfaq=getFaqsAttributes(req,method,updatedfaq);
-            handleFaqResponse(res,method,updatedfaq);
-         })
-         .catch(error=>next(error));
+FaqDal.update(query,setUpdates,updateOptions)
+       .then(updatedfaq =>handleFaqResponse(res,method,
+         getFaqsAttributes(req,method,updatedfaq)))
+       .catch(error=>next(error));
 }
 
 /**
 *8. CONTROLLER TO DELETE/REMOVE FARE DOCUMENT
 */
- function deleteFaqById(req,res){
+ function deleteFaqById(req,res,next){
   var query= {_id:req.params.id};
   var method=req.method;
    FaqDal.delete(query)
-         .then(faq => {
-           handleFaqResponse(res,method,faq);
-         })
+         .then(faq =>handleFaqResponse(res,method,faq))
          .catch(error=>next(error));
-
 }
 /**
 *9. CONTROLLER TO GET FARE DOCUMENTS BY PAGINATION
@@ -182,9 +172,7 @@ function getFaqByPagination(req, res, next){
     var method = req.method;
 
     FaqDal.paginate(query, queryParams)
-              .then(function(docs){
-               handleFaqResponse(res,method,docs);
-              })
+              .then(docs=>handleFaqResponse(res,method,docs))
               .catch(error=>next(error));
 }
 

@@ -30,7 +30,7 @@ var handleResponse=(res,status=200,doc)=>{
 /**
 *1. create/register/signup new user
 */
-function create_user(req, res) {
+function create_user(req, res,next) {
   //validate user input
   req.checkBody('email','Email you entered is invalid. Please try again').isEmail().trim();
   req.checkBody('confirmPassword','password is required').matches();
@@ -65,13 +65,10 @@ function create_user(req, res) {
              else{
                //user already exists
                //console.log("error: "+ newUser.email + " already exists");
-               return res.status(400).json({message:newUserData.email+" already exists"});
+               return res.status(400).json({message:newUserData.email+" already in use."});
              }
            })
-           .catch(e => {
-             console.log(e);
-             return res.status(500).json({message:"SERVER ERROR"});
-           })
+           .catch(e =>  next(e))
 }
 
 /**

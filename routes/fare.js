@@ -69,7 +69,7 @@ router.get('/paginate', fareController.paginate);
  * {"email": "john1@aksum.com"}
  */
  //the following should use get http method
-router.put('/search', fareController.search);
+//router.put('/search', fareController.search);
 
 /**
  * @api {GET} /fares/:id Get Station

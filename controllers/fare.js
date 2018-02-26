@@ -14,13 +14,15 @@ var handleError  = require('../lib/utils').handleError;
 var errorHandler = require('../lib/utils').errorHandler;
 var logMsg       = require('../lib/utils').showMsg;
 var utils       = require('../lib/utils');
+/**
+*Handle fare responses
+**/
+  function handleFareResponse(res,method, doc){
+    if(!doc || doc===404) return utils.handleResponse(res,404,doc);
+     if(method==="POST") return utils.handleResponse(res,201,doc);
+     return utils.handleResponse(res,200,doc);
+  }
 
-
-var customError = {
-    status : 500,
-    type : "FARE_ERROR",
-    message:""
-}
 
 //create global fare object and attach any required fields to it
 //then export the object to expose its feature from other source Profile
@@ -137,77 +139,52 @@ function getFareById (req, res, next){
            .then(fare=>handleFareResponse(res,req.method,fare))
            .catch(error=>next(error));
 }
-/**
-*6. CONTROLLER TO SEARCH FARE DOCUMENT BY ???//refactor the following code
-*/
- function searchFare(req, res, next){
-    var query = req.body;
-    customError.type = 'SEARCH_FARE_ERROR';
-
-    FareDal.getById(query, function(err, fare){
-         if(!fare){
-           customError.message = "COULDN'T FIND STATIION \'"+query+".";
-
-           return handleError(res, customError);
-           }
-        if(err)  return handleError(res, customError);
-        //if succesfull
-        res.status(200).json(fare || {});
-    })
-}
-/**
+ /**
 *7. CONTROLLER TO UPDATE FARE DOCUMENT INFO//refactor this too
 */
-function updateFare (req, res, next){
-    var fareId = req.params.id;
+function updateFare(req,res,next){
+  var fareId = req.params.id;
 
-    var update = req.body;
-    var now = moment().toISOString();
-    update.lastModified = now;
+  //var update = req.body;
+  var modifiedAt = new Date();
 
-    FareDal.update(fareId, update, function(err, fare){
-        if(err){
-            customError.type = 'UPDATE_FARE_ERROR';
-            return handleError(res, err, customError);
-        }
-        res.json(fare || {});
-    })
+  req.body.modifiedAt=modifiedAt;
+
+  var fareData= _.pick(req.body,["from","to","modifiedAt","price","distance"]);
+
+  var updates =fareData;
+
+  var query         = {_id:req.params.id};
+  var setUpdates    = {$set: updates };
+  var updateOptions = {new: true};
+  var method =req.method;
+FareDal.update(query,setUpdates,updateOptions)
+       .then(updatedfaq =>handleFareResponse(res,method,updatedfaq))
+       .catch(error=>next(error));
 }
+
 /**
-*8. CONTROLLER TO DELETE/REMOVE FARE DOCUMENT//refactor this too
+*8. CONTROLLER TO DELETE
 */
-function deleteFare (req, res, next){
-    var fareId = req.params.id;
-
-    FareDal.delete({_id: fareId}, function(err, fare){
-        if(err){
-            customError.type = 'DELETE_FARE_ERROR';
-            customError.status=404;
-            return handleError(res, err, customError);
-        }
-        res.json(fare || {});
-        if(!fare)
-        res.status(404).json({"message":"No fare found with id " +fareId});
-
-    })
+function deleteFare(req,res,next){
+ var query= {_id:req.params.id};
+ var method=req.method;
+  FareDal.delete(query)
+        .then(faq =>handleFareResponse(res,method,faq))
+        .catch(error=>next(error));
 }
 /**
 *9. CONTROLLER TO GET FARE DOCUMENTS BY PAGINATION//refactor this too
 */
-function getFareByPagination (req, res, next){
-    debug('Get fare collection by pagination');
+function getFareByPagination(req, res, next){
+    debug('GET FARE COLLECTION BY PAGINATION');
+    var query = req.query.query || {};//default query: find all
+    var queryParams = req.query;
+    var method = req.method;
 
-    var query = req.query.query || {};
-    var qs = req.query;
-
-    FareDal.paginate(query, qs, function(err, docs){
-        if(err){
-            customError.type = 'GET_FAREs_PAGINATE_ERROR';
-            //return handleError(res, err, customError);
-            return errorHandler(res, customError);
-        }
-        res.json(docs);
-    })
+    FareDal.paginate(query, queryParams)
+              .then(docs=>handleFareResponse(res,method,docs))
+              .catch(error=>next(error));
 }
 /**
 *10. CONTROLLER TO UPDATE FARE DOCUMENT AND POPULATE WITH COMPLETE RELATED INFO
@@ -331,7 +308,7 @@ function getCompleteFareInfo(req, res, next){
         create   : createFare,
         getAll   : getAllFares,
         getById  : getFareById,
-        search   : searchFare,
+        //search   : searchFare,
         update   : updateFare,
         delete   : deleteFare,
         paginate : getFareByPagination,

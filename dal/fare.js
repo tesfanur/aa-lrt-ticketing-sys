@@ -160,62 +160,65 @@ function getFareById(fareId){
 /**
 *7. DATA ACCESS LAYER to update Fare document info
 */
-function updateFare(query, update, cb){
-    debug('updating a fare', query);
-    var opts = {
-        'new': true
-    };
- FareModel.findOneAndUpdate(query, update, opts)
-        .exec()
-        .then(fare => cb(null, fare || {}))
-        .catch( err   => {if(err) return cb(err);});
-}
+
+function updateFare(query, update, opts){
+    debug('updating a faq', query);
+
+    return new Promise((resolve, reject)=>{
+   FareModel.findOneAndUpdate(query, update, opts)
+            .exec()
+            .then((result) => {
+                  resolve(result);
+            }, (err)=>{
+              reject(err)
+            });
+    });
+  }
 /**
 *8. DATA ACCESS LAYER to remove Fare document
 */
-function deleteFare(query, cb){
-    debug('deleting a fare');
- FareModel.findOne(query)
-        .exec()
-        .then(function (fare){
-            if(!fare) {
-              return cb(null, {fare : fare,
-                "message":"Fare not found"
-            })}
-              ////cb(null, fare);
-
-            fare.remove((err, data)=>{
-                if(err) return cb(err)
-                cb(null, data);})
-                ;})
-         .catch(err=>{return cb(err)} );
-}
+function deleteFare(query){
+    debug('DELETING FAQ');
+    return new Promise((resolve, reject)=>{
+       FareModel.findOneAndRemove(query)
+               .then((result)=>{
+                   resolve(result)
+                 }, err=>{
+                   reject(err);
+                 });
+    })
+  }
 /**
 *9. DATA ACCESS LAYER to Get fare documents by pagination
 */
-function getFareByPagination(query, qs, cb){
-    debug('fetching a collection of fares');
-
+function getFareByPagination(query, queryParams){
+    debug('FETCHING A COLLECTION OF FAQS');
+    var defferd =q.defer();
     var opts = {
-        sort: qs.sort || {},
-        page: qs.page || 1,
-        limit: qs.per_page || 10
+        sort: queryParams.sort || {},
+        page: queryParams.page || 1,
+        limit: queryParams.per_page || 10
     };
+        FareModel.paginate(query, opts)
+                .then((faqs)=>{
+                    if(!faqs)
+                    return defferd.reject("Faq not found");
 
-    FareModel.paginate(query, opts, (err, data)=>{
-        if(err) return cb(err,null);
-
-        var response = {
-            page: data.page,
-            total_docs: data.total,
-            total_pages: data.pages,
-            per_page: data.limit,
-            docs: data.docs
-        };
-
-        cb(null, response);
-    });
+                    var response = {
+                        page       : faqs.page,
+                        total_docs : faqs.total,
+                        total_pages: faqs.pages,
+                        per_page   : faqs.limit,
+                        docs       : faqs.docs
+                    };
+                  return defferd.resolve(response);
+                })
+                .catch(err =>{
+                  defferd.reject(err);
+                });
+    return defferd.promise;
 }
+
 /**
 *10.Get Fare by Id  cb({error},{result}) ???
 */

@@ -1,8 +1,9 @@
-var mongoose = require('mongoose');
-var moment   = require('moment');
+const mongoose = require('mongoose');
+const paginator = require('mongoose-paginate');
+const moment   = require('moment');
 
-var Schema   = mongoose.Schema;
-var ObjectId = Schema.Types.ObjectId;
+const Schema   = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 /**
 *Train Transport payment/fare Schema
 */
@@ -63,6 +64,9 @@ FareSchema.statics.whitelist = {
   createdAt: 1,
   modifiedAt: 1
 };
+
+//Add mongoose paginate
+FareSchema.plugin(paginator);
 
 
 //export fare model
