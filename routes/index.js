@@ -11,7 +11,7 @@ const ticketRouter   = require('./ticket');
 const stationRouter  = require('./station');
 const scheduleRouter = require('./schedule');
 const userProfileRouter   = require('./user_profile');
-const profileImageRouter = require('./profileimage');
+const profileImageRouter = require('./profileImage');
 
 module.exports = function appRouter(app) {
 

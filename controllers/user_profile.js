@@ -180,7 +180,7 @@ function deleteUserProfileById(req,res){
 
 }
 /**
-*7. Get collection paginate
+*7. Get collection paginate//refactor this code//use promises instead of caalbacks
 */
 function findUserProfileByPagination (req, res, next){
     debug('GET STATION COLLECTION BY PAGINATION');
