@@ -10,19 +10,19 @@ var fareController = require('../controllers/fare');
 var router = express.Router();
 /**
  * @api {POST} /fares/ Create fare
- * @apiName CreateStation
- * @apiGroup Station
- * @apiDescription Creates a new Station
+ * @apiName CreateFare
+ * @apiGroup Fare
+ * @apiDescription Creates a new Fare
  *
- * @apiParam {String} firstName The first name of the Station
- * @apiParam {String} lastName The last name of the Station
- * @apiParam {String} email The email address of the Station
+ * @apiParam {String} firstName The first name of the Fare
+ * @apiParam {String} lastName The last name of the Fare
+ * @apiParam {String} email The email address of the Fare
  * @apiParam {String} password The user password
  *
  * @apiParamExample Request Example
  *
  * {
- *	"email": "john1@aksum.com",
+ *	"email": "evana.magato@hotmail.com",
  *	"password": "password",
  *	"firstName": "John",
  *	"lastName": "Doe"
@@ -32,7 +32,7 @@ var router = express.Router();
  *
  * {
  *   "_id": "5a478c962698af267483b1ee",
- *   "email": "john1@aksum.com",
+ *   "email": "evana.magato@hotmail.com",
  *   "firstName": "John",
  *   "lastName": "Doe",
  *   "dateCreated": "2017-12-30T12:54:46.419Z",
@@ -43,38 +43,38 @@ var router = express.Router();
 router.post('/', fareController.create);
 
 /**
- * @api {GET} /fares/ Get Stations
- * @apiName GetStations
- * @apiGroup Station
+ * @api {GET} /fares/ Get Fares
+ * @apiName GetFares
+ * @apiGroup Fare
  *
  *
  */
  router.get('/',fareController.getAll);
 
 /**
- * @api {GET} /fares/paginate Station Paginate
- * @apiName GetStationsPaginate
- * @apiGroup Station
+ * @api {GET} /fares/paginate Fare Paginate
+ * @apiName GetFaresPaginate
+ * @apiGroup Fare
  *
- * 
+ *
  */
 router.get('/paginate', fareController.paginate);
 /**
- * @api {PUT} /fares/search Search Station
- * @apiName SearchStations
- * @apiGroup Station
+ * @api {PUT} /fares/search Search Fare
+ * @apiName SearchFares
+ * @apiGroup Fare
  *
  * @apiParamExample Request Example
  *
- * {"email": "john1@aksum.com"}
+ * {"email": "evana.magato@hotmail.com"}
  */
  //the following should use get http method
 //router.put('/search', fareController.search);
 
 /**
- * @api {GET} /fares/:id Get Station
- * @apiName GetStation
- * @apiGroup Station
+ * @api {GET} /fares/:id Get Fare
+ * @apiName GetFare
+ * @apiGroup Fare
  *
  * @apiParamExample Request Example
  *
@@ -83,9 +83,9 @@ router.get('/paginate', fareController.paginate);
 router.get('/:id', fareController.getById);
 
 /**
- * @api {UPDATE} /fares/:id Update Station
- * @apiName UpdateStations
- * @apiGroup Station
+ * @api {UPDATE} /fares/:id Update Fare
+ * @apiName UpdateFares
+ * @apiGroup Fare
  *
  * @apiParamExample Request Example
  *
@@ -94,24 +94,64 @@ router.get('/:id', fareController.getById);
 router.put('/:id', fareController.update);
 
 /**
- * @api {DELETE} /fares/:id Delete Station
- * @apiName DeleteStations
- * @apiGroup Station
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
  *
  * @apiParamExample Request Example
  *
  * http://localhost:3000/fares/5a478c962698af267483b1ee
  */
 router.delete('/:id', fareController.delete);
-//SET FARE AMOUNT
+/**
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/fares/5a478c962698af267483b1ee
+ */
 router.put('/setfareamount', fareController.setFareAmount);
-//SET FARE AMOUNT
+/**
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/fares/5a478c962698af267483b1ee
+ */
 router.put('/setdistance',  fareController.setDistance);
-//findAndPopulate
+/**
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/fares/5a478c962698af267483b1ee
+ */
 router.get('/populate/:id', fareController.findAndPopulate);
-//getTotalPrice
+/**
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/fares/5a478c962698af267483b1ee
+ */
 router.get('/fare/price/',  fareController.getTotalPrice);
-//completeInfo
+/**
+ * @api {DELETE} /fares/:id Delete Fare
+ * @apiName DeleteFares
+ * @apiGroup Fare
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/fares/5a478c962698af267483b1ee
+ */
 router.get('/fare/info/', fareController.completeInfo);
 
 module.exports = router;

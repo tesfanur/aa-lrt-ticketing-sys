@@ -7,21 +7,57 @@ var router  = express.Router();
 *load local/custom modules
 */
 var userController = require('../controllers/user');
+// ------------------------------------------------------------------------------------------
+// User Success Response
+// ------------------------------------------------------------------------------------------
+/**
+ * @apiDefine UserSuccess
+ * @apiSuccess {Object} _id User Auto generated mongodb object Id
+ * @apiSuccess {String} email User email
+ * @apiSuccess {String} userType User Type/Role
+ * @apiSuccess {Date} createdAt User registration date time
+ * @apiSuccess {Date} modifiedAt User info delete date time
+*/
+// ------------------------------------------------------------------------------------------
+// Current Permissions.
+// ------------------------------------------------------------------------------------------
+/**
+ * @apiDefine UnauthorizedError
+ * @apiVersion 0.1.0
+ *
+ * @apiError Unauthorized Only authenticated users can access the endpoint.
+ *
+ * @apiErrorExample  Unauthorized response:
+ *     HTTP 401 Unauthorized
+ *     {
+ *      "message":"Access is forbidden"
+ *     }
+ */
 
 /**
- * @api {POST} /Users/signup signup User
+ * @api {post} /users/signup Signup User
  * @apiName CreateUser
  * @apiGroup User
- * @apiDescription Creates a new User
- *
+ * @apiDescription Creates a New User
+ * @apiVersion 0.1.0
+ * @apiPermission none
  * @apiParam {String} email User's email
  * @apiParam {String} password User's password
+ * @apiParam {String} confirmPassword User's password confirmation
  * @apiParam {String} phone User's phone number
  *
- * @apiParamExample Request Example
+ * @apiSuccess(Success 201) {json} User User's registration info
  *
+ * @apiSuccess(Success 201) {String} _id User's Object id
+ * @apiSuccess(Success 201) {String} email User's email address
+ * @apiSuccess(Success 201) {String} userType User's user type/role
+ * @apiSuccess(Success 201) {Date}   createdAt User's registeration date time
+ * @apiSuccess(Success 201) {Date}   modifiedAt User's data update date time
+ *
+ * @apiParamExample Request Example
+ *    HTTPS 201 OK
  * {
- * "email" : "evana.mangato@gmail.com",
+ *   "email" : "evana.mangato@gmail.com",
  *  "password" : "TestPassword@123",
  *  "confirmPassword":"TestPassword@123",
  *  "phone":"251-917-123456"
@@ -49,15 +85,20 @@ var userController = require('../controllers/user');
  *  ]
  * }
  */
+ function create() { return; }
 router.post('/signup',userController.create);
 /**
- * @api {POST} /Users/login login User
+ * @api {post} /Users/login Login User
  * @apiName LoginUser
  * @apiGroup User
- * @apiDescription Login registerd User
- *
- * @apiParam {String} email User's email
+ * @apiDescription Allows registerd users to login
+ * @apiVersion 0.1.0
+ * @apiParam {String} email User's email address
  * @apiParam {String} password User's password
+ *
+ * @apiSuccess {json} User User's registration info
+ *
+ * @apiUse UserSuccess
  *
  * @apiParamExample Request Example
  *
@@ -81,20 +122,16 @@ router.post('/signup',userController.create);
  *  "MESSAGE": "ACCESS FORBID"
  * }
  */
-
+function login() { return; }
 router.post('/login', userController.login);
 /**
  * @api {GET} /Users/ find all users
  * @apiName FindAllUsers
  * @apiGroup User
- * @apiDescription get all registerd Users
+ * @apiDescription list all registerd Users
+ * @apiVersion 0.1.0
  *
- * @apiParamExample Request Example
- *
- * {
- * "email" : "evana.mangato@gmail.com",
- *  "password" : "TestPassword@123"
- * }
+ * @apiUse UserSuccess
  *
  * @apiSuccessExample Response Example
  *
@@ -140,18 +177,31 @@ router.post('/login', userController.login);
   *      "modifiedAt": "2018-02-12T09:09:01.240Z"
   *  }
   * ]
-  *
+  *@apiUse UnauthorizedError
  */
-
+function findAll() { return; }
 router.get('/',userController.findAll);
 /**
- * @api {GET} /Users/:userId get User
- * @apiName findById
+ * @api {get} /Users/:userId Get User
+ * @apiName GetUser
  * @apiGroup User
  * @apiDescription find user by id
+ * @apiVersion 0.1.0
+ * @apiPermission authenticated user
  *
+ * @apiExample {js} Example usage:
+ * $http.defaults.headers.common["Authorization"] = token;
+ * $http.get(url)
+ *   .success((res, status) => doSomethingHere())
+ *   .error((err, status) => doSomethingHere());
+ *
+ * @apiSuccess {String} _id The User id
+ *
+ *@apiUse UserSuccess
+ *
+ * @apiParam {String} _id The User id
  * @apiSuccessExample Response Example
- * {{url}}/users/5a845264c73ad33fbc6037a4
+ *     HTTPS 200 OK
  * {
  *  "_id": "5a845264c73ad33fbc6037a4",
  *  "email": "evana.mangato@gmail.com",
@@ -164,17 +214,20 @@ router.get('/',userController.findAll);
  * {
  *    "ERROR": "NO USER FOUND"
  * }
+ *@apiUse UnauthorizedError
  */
-// Retrieve single user with userControllerId
 router.get('/:userId',userController.findById);
 /**
- * @api {POST} /Users/:userId update User
+ * @api {put} /Users/:userId update User
  * @apiName update
  * @apiGroup User
  * @apiDescription update user info
+ * @apiVersion 0.1.0
+ * @apiPermission none
+ *
+ * @apiUse UserSuccess
  *
  * @apiRequestExample Response Example
- * {{url}}/users/5a845264c73ad33fbc6037a4
  * {
  *  "email": "evana.mangato@gmail.com",
  *  "phone": "251-917-088845",
@@ -189,14 +242,34 @@ router.get('/:userId',userController.findById);
  *    "createdAt": "2018-02-14T15:14:44.974Z",
  *    "modifiedAt": "2018-02-14T15:14:44.974Z"
  * }
+ *@apiUse UnauthorizedError
  */
 router.put('/:userId', userController.update);
-
-// Delete user with userId
+/**
+ * @api {delete} /Users/:userId Delete User
+ * @apiName delete
+ * @apiGroup User
+ * @apiDescription deletes a user
+ * @apiVersion 0.1.0
+ * @apiUse UserSuccess
+ *
+ * @apiRequestExample Response Example
+ * {
+ *  "email": "evana.mangato@gmail.com",
+ *  "phone": "251-917-088845",
+ *  "userType": "admin"
+ * }
+ *@apiSuccessExample Response Example
+ *{
+ *    "_id": "5a845264c73ad33fbc6037a4",
+ *    "email": "evana.mangato@gmail.com",
+ *    "phone": "251-917-123456",
+ *    "userType": "admin",
+ *    "createdAt": "2018-02-14T15:14:44.974Z",
+ *    "modifiedAt": "2018-02-14T15:14:44.974Z"
+ * }
+ *@apiUse UnauthorizedError
+ */
 router.delete('/:userId', userController.delete);
-
-
-//router.get('/', userController.homepage);
-
 //expose router to other files
 module.exports =router;

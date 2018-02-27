@@ -37,9 +37,9 @@ var router = express.Router();
  *
  * {
  *   "_id": "5a478c962698af267483b1ee",
- *   "email": "john1@aksum.com",
- *   "firstName": "John",
- *   "lastName": "Doe",
+ *   "email": "evana.magato@hotmail.com",
+ *   "firstName": "Evana",
+ *   "lastName": "Mangato",
  *   "dateCreated": "2017-12-30T12:54:46.419Z",
  *   "lastModified": "2017-12-30T12:54:46.419Z",
  *   "__v": 0
@@ -71,7 +71,7 @@ router.get('/paginate', stationController.paginate);
  *
  * @apiParamExample Request Example
  *
- * {"email": "john1@aksum.com"}
+ * {"email": "evana.magato@hotmail.com"}
  */
 router.get('/search/:name', stationController.searchByName);
 
