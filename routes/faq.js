@@ -56,14 +56,44 @@ router.post('/', faqController.create);
  *
  */
  router.get('/', faqController.findAll);
-//
-// /**
-//  * @api {GET} /faqs/paginate Faq Paginate
-//  * @apiName GetFaqsPaginate
-//  * @apiGroup Faq
-//  *
-//  * @
-//  */
+
+ /**
+  * @api {GET} /faqs/ paginate faq
+  * @apiName PaginateFaq
+  * @apiGroup Faq
+  * @apiDescription Creates a new Faq
+  *
+  * @apiParam {String} name The name of the Faq
+  * @apiParam {String} faqId The last name of the Faq
+  * @apiParam {String} route The route of the Faq
+  * @apiParam {Number} latitude The latitude of the faq
+  * @apiParam {Number} longitude The longitude of the sation
+  *
+  * @apiParamExample Request Example
+  *
+  * {
+  *   "_id": "5a74264fc461a418b08dae07",
+  *   "faqId": "2",
+  *   "name": "Meri",
+  *   "longitude": 38.863153,
+  *   "latitude": 9.0195233,
+  *   "createdAt": "2018-02-02T08:50:23.602Z",
+  *   "modifiedAt": "2018-02-02T08:50:23.602Z",
+  *   "route": "EW"
+  * }
+  *
+  * @apiSuccessExample Response Example
+  *
+  * {
+  *   "_id": "5a478c962698af267483b1ee",
+  *   "email": "evana.mangato@hotmail.com",
+  *   "firstName": "John",
+  *   "lastName": "Doe",
+  *   "dateCreated": "2017-12-30T12:54:46.419Z",
+  *   "lastModified": "2017-12-30T12:54:46.419Z",
+  *   "__v": 0
+  * }
+  */
 router.get('/paginate', faqController.paginate);
 /**
  * @api {PUT} /faqs/search Search Faq
@@ -74,7 +104,6 @@ router.get('/paginate', faqController.paginate);
  *
  * {"email": "evana.mangato@hotmail.com"}
  */
- //the following should use get http method
 router.get('/search/:desc', faqController.searchByDesc);
 
 /**

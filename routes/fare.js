@@ -50,14 +50,14 @@ router.post('/', fareController.create);
  *
  */
  router.get('/',fareController.getAll);
-//
-// /**
-//  * @api {GET} /fares/paginate Station Paginate
-//  * @apiName GetStationsPaginate
-//  * @apiGroup Station
-//  *
-//  * @
-//  */
+
+/**
+ * @api {GET} /fares/paginate Station Paginate
+ * @apiName GetStationsPaginate
+ * @apiGroup Station
+ *
+ * 
+ */
 router.get('/paginate', fareController.paginate);
 /**
  * @api {PUT} /fares/search Search Station

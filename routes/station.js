@@ -2,13 +2,10 @@
 *Load module dependecies
 */
 var express = require('express');
-
-//var stationController = require('../controllers/station_');
+/**
+*Load local module dependecies
+*/
 var stationController = require('../controllers/station');
-var noop = require('../lib/utils').noop;
-// var middleware =require('../lib/middleware/auth');
-// var requireAuthentication = middleware.requireAuthentication;
-// var authenticate = require('../lib/middleware/authenticate').authenticate;
 
 var router = express.Router();
 /**
@@ -58,14 +55,14 @@ router.post('/', stationController.create);
  *
  */
  router.get('/', stationController.findAll);
-//
-// /**
-//  * @api {GET} /stations/paginate Station Paginate
-//  * @apiName GetStationsPaginate
-//  * @apiGroup Station
-//  *
-//  * @
-//  */
+
+/**
+ * @api {GET} /stations/paginate Station Paginate
+ * @apiName GetStationsPaginate
+ * @apiGroup Station
+ *
+ *
+ */
 router.get('/paginate', stationController.paginate);
 /**
  * @api {PUT} /stations/search Search Station
@@ -76,7 +73,6 @@ router.get('/paginate', stationController.paginate);
  *
  * {"email": "john1@aksum.com"}
  */
- //the following should use get http method
 router.get('/search/:name', stationController.searchByName);
 
 /**
@@ -88,9 +84,16 @@ router.get('/search/:name', stationController.searchByName);
  *
  * http://localhost:3000/stations/5a478c962698af267483b1ee
  */
- router.get('/:id', stationController.findById);
- //
-
+router.get('/:id', stationController.findById);
+/**
+ * @api {GET} /stations/:id Get Station
+ * @apiName GetStation
+ * @apiGroup Station
+ *
+ * @apiParamExample Request Example
+ *
+ * http://localhost:3000/stations/5a478c962698af267483b1ee
+ */
 router.get('/customid/:cid', stationController.findByCustomId);
 
 /**

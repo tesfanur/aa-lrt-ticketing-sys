@@ -23,11 +23,14 @@ var  router  = require('./routes'),
 
 //instantiate express -server
 var app  = express();
+app.disable('x-powered-by');
+app.set('x-powered-by', false);
 
 debug('AA LRT ONLINE TICKETING SYSTEM');
 //configuration express app
 app.set('PORT', config.PORT);
 app.set('SECRET', config.SECRET);
+app.use(express.static(__dirname+'/docs/'));
 
 //strat database connection
 connect.toMongoDB(mongoose);
