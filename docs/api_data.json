@@ -68,7 +68,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -143,7 +143,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -151,7 +151,7 @@
   },
   {
     "type": "get",
-    "url": "/faqs",
+    "url": "/faqs/paginate",
     "title": "Paginate Faqs",
     "version": "0.1.0",
     "name": "GetAll",
@@ -212,7 +212,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -281,7 +281,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -290,7 +290,7 @@
   {
     "type": "get",
     "url": "/faqs/:id",
-    "title": "Find Faq",
+    "title": "Get Faq",
     "version": "0.1.0",
     "name": "GetFaq",
     "group": "Faq",
@@ -363,7 +363,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -371,7 +371,7 @@
   },
   {
     "type": "get",
-    "url": "/faqs/:id",
+    "url": "/faqs/:desc",
     "title": "Search Faq",
     "version": "0.1.0",
     "name": "SearchFaq",
@@ -445,7 +445,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -723,10 +723,538 @@
     "groupTitle": "Fare"
   },
   {
+    "type": "GET",
+    "url": "/stations/",
+    "title": "find all stations",
+    "name": "FindAllStations",
+    "group": "Station",
+    "description": "<p>list all registerd Stations</p>",
+    "version": "0.1.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "\n{\n \"stationCount\": 56,\n \"stations\": [\n     {\n         \"_id\": \"5a96591a2d8b790b8c9bc243\",\n         \"createdBy\": {\n             \"_id\": \"5a8157014d99ed52700bc99f\",\n             \"email\": \"ayele.gobeze@gmail.com\",\n             \"phone\": \"251-917-123456\",\n             \"userType\": \"passenger\",\n             \"createdAt\": \"2018-02-12T08:57:00.000Z\",\n             \"modifiedAt\": \"2018-02-12T08:57:00.000Z\"\n         },\n         \"stationId\": 10200509513304,\n         \"name\": \"Gurd Shola 1211\",\n         \"route\": \"EW\",\n         \"longitude\": 38.8139838,\n         \"latitude\": 9.0158921,\n         \"createdAt\": \"28-Feb-2018 10:24 AM\",\n         \"modifiedAt\": \"28-Feb-2018 10:24 AM\",\n         \"request\": {\n             \"method\": \"GET\",\n             \"url\": \"http://localhost/stations\"\n         }\n     },\n  {\n           \"_id\": \"5a83e4c24f018d281460fb9d\",\n           \"createdBy\": {\n               \"_id\": \"5a80496050df3044fcf084fd\",\n               \"email\": \"tarikuwa.abeje@gmail.com\",\n               \"phone\": \"251-917-123456\",\n               \"userType\": \"passenger\",\n               \"createdAt\": \"2018-02-11T13:47:00.000Z\",\n               \"modifiedAt\": \"2018-02-11T13:47:00.000Z\"\n           },\n           \"stationId\": 19,\n           \"name\": \"Megenagna\",\n           \"route\": \"EW\",\n           \"longitude\": 38.8024029,\n           \"latitude\": 9.0204692,\n           \"createdAt\": \"14-Feb-2018 10:26 AM\",\n           \"modifiedAt\": \"14-Feb-2018 10:26 AM\",\n           \"request\": {\n               \"method\": \"GET\",\n               \"url\": \"http://localhost/stations\"\n           }\n       }\n]\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>custom Unique id of train Station(the first digit refers to route. 1 for EW &amp; 2 for NS route)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>The latitude of train station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>The longitude of train sation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "error": {
+      "examples": [
+        {
+          "title": "Sation-Not-Found-Response:",
+          "content": "{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "/stations/paginate",
+    "title": "List all stations and Paginate",
+    "name": "FindAllStationsAndPaginate",
+    "group": "Station",
+    "description": "<p>list all registerd Stations by pagination</p>",
+    "version": "0.1.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Example",
+          "content": "\n{\n \"page\": 1,\n    \"total_docs\": 56,\n    \"total_pages\": 6,\n    \"per_page\": 10,\n    \"docs\": [\n     {\n         \"_id\": \"5a96591a2d8b790b8c9bc243\",\n         \"createdBy\": {\n             \"_id\": \"5a8157014d99ed52700bc99f\",\n             \"email\": \"ayele.gobeze@gmail.com\",\n             \"phone\": \"251-917-123456\",\n             \"userType\": \"passenger\",\n             \"createdAt\": \"2018-02-12T08:57:00.000Z\",\n             \"modifiedAt\": \"2018-02-12T08:57:00.000Z\"\n         },\n         \"stationId\": 10200509513304,\n         \"name\": \"Gurd Shola 1211\",\n         \"route\": \"EW\",\n         \"longitude\": 38.8139838,\n         \"latitude\": 9.0158921,\n         \"createdAt\": \"28-Feb-2018 10:24 AM\",\n         \"modifiedAt\": \"28-Feb-2018 10:24 AM\",\n         \"request\": {\n             \"method\": \"GET\",\n             \"url\": \"http://localhost/stations\"\n         }\n     },\n  {\n           \"_id\": \"5a83e4c24f018d281460fb9d\",\n           \"createdBy\": {\n               \"_id\": \"5a80496050df3044fcf084fd\",\n               \"email\": \"tarikuwa.abeje@gmail.com\",\n               \"phone\": \"251-917-123456\",\n               \"userType\": \"passenger\",\n               \"createdAt\": \"2018-02-11T13:47:00.000Z\",\n               \"modifiedAt\": \"2018-02-11T13:47:00.000Z\"\n           },\n           \"stationId\": 19,\n           \"name\": \"Megenagna\",\n           \"route\": \"EW\",\n           \"longitude\": 38.8024029,\n           \"latitude\": 9.0204692,\n           \"createdAt\": \"14-Feb-2018 10:26 AM\",\n           \"modifiedAt\": \"14-Feb-2018 10:26 AM\",\n           \"request\": {\n               \"method\": \"GET\",\n               \"url\": \"http://localhost/stations\"\n           }\n       }\n]\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>custom Unique id of train Station(the first digit refers to route. 1 for EW &amp; 2 for NS route)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>The latitude of train station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>The longitude of train sation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "error": {
+      "examples": [
+        {
+          "title": "Sation-Not-Found-Response:",
+          "content": "{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/stations/:id",
+    "title": "Get Station By Id",
+    "version": "0.1.0",
+    "name": "GetStation",
+    "group": "Station",
+    "permission": [
+      {
+        "name": "authenticated user\n\n\nhttp://localhost:5000/stations/5a478c962698af267483b1ee"
+      }
+    ],
+    "description": "<p>Retrieve station by their Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The station id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The station id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The station name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": "HTTPS 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "error": {
+      "examples": [
+        {
+          "title": "Invalid-Sation-Id-Response:",
+          "content": "{\n    \"message\": \"Station Id is not valid\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Sation-Not-Found-Response:",
+          "content": "{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/stations/search/:name",
+    "title": "Search Station",
+    "version": "0.1.0",
+    "name": "SearchStation",
+    "group": "Station",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "description": "<p>Search station by their name</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The station id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The station id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The station name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": "HTTPS 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "error": {
+      "examples": [
+        {
+          "title": "Sation-Not-Found-Response:",
+          "content": "{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/stations/:id",
+    "title": "Delete Station",
+    "name": "deleteStation",
+    "group": "Station",
+    "description": "<p>deletes a user</p>",
+    "version": "0.1.0",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "\n{\n  \"id\": \"5a96591a2d8b790b8c9bc243\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>custom Unique id of train Station(the first digit refers to route. 1 for EW &amp; 2 for NS route)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>The latitude of train station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>The longitude of train sation</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/stations/:cid",
+    "title": "Find Station By custom Id",
+    "version": "0.1.0",
+    "name": "findStation",
+    "group": "Station",
+    "permission": [
+      {
+        "name": "authenticated user\n\n\nhttp://localhost:5000/stations/211"
+      }
+    ],
+    "description": "<p>Find station by their custom Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The station id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The station id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The station name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": "  HTTPS 200 OK\n{\n    \"_id\": \"5a8415c0542c19147c03c52f\",\n    \"createdBy\": {\n        \"_id\": \"5a80496050df3044fcf084fd\",\n        \"email\": \"tarikuwa.abeje@gmail.com\",\n        \"phone\": \"251-917-123456\",\n        \"userType\": \"passenger\",\n        \"createdAt\": \"2018-02-11T13:47:00.000Z\",\n        \"modifiedAt\": \"2018-02-11T13:47:00.000Z\"\n    },\n    \"stationId\": 211,\n    \"name\": \"Nefas Silik 2\",\n    \"route\": \"NS\",\n    \"longitude\": 38.7614768999999,\n    \"latitude\": 9.0109684,\n    \"createdAt\": \"14-Feb-2018 01:56 PM\",\n    \"modifiedAt\": \"14-Feb-2018 01:56 PM\",\n    \"request\": {\n        \"method\": \"GET\",\n        \"url\": \"http://localhost/stations/customid/211\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/station.js",
+    "groupTitle": "Station",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "type": "POST",
     "url": "/stations/",
     "title": "Create station",
-    "name": "CreateStation",
+    "name": "postStation",
     "group": "Station",
     "description": "<p>Creates a new Station</p>",
     "parameter": {
@@ -737,42 +1265,42 @@
             "type": "String",
             "optional": false,
             "field": "name",
-            "description": "<p>The name of the Station</p>"
+            "description": "<p>The name of train Station</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
             "field": "stationId",
-            "description": "<p>The last name of the Station</p>"
+            "description": "<p>custom Unique id of train Station</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "route",
-            "description": "<p>The route of the Station</p>"
+            "description": "<p>The route of train Station</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "latitude",
-            "description": "<p>The latitude of the station</p>"
+            "description": "<p>The latitude of train station</p>"
           },
           {
             "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "longitude",
-            "description": "<p>The longitude of the sation</p>"
+            "description": "<p>The longitude of train sation</p>"
           }
         ]
       },
       "examples": [
         {
-          "title": "Request Example",
-          "content": "\n{\n  \"_id\": \"5a74264fc461a418b08dae07\",\n  \"stationId\": \"2\",\n  \"name\": \"Meri\",\n  \"longitude\": 38.863153,\n  \"latitude\": 9.0195233,\n  \"createdAt\": \"2018-02-02T08:50:23.602Z\",\n  \"modifiedAt\": \"2018-02-02T08:50:23.602Z\",\n  \"route\": \"EW\"\n}",
+          "title": "Request-Example",
+          "content": "\n{\n \"stationId\": \"17\",\n \"name\": \"Gurd Shola 1211\",\n \"latitude\":9.0158921,\n \"longitude\": 38.8139838,\n \"route\" :\"EW\"\n}",
           "type": "json"
         }
       ]
@@ -780,130 +1308,160 @@
     "success": {
       "examples": [
         {
-          "title": "Response Example",
-          "content": "\n{\n  \"_id\": \"5a478c962698af267483b1ee\",\n  \"email\": \"evana.magato@hotmail.com\",\n  \"firstName\": \"Evana\",\n  \"lastName\": \"Mangato\",\n  \"dateCreated\": \"2017-12-30T12:54:46.419Z\",\n  \"lastModified\": \"2017-12-30T12:54:46.419Z\",\n  \"__v\": 0\n}",
+          "title": "Response-Example",
+          "content": "\n{\n  \"_id\": \"5a96591a2d8b790b8c9bc243\",\n  \"createdBy\": \"5a8157014d99ed52700bc99f\",\n  \"stationId\": 10200509513304,\n  \"name\": \"Gurd Shola 2\",\n  \"route\": \"EW\",\n  \"longitude\": 38.8139838,\n  \"latitude\": 9.0158921,\n  \"createdAt\": \"28-Feb-2018 10:24 AM\",\n  \"modifiedAt\": \"28-Feb-2018 10:24 AM\",\n  \"request\": {\n      \"method\": \"POST\",\n      \"url\": \"http://localhost/stations\"\n  }\n}",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of train Station</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the Station</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>custom Unique id of train Station(the first digit refers to route. 1 for EW &amp; 2 for NS route)</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route of train Station</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>The latitude of train station</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>The longitude of train sation</p>"
+          }
+        ]
+      }
     },
     "version": "0.0.0",
     "filename": "routes/station.js",
     "groupTitle": "Station"
   },
   {
-    "type": "DELETE",
-    "url": "/stations/:id",
-    "title": "Delete Station",
-    "name": "DeleteStations",
-    "group": "Station",
-    "parameter": {
-      "examples": [
-        {
-          "title": "Request Example",
-          "content": "\nhttp://localhost:3000/stations/5a478c962698af267483b1ee",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "GET",
-    "url": "/stations/:id",
-    "title": "Get Station",
-    "name": "GetStation",
-    "group": "Station",
-    "parameter": {
-      "examples": [
-        {
-          "title": "Request Example",
-          "content": "\nhttp://localhost:3000/stations/5a478c962698af267483b1ee",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "GET",
-    "url": "/stations/:id",
-    "title": "Get Station",
-    "name": "GetStation",
-    "group": "Station",
-    "parameter": {
-      "examples": [
-        {
-          "title": "Request Example",
-          "content": "\nhttp://localhost:3000/stations/5a478c962698af267483b1ee",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "GET",
-    "url": "/stations/",
-    "title": "Get Stations",
-    "name": "GetStations",
-    "group": "Station",
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "GET",
-    "url": "/stations/paginate",
-    "title": "Station Paginate",
-    "name": "GetStationsPaginate",
-    "group": "Station",
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "PUT",
-    "url": "/stations/search",
-    "title": "Search Station",
-    "name": "SearchStations",
-    "group": "Station",
-    "parameter": {
-      "examples": [
-        {
-          "title": "Request Example",
-          "content": "\n{\"email\": \"evana.magato@hotmail.com\"}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "routes/station.js",
-    "groupTitle": "Station"
-  },
-  {
-    "type": "UPDATE",
+    "type": "put",
     "url": "/stations/:id",
     "title": "Update Station",
-    "name": "UpdateStations",
+    "name": "putStation",
     "group": "Station",
+    "description": "<p>Update Station</p>",
+    "version": "0.1.0",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
     "parameter": {
       "examples": [
         {
-          "title": "Request Example",
-          "content": "\nhttp://localhost:3000/stations/5a478c962698af267483b1ee",
+          "title": "Request-Example",
+          "content": "{\n  \"id\": \"5a83fa1b1104c34bd8a66e72\"\n}",
           "type": "json"
         }
       ]
     },
-    "version": "0.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "{\n \"_id\": \"5a83fa1b1104c34bd8a66e72\",\n \"createdBy\": \"5a80496050df3044fcf084fd\",\n \"stationId\": 27,\n \"name\": \"Abo Junction\",\n \"route\": \"NS\",\n \"longitude\": 38.7706822,\n \"latitude\": 8.9451405,\n \"createdAt\": \"14-Feb-2018 11:58 AM\",\n \"modifiedAt\": \"28-Feb-2018 11:19 AM\",\n \"request\": {\n     \"method\": \"PUT\",\n     \"url\": \"http://localhost/stations/5a83fa1b1104c34bd8a66e72\"\n }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>custom Unique id of train Station(the first digit refers to route. 1 for EW &amp; 2 for NS route)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route of train Station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "latitude",
+            "description": "<p>The latitude of train station</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "longitude",
+            "description": "<p>The longitude of train sation</p>"
+          }
+        ]
+      }
+    },
     "filename": "routes/station.js",
-    "groupTitle": "Station"
+    "groupTitle": "Station",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "POST",
@@ -1090,7 +1648,7 @@
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User's email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Parameter",
@@ -1128,10 +1686,10 @@
         "Success 201": [
           {
             "group": "Success 201",
-            "type": "json",
+            "type": "String",
             "optional": false,
-            "field": "User",
-            "description": "<p>User's registration info</p>"
+            "field": "Authorization",
+            "description": "<p>jwtwebtoken is generated &amp; is set to header</p>"
           },
           {
             "group": "Success 201",
@@ -1216,35 +1774,35 @@
             "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>User Auto generated mongodb object Id</p>"
+            "description": "<p>User's Auto generated mongodb Object Unique Id</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "userType",
-            "description": "<p>User Type/Role</p>"
+            "description": "<p>User's Type/Role, default value: passenger</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "createdAt",
-            "description": "<p>User registration date time</p>"
+            "description": "<p>User's registration date time</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "modifiedAt",
-            "description": "<p>User info delete date time</p>"
+            "description": "<p>User's info delete date time</p>"
           }
         ]
       }
@@ -1265,7 +1823,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -1277,6 +1835,19 @@
     "title": "Get User",
     "name": "GetUser",
     "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>JWT token value</p>"
+          }
+        ]
+      }
+    },
     "description": "<p>find user by id</p>",
     "version": "0.1.0",
     "permission": [
@@ -1306,28 +1877,28 @@
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "userType",
-            "description": "<p>User Type/Role</p>"
+            "description": "<p>User's Type/Role, default value: passenger</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "createdAt",
-            "description": "<p>User registration date time</p>"
+            "description": "<p>User's registration date time</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "modifiedAt",
-            "description": "<p>User info delete date time</p>"
+            "description": "<p>User's info delete date time</p>"
           }
         ]
       },
@@ -1372,7 +1943,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -1420,45 +1991,45 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "json",
+            "type": "String",
             "optional": false,
-            "field": "User",
-            "description": "<p>User's registration info</p>"
+            "field": "Authorization",
+            "description": "<p>jwtwebtoken is generated &amp; set to header</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>User Auto generated mongodb object Id</p>"
+            "description": "<p>User's Auto generated mongodb Object Unique Id</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "userType",
-            "description": "<p>User Type/Role</p>"
+            "description": "<p>User's Type/Role, default value: passenger</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "createdAt",
-            "description": "<p>User registration date time</p>"
+            "description": "<p>User's registration date time</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "modifiedAt",
-            "description": "<p>User info delete date time</p>"
+            "description": "<p>User's info delete date time</p>"
           }
         ]
       },
@@ -1470,20 +2041,27 @@
         }
       ]
     },
+    "filename": "routes/user.js",
+    "groupTitle": "User",
     "error": {
       "fields": {
         "Error 4xx": [
           {
             "group": "Error 4xx",
             "optional": false,
-            "field": "Authentication",
-            "description": "<p>error { &quot;MESSAGE&quot;: &quot;ACCESS FORBID&quot; }</p>"
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
           }
         ]
-      }
-    },
-    "filename": "routes/user.js",
-    "groupTitle": "User"
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "delete",
@@ -1508,35 +2086,35 @@
             "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>User Auto generated mongodb object Id</p>"
+            "description": "<p>User's Auto generated mongodb Object Unique Id</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "userType",
-            "description": "<p>User Type/Role</p>"
+            "description": "<p>User's Type/Role, default value: passenger</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "createdAt",
-            "description": "<p>User registration date time</p>"
+            "description": "<p>User's registration date time</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "modifiedAt",
-            "description": "<p>User info delete date time</p>"
+            "description": "<p>User's info delete date time</p>"
           }
         ]
       }
@@ -1557,7 +2135,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]
@@ -1566,10 +2144,10 @@
   {
     "type": "put",
     "url": "/Users/:userId",
-    "title": "update User",
-    "name": "update",
+    "title": "Update User",
+    "name": "putUser",
     "group": "User",
-    "description": "<p>update user info</p>",
+    "description": "<p>Update user info</p>",
     "version": "0.1.0",
     "permission": [
       {
@@ -1591,35 +2169,35 @@
             "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>User Auto generated mongodb object Id</p>"
+            "description": "<p>User's Auto generated mongodb Object Unique Id</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>User email</p>"
+            "description": "<p>User's email address</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "userType",
-            "description": "<p>User Type/Role</p>"
+            "description": "<p>User's Type/Role, default value: passenger</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "createdAt",
-            "description": "<p>User registration date time</p>"
+            "description": "<p>User's registration date time</p>"
           },
           {
             "group": "Success 200",
             "type": "Date",
             "optional": false,
             "field": "modifiedAt",
-            "description": "<p>User info delete date time</p>"
+            "description": "<p>User's info delete date time</p>"
           }
         ]
       }
@@ -1640,7 +2218,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access is forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
           "type": "json"
         }
       ]

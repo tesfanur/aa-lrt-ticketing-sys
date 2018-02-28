@@ -12,11 +12,11 @@ var userController = require('../controllers/user');
 // ------------------------------------------------------------------------------------------
 /**
  * @apiDefine UserSuccess
- * @apiSuccess {Object} _id User Auto generated mongodb object Id
- * @apiSuccess {String} email User email
- * @apiSuccess {String} userType User Type/Role
- * @apiSuccess {Date} createdAt User registration date time
- * @apiSuccess {Date} modifiedAt User info delete date time
+ * @apiSuccess {Object} _id User's Auto generated mongodb Object Unique Id
+ * @apiSuccess {String} email User's email address
+ * @apiSuccess {String} userType User's Type/Role, default value: passenger
+ * @apiSuccess {Date} createdAt User's registration date time
+ * @apiSuccess {Date} modifiedAt User's info delete date time
 */
 // ------------------------------------------------------------------------------------------
 // Current Permissions.
@@ -30,7 +30,7 @@ var userController = require('../controllers/user');
  * @apiErrorExample  Unauthorized response:
  *     HTTP 401 Unauthorized
  *     {
- *      "message":"Access is forbidden"
+ *      "message":"Access forbidden"
  *     }
  */
 
@@ -41,12 +41,11 @@ var userController = require('../controllers/user');
  * @apiDescription Creates a New User
  * @apiVersion 0.1.0
  * @apiPermission none
- * @apiParam {String} email User's email
+ * @apiParam {String} email User's email address
  * @apiParam {String} password User's password
  * @apiParam {String} confirmPassword User's password confirmation
  * @apiParam {String} phone User's phone number
- *
- * @apiSuccess(Success 201) {json} User User's registration info
+ * @apiSuccess(Success 201) {String} Authorization jwtwebtoken is generated & is set to header
  *
  * @apiSuccess(Success 201) {String} _id User's Object id
  * @apiSuccess(Success 201) {String} email User's email address
@@ -96,7 +95,7 @@ router.post('/signup',userController.create);
  * @apiParam {String} email User's email address
  * @apiParam {String} password User's password
  *
- * @apiSuccess {json} User User's registration info
+ * @apiSuccess {String} Authorization jwtwebtoken is generated & set to header
  *
  * @apiUse UserSuccess
  *
@@ -117,10 +116,7 @@ router.post('/signup',userController.create);
  *  "createdAt": "2018-02-14T15:14:44.974Z",
  *  "modifiedAt": "2018-02-14T15:14:44.974Z"
  * }
- *@apiError Authentication error
- * {
- *  "MESSAGE": "ACCESS FORBID"
- * }
+ *@apiUse UnauthorizedError
  */
 function login() { return; }
 router.post('/login', userController.login);
@@ -185,6 +181,7 @@ router.get('/',userController.findAll);
  * @api {get} /Users/:userId Get User
  * @apiName GetUser
  * @apiGroup User
+ * @apiHeader {String} Authorization JWT token value
  * @apiDescription find user by id
  * @apiVersion 0.1.0
  * @apiPermission authenticated user
@@ -218,10 +215,10 @@ router.get('/',userController.findAll);
  */
 router.get('/:userId',userController.findById);
 /**
- * @api {put} /Users/:userId update User
- * @apiName update
+ * @api {put} /Users/:userId Update User
+ * @apiName putUser
  * @apiGroup User
- * @apiDescription update user info
+ * @apiDescription Update user info
  * @apiVersion 0.1.0
  * @apiPermission none
  *

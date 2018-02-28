@@ -120,7 +120,7 @@ router.post('/', faqController.create);
  router.get('/', faqController.findAll);
 
   /**
-    * @api {get} /faqs Paginate Faqs
+    * @api {get} /faqs/paginate Paginate Faqs
     * @apiVersion 0.1.0
     * @apiName GetAll
     * @apiGroup Faq
@@ -152,7 +152,7 @@ router.post('/', faqController.create);
     */
 router.get('/paginate', faqController.paginate);
 /**
-  * @api {get} /faqs/:id Search Faq
+  * @api {get} /faqs/:desc Search Faq
   * @apiVersion 0.1.0
   * @apiName SearchFaq
   * @apiGroup Faq
@@ -182,7 +182,7 @@ router.get('/paginate', faqController.paginate);
   */
 router.get('/search/:desc', faqController.searchByDesc);
 /**
-  * @api {get} /faqs/:id Find Faq
+  * @api {get} /faqs/:id  Get Faq
   * @apiVersion 0.1.0
   * @apiName GetFaq
   * @apiGroup Faq
