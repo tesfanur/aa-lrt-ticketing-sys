@@ -38,7 +38,7 @@ var userController = require('../controllers/user');
  * @api {post} /users/signup Signup User
  * @apiName CreateUser
  * @apiGroup User
- * @apiDescription Creates a New User
+ * @apiDescription Allows new users to signup/create account
  * @apiVersion 0.1.0
  * @apiPermission none
  * @apiParam {String} email User's email address
@@ -121,10 +121,10 @@ router.post('/signup',userController.create);
 function login() { return; }
 router.post('/login', userController.login);
 /**
- * @api {GET} /Users/ find all users
+ * @api {GET} /Users/ Find All Users
  * @apiName FindAllUsers
  * @apiGroup User
- * @apiDescription list all registerd Users
+ * @apiDescription Lists all registerd users
  * @apiVersion 0.1.0
  *
  * @apiUse UserSuccess
@@ -182,7 +182,7 @@ router.get('/',userController.findAll);
  * @apiName GetUser
  * @apiGroup User
  * @apiHeader {String} Authorization JWT token value
- * @apiDescription find user by id
+ * @apiDescription Find user by id
  * @apiVersion 0.1.0
  * @apiPermission authenticated user
  *
@@ -218,7 +218,7 @@ router.get('/:userId',userController.findById);
  * @api {put} /Users/:userId Update User
  * @apiName putUser
  * @apiGroup User
- * @apiDescription Update user info
+ * @apiDescription Allows registerd user to update their account
  * @apiVersion 0.1.0
  * @apiPermission none
  *
@@ -246,7 +246,7 @@ router.put('/:userId', userController.update);
  * @api {delete} /Users/:userId Delete User
  * @apiName delete
  * @apiGroup User
- * @apiDescription deletes a user
+ * @apiDescription Delete a user
  * @apiVersion 0.1.0
  * @apiUse UserSuccess
  *

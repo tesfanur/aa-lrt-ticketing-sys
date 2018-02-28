@@ -185,7 +185,7 @@ function createTicket(req, res, next){
                                             console.log(decryptTicket(newResult))
                                             if(result)
                                             return res.status(201)
-                                                      .send(decryptTicket(newResult).encryptedTicket)
+                                                      .send(decryptTicket(newResult))
                                           }).catch(
                                             err => {
                                               res.status(500).send(err);

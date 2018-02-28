@@ -1,6 +1,6 @@
 {
   "name": "aa_lrt_ticketing_api",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Addis Ababa Light Rail Transit Train Online Tickeing API",
   "main": "app.js",
   "engines": {
