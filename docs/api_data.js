@@ -14,13 +14,13 @@ define({ "api": [
     "description": "<p>create frequently asked question</p>",
     "parameter": {
       "fields": {
-        "Request body": [
+        "Parameter": [
           {
-            "group": "Request body",
+            "group": "Parameter",
             "type": "Object",
             "optional": false,
-            "field": "question",
-            "description": "<p>The question description</p>"
+            "field": "question.description",
+            "description": "<p>Description of faq question</p>"
           }
         ]
       }
@@ -40,7 +40,77 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "question.description",
-            "description": "<p>Faq created question apiUse UserSuccess</p>"
+            "description": "<p>Faq created question</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
           }
         ]
       },
@@ -165,36 +235,99 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());\n\napiUse UserSuccess",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
         "type": "js"
       }
     ],
     "success": {
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": "HTTPS 200 OK\n{\n  \"page\": 1,\n  \"total_docs\": 8,\n  \"total_pages\": 1,\n  \"per_page\": 10,\n  \"docs\": [\n      {\n          \"_id\": \"5a92752a45475524e0619b03\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T08:34:50.743Z\",\n              \"createdAt\": \"2018-02-25T08:34:50.743Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"How long your service stay during the evening?\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T08:34:50.743Z\",\n              \"createdAt\": \"2018-02-25T08:34:50.743Z\"\n          }\n      },\n      {\n          \"_id\": \"5a9279a25bebbd257805293b\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T08:53:54.404Z\",\n              \"createdAt\": \"2018-02-25T08:53:54.404Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"At what time is train service starts?\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T08:53:54.404Z\",\n              \"createdAt\": \"2018-02-25T08:53:54.404Z\"\n          }\n      },\n      {\n          \"_id\": \"5a927aa89a08a935dc02634d\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T08:58:16.609Z\",\n              \"createdAt\": \"2018-02-25T08:58:16.609Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"At what time is train service starts?\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T08:58:16.609Z\",\n              \"createdAt\": \"2018-02-25T08:58:16.609Z\"\n          }\n      },\n      {\n          \"_id\": \"5a927ae5419ffa2c50ab62c3\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T08:59:17.009Z\",\n              \"createdAt\": \"2018-02-25T08:59:17.009Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"At what time is train service starts?\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T08:59:17.009Z\",\n              \"createdAt\": \"2018-02-25T08:59:17.009Z\"\n          }\n      },\n      {\n          \"_id\": \"5a9292dc2023554038ff9f87\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n              \"createdAt\": \"2018-02-25T10:41:32.663Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"Tesfaye Belachew Abebe\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n              \"createdAt\": \"2018-02-25T10:41:32.663Z\"\n          }\n      },\n      {\n          \"_id\": \"5a92b5f3f6b32946a899d127\",\n          \"__v\": 0,\n          \"answer\": {\n              \"modifiedAt\": \"2018-02-25T13:11:15.939Z\",\n              \"createdAt\": \"2018-02-25T13:11:15.939Z\",\n              \"description\": \"Not answerd yet\"\n          },\n          \"question\": {\n              \"description\": \"Is there any charter train for special events\",\n              \"askedBy\": \"5a8157014d99ed52700bc99f\",\n              \"modifiedAt\": \"2018-02-25T13:11:15.939Z\",\n              \"createdAt\": \"2018-02-25T13:11:15.939Z\"\n          }\n      }\n    ]",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>The faq id</p>"
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>The faq name</p>"
+            "field": "question.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success response:",
-          "content": "HTTPS 200 OK\n[{\n  \"_id\": \"57e8e94ea06a0c473bac50cc\",\n  \"name\": \"Do the disehs\"\n },\n {\n  \"_id\": \"57e903941ca43a5f0805ba5a\",\n  \"name\": \"Take out the trash\"\n}]",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "routes/faq.js",
     "groupTitle": "Faq",
@@ -234,36 +367,99 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());\n\napiUse UserSuccess",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());\n\napiUse FaqSuccess",
         "type": "js"
       }
     ],
     "success": {
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": "  HTTPS 200 OK\n  {\n    \"_id\": \"5a9292dc2023554038ff9f87\",\n    \"__v\": 0,\n    \"answer\": {\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\",\n        \"description\": \"Not answerd yet\"\n    },\n    \"question\": {\n        \"description\": \"Is there discount for children?\",\n        \"askedBy\": \"5a8157014d99ed52700bc99f\",\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\"\n    }\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>The faq id</p>"
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>The faq name</p>"
+            "field": "question.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success response:",
-          "content": "HTTPS 200 OK\n[{\n  \"_id\": \"57e8e94ea06a0c473bac50cc\",\n  \"name\": \"Do the disehs\"\n },\n {\n  \"_id\": \"57e903941ca43a5f0805ba5a\",\n  \"name\": \"Take out the trash\"\n}]",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "routes/faq.js",
     "groupTitle": "Faq",
@@ -321,31 +517,94 @@ define({ "api": [
       }
     ],
     "success": {
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": " HTTPS 200 OK\n{\n    \"_id\": \"5a92b72364f0582538373c70\",\n    \"__v\": 0,\n    \"answer\": {\n        \"modifiedAt\": \"2018-02-25T13:16:19.154Z\",\n        \"createdAt\": \"2018-02-25T13:16:19.154Z\",\n        \"description\": \"Not answerd yet\"\n    },\n    \"question\": {\n        \"description\": \"Is there any charter train for special events\",\n        \"askedBy\": \"5a8157014d99ed52700bc99f\",\n        \"modifiedAt\": \"2018-02-25T13:16:19.154Z\",\n        \"createdAt\": \"2018-02-25T13:16:19.154Z\"\n    }\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>The faq id</p>"
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>The faq name</p>"
+            "field": "question.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success response:",
-          "content": "HTTPS 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "routes/faq.js",
     "groupTitle": "Faq",
@@ -403,31 +662,94 @@ define({ "api": [
       }
     ],
     "success": {
+      "examples": [
+        {
+          "title": "Success response:",
+          "content": " HTTPS 200 OK\n{\n    \"faqs\": [\n        {\n            \"_id\": \"5a92b5f3f6b32946a899d127\",\n            \"question\": {\n                \"askedBy\": {\n                    \"_id\": \"5a8157014d99ed52700bc99f\",\n                    \"email\": \"ayele.gobeze@gmail.com\",\n                    \"phone\": \"251-917-123456\",\n                    \"userType\": \"passenger\",\n                    \"createdAt\": \"2018-02-12T08:57:00.000Z\",\n                    \"modifiedAt\": \"2018-02-12T08:57:00.000Z\"\n                },\n                \"description\": \"Is there any charter train for special events\",\n                \"dateAsked\": \"25-Feb-2018 04:11 PM\"\n            },\n            \"answer\": {\n                \"description\": \"Not answerd yet\",\n                \"dateAnswerd\": \"25-Feb-2018 04:11 PM\"\n            },\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/faqs/search/charter\"\n            }\n        },\n        {\n            \"_id\": \"5a92b72364f0582538373c70\",\n            \"question\": {\n                \"askedBy\": {\n                    \"_id\": \"5a8157014d99ed52700bc99f\",\n                    \"email\": \"ayele.gobeze@gmail.com\",\n                    \"phone\": \"251-917-123456\",\n                    \"userType\": \"passenger\",\n                    \"createdAt\": \"2018-02-12T08:57:00.000Z\",\n                    \"modifiedAt\": \"2018-02-12T08:57:00.000Z\"\n                },\n                \"description\": \"Is there any charter train for special events\",\n                \"dateAsked\": \"25-Feb-2018 04:16 PM\"\n            },\n            \"answer\": {\n                \"description\": \"Not answerd yet\",\n                \"dateAnswerd\": \"25-Feb-2018 04:16 PM\"\n            },\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/faqs/search/charter\"\n            }\n        },\n        {\n            \"_id\": \"5a957763f45a380610389b8e\",\n            \"question\": {\n                \"askedBy\": {\n                    \"_id\": \"5a8157014d99ed52700bc99f\",\n                    \"email\": \"ayele.gobeze@gmail.com\",\n                    \"phone\": \"251-917-123456\",\n                    \"userType\": \"passenger\",\n                    \"createdAt\": \"2018-02-12T08:57:00.000Z\",\n                    \"modifiedAt\": \"2018-02-12T08:57:00.000Z\"\n                },\n                \"description\": \"Is there any charter train for special events\",\n                \"dateAsked\": \"27-Feb-2018 06:21 PM\"\n            },\n            \"answer\": {\n                \"description\": \"Not answerd yet\",\n                \"dateAnswerd\": \"27-Feb-2018 06:21 PM\"\n            },\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/faqs/search/charter\"\n            }\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "_id",
-            "description": "<p>The faq id</p>"
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "name",
-            "description": "<p>The faq name</p>"
+            "field": "question.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Success response:",
-          "content": "HTTPS 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "routes/faq.js",
     "groupTitle": "Faq",
@@ -452,23 +774,143 @@ define({ "api": [
     }
   },
   {
-    "type": "UPDATE",
+    "type": "put",
     "url": "/faqs/:id",
     "title": "Update Faq",
-    "name": "UpdateFaqs",
+    "name": "putFaq",
     "group": "Faq",
+    "description": "<p>Update Faq</p>",
+    "version": "0.1.0",
+    "permission": [
+      {
+        "name": "passnger"
+      }
+    ],
     "parameter": {
       "examples": [
         {
-          "title": "Request Example",
-          "content": "\nurl/faqs/5a478c962698af267483b1ee",
+          "title": "Request-Example",
+          "content": "{\n  \"id\": \"5a8b5a4e7474781c44dfc65e\"\n}",
           "type": "json"
         }
       ]
     },
-    "version": "0.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "\n  {\n    \"_id\": \"5a92b72364f0582538373c70\",\n    \"question\": {\n        \"askedBy\": \"5a8157014d99ed52700bc99f\",\n        \"description\": \"Is there any charter train for special events?\",\n        \"dateAsked\": \"25-Feb-2018 04:16 PM\"\n    },\n    \"answer\": {\n        \"description\": \"Not answerd yet\",\n        \"dateAnswerd\": \"25-Feb-2018 04:16 PM\"\n    },\n    \"request\": {\n        \"method\": \"PUT\",\n        \"url\": \"http://localhost/faqs/5a92b72364f0582538373c70\"\n    }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>Faq Auto generated mongodb object Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "question",
+            "description": "<p>Faq Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "question.askedBy",
+            "description": "<p>Faq author of description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.createdAt",
+            "description": "<p>Faq Question's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "question.modifiedAt",
+            "description": "<p>Faq Question's editing date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Faq Answer</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.description",
+            "description": "<p>Faq description of the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "answer.answerdBy",
+            "description": "<p>Faq author of answer for the Question</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.createdAt",
+            "description": "<p>Faq Answer's creation date time</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "answer.modifiedAt",
+            "description": "<p>Faq Answer's editing date time</p>"
+          }
+        ]
+      }
+    },
     "filename": "routes/faq.js",
-    "groupTitle": "Faq"
+    "groupTitle": "Faq",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "type": "GET",
