@@ -14,13 +14,13 @@ const router = express.Router();
 /**
  * @apiDefine FaqSuccess
  * @apiSuccess {Object} _id Faq Auto generated mongodb object Id
- * @apiSuccess {Object} question Faq Question
+ * @apiSuccess {Object} question Faq Question Object
  * @apiSuccess {String} question.description Faq description of the Question
  * @apiSuccess {String} question.askedBy Faq author of description of the Question
  * @apiSuccess {Date} question.createdAt Faq Question's creation date time
  * @apiSuccess {Date} question.modifiedAt Faq Question's editing date time
- * @apiSuccess {Object} answer Faq Answer
- * @apiSuccess {String} answer.description Faq description of the Question
+ * @apiSuccess {Object} answer Faq Answer Object
+ * @apiSuccess {String} answer.description Faq description of the Answer
  * @apiSuccess {String} answer.answerdBy Faq author of answer for the Question
  * @apiSuccess {Date} answer.createdAt Faq Answer's creation date time
  * @apiSuccess {Date} answer.modifiedAt Faq Answer's editing date time
@@ -28,12 +28,12 @@ const router = express.Router();
 /**
  * @apiDefine FaqCreationSuccess
  * @apiSuccess(Success 201) {Object} _id Faq Auto generated mongodb object Id
- * @apiSuccess(Success 201) {Object} question Faq Question
+ * @apiSuccess(Success 201) {Object} question Faq Question Object
  * @apiSuccess(Success 201) {String} question.description Faq description of the Question
  * @apiSuccess(Success 201) {String} question.askedBy Faq author of description of the Question
  * @apiSuccess(Success 201) {Date} question.createdAt Faq Question's creation date time
  * @apiSuccess(Success 201) {Date} question.modifiedAt Faq Question's editing date time
- * @apiSuccess(Success 201) {Object} answer Faq Answer
+ * @apiSuccess(Success 201) {Object} answer Faq Answer Object
  * @apiSuccess(Success 201) {String} answer.description Faq description of the Question
  * @apiSuccess(Success 201) {String} answer.answerdBy Faq author of answer for the Question
  * @apiSuccess(Success 201) {Date} answer.createdAt Faq Answer's creation date time
@@ -77,7 +77,7 @@ const router = express.Router();
     *   .success((res, status) => doSomethingHere())
     *   .error((err, status) => doSomethingHere());
     *
-    * @apiSuccess (Success 201) {String} question.description Faq created question
+    * @apiSuccess (Success 201) {String} question.description Faq description of the question
     * @apiUse FaqCreationSuccess
     * @apiSuccessExample {json} Response-Example:
     *     HTTPS 201 OK

@@ -40,7 +40,7 @@
             "type": "String",
             "optional": false,
             "field": "question.description",
-            "description": "<p>Faq created question</p>"
+            "description": "<p>Faq description of the question</p>"
           },
           {
             "group": "Success 201",
@@ -54,7 +54,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 201",
@@ -82,7 +82,7 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 201",
@@ -261,7 +261,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 200",
@@ -296,14 +296,14 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "answer.description",
-            "description": "<p>Faq description of the Question</p>"
+            "description": "<p>Faq description of the Answer</p>"
           },
           {
             "group": "Success 200",
@@ -393,7 +393,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 200",
@@ -428,14 +428,14 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "answer.description",
-            "description": "<p>Faq description of the Question</p>"
+            "description": "<p>Faq description of the Answer</p>"
           },
           {
             "group": "Success 200",
@@ -538,7 +538,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 200",
@@ -573,14 +573,14 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "answer.description",
-            "description": "<p>Faq description of the Question</p>"
+            "description": "<p>Faq description of the Answer</p>"
           },
           {
             "group": "Success 200",
@@ -683,7 +683,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 200",
@@ -718,14 +718,14 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "answer.description",
-            "description": "<p>Faq description of the Question</p>"
+            "description": "<p>Faq description of the Answer</p>"
           },
           {
             "group": "Success 200",
@@ -817,7 +817,7 @@
             "type": "Object",
             "optional": false,
             "field": "question",
-            "description": "<p>Faq Question</p>"
+            "description": "<p>Faq Question Object</p>"
           },
           {
             "group": "Success 200",
@@ -852,14 +852,14 @@
             "type": "Object",
             "optional": false,
             "field": "answer",
-            "description": "<p>Faq Answer</p>"
+            "description": "<p>Faq Answer Object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "answer.description",
-            "description": "<p>Faq description of the Question</p>"
+            "description": "<p>Faq description of the Answer</p>"
           },
           {
             "group": "Success 200",
