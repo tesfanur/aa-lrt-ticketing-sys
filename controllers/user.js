@@ -55,7 +55,8 @@ function create_user(req, res,next) {
                          let [token, user] =result;
                          //test first whether token exists or not
                          //if(token)  res.header('x-auth')
-                         res.header('x-auth',token).send(user);
+                         //res.status(201);
+                         res.status(201).header('x-auth',token).send(user);
                        })
                        .catch(e => {
                          res.status(400).send(e);
