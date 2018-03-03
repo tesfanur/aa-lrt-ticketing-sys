@@ -51,7 +51,7 @@ const router = express.Router();
  * @apiErrorExample  Unauthorized response:
  *     HTTP 401 Unauthorized
  *     {
- *      "message":"Access is forbidden"
+ *      "message":"Access denied"
  *     }
  */
 
