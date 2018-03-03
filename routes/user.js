@@ -30,7 +30,7 @@ var userController = require('../controllers/user');
  * @apiErrorExample  Unauthorized response:
  *     HTTP 401 Unauthorized
  *     {
- *      "message":"Access forbidden"
+ *      "message":"Access denied"
  *     }
  */
 

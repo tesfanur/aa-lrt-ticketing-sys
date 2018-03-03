@@ -41,7 +41,7 @@ function createTicket(data){
   TicketModel.find(query,{createdAt:-1})
              .populate('from',"name route stationId")
              .populate('to',"name route stationId")
-             .populate('passengerId',"email")
+             .populate('passengerId',"email phone userType")
              .sort({createdAt:-1})
              .exec()
              .then( (tickets) => {

@@ -138,7 +138,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -213,7 +213,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -345,7 +345,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -477,7 +477,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -622,7 +622,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -767,7 +767,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -901,7 +901,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -988,7 +988,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1085,7 +1085,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1177,7 +1177,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1291,7 +1291,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1439,7 +1439,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1543,7 +1543,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1628,7 +1628,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1723,7 +1723,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1815,7 +1815,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -1912,7 +1912,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2021,7 +2021,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2113,7 +2113,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2251,7 +2251,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2355,7 +2355,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2480,7 +2480,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2610,7 +2610,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2765,7 +2765,7 @@
         },
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -2914,7 +2914,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -3085,7 +3085,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -3224,7 +3224,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         },
         {
@@ -3431,7 +3431,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -3551,7 +3551,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -3665,7 +3665,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -3743,7 +3743,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]
@@ -3826,7 +3826,7 @@
       "examples": [
         {
           "title": "Unauthorized response:",
-          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access forbidden\"\n}",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
           "type": "json"
         }
       ]

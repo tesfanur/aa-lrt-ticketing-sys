@@ -47,16 +47,10 @@ TicketSchema.plugin(paginator);
 //presave hook for id
 //console.log(shortid.generate());
   TicketSchema.pre('save', function (next) {
-    var ticket = this;
-      ticket.id =shortid.generate();
+    var new_ticket = this;
+      new_ticket.id =shortid.generate();
       next();
   });
-//console.log(shortid.generate());
-  // TicketSchema.method.generateTicketId=function (next) {
-  //   var ticket = this;
-  //     ticket.id =shortid.generate();
-  //     return ticket.save()
-  // };
 
 //export user model
 module.exports = mongoose.model('Ticket', TicketSchema);

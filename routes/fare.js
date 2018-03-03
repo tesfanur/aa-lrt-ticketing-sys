@@ -101,7 +101,7 @@ var router = express.Router();
  * @apiErrorExample  Unauthorized-Error-Response:
  *     HTTP 401 Unauthorized
  *     {
- *      "message":"Access forbidden"
+ *      "message":"Access denied"
  *     }
  */
 
