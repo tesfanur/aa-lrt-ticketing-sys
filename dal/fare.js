@@ -117,9 +117,9 @@ function getAllFares(query){
     debug('GETTING ALL FARE COLLECTION');
     var defferd =q.defer();
  FareModel.find(query)
-          .populate('from',"name route")
-          .populate('to',"name route")
-          .populate('userId',"email")
+          .populate('from','name stationId route')
+          .populate('to','name stationId route')
+          .populate('userId','email phone userType')
           .sort({createdAt:-1})
           .exec()
           .then(fares => {
