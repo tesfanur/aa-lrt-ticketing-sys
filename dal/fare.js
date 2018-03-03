@@ -119,6 +119,8 @@ function getAllFares(query){
  FareModel.find(query)
           // .populate('from','name stationId route')
           // .populate('to','name stationId route')
+          .populate('from')
+          .populate('to')
           .populate('userId','email phone userType')
           .sort({createdAt:-1})
           .exec()
