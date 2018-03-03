@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 const _        = require('lodash');//lodash can also do the same.check?
 const debug    = require('debug')('Ticket-api');
+const shortid  = require('shortid');
 
 /**
 *Steps to convert Ticket object into qr code
@@ -159,6 +160,8 @@ function createTicket(req, res, next){
                       if(ticket) {
                         console.log(ticket);
                       //return res.send(ticket);
+                      if(!ticket.id) ticket.id=shortid.generate();
+                      
                       var ticketData ={
                         id: ticket.id,
                         route: ticket.route,
@@ -217,7 +220,9 @@ function findAllTicket(req, res, next){
   var alltickets={};
   TicketDal.findAll(alltickets)
           .then((tickets) => {
-            handleTicketResponse(res,tickets);
+            var ticketCount =0;
+            if(tickets) ticketCount =tickets.length;
+            handleTicketResponse(res,{"Number of tickets sold:":ticketCount,tickets});
           })
           .catch(error => next(error));
    }
