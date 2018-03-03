@@ -7,7 +7,7 @@ var ObjectId = Schema.Types.ObjectId;
 
 var TicketSchema = new Schema({
     id      :{type:String,
-            //required : true,
+             required : true,
             default:"no id"},
     type    :{type:String,
               enum : ['for child','for adult','for handicaped'],
