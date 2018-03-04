@@ -1556,6 +1556,744 @@
   },
   {
     "type": "GET",
+    "url": "/schedules/",
+    "title": "Find All Schedules",
+    "name": "FindAllSchedules",
+    "group": "Schedule",
+    "description": "<p>list all registerd Schedules</p>",
+    "version": "0.1.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "\nHTTP 200 OK\n{\n    \"scheduleCount\": 6,\n    \"schedules\": [\n        {\n            \"_id\": \"5a9bea8c9b212d3904716546\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:46 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:46 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        },\n        {\n            \"_id\": \"5a9bea7d9b212d3904716545\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:45 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:45 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        },\n        {\n            \"_id\": \"5a9bea2c69a5a544c49071be\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:44 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:44 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        },\n        {\n            \"_id\": \"5a9bea0369a5a544c49071bd\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:43 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:43 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        },\n        {\n            \"_id\": \"5a9be79f150cee41286b723a\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:33 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:33 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        },\n        {\n            \"_id\": \"5a9be738ab9886334cf66f63\",\n            \"createdBy\": \"5a8157014d99ed52700bc99f\",\n            \"trainId\": \"AALRT-T-01\",\n            \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n            \"departureTime\": \"04-Mar-2018 05:01 AM\",\n            \"createdAt\": \"04-Mar-2018 03:31 PM\",\n            \"modifiedAt\": \"04-Mar-2018 03:31 PM\",\n            \"request\": {\n                \"method\": \"GET\",\n                \"url\": \"http://localhost/schedules\"\n            }\n        }\n    ]\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>The id of train Schedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the shedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trainId",
+            "description": "<p>Unique id of train</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "arrivalTime",
+            "description": "<p>The arrival time of train at Schedule with id of stationId</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "departureTime",
+            "description": "<p>The departure time of train from Schedule with id of stationId</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "examples": [
+        {
+          "title": "Schedule-Not-Found-Response:",
+          "content": "* HTTP 400 Bad request\n{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "GET",
+    "url": "/schedules/paginate",
+    "title": "Paginated Schedules List",
+    "name": "FindAllSchedulesAndPaginate",
+    "group": "Schedule",
+    "description": "<p>List all registerd schedules by pagination</p>",
+    "version": "0.1.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "\nHTTP 200 OK\n  {\n      \"page\": 1,\n      \"total_docs\": 6,\n      \"total_pages\": 1,\n      \"per_page\": 10,\n      \"docs\": [\n          {\n              \"_id\": \"5a9be738ab9886334cf66f63\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:31:52.206Z\",\n              \"createdAt\": \"2018-03-04T12:31:52.206Z\"\n          },\n          {\n              \"_id\": \"5a9be79f150cee41286b723a\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:33:35.620Z\",\n              \"createdAt\": \"2018-03-04T12:33:35.620Z\"\n          },\n          {\n              \"_id\": \"5a9bea0369a5a544c49071bd\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:43:47.708Z\",\n              \"createdAt\": \"2018-03-04T12:43:47.708Z\"\n          },\n          {\n              \"_id\": \"5a9bea2c69a5a544c49071be\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:44:28.516Z\",\n              \"createdAt\": \"2018-03-04T12:44:28.516Z\"\n          },\n          {\n              \"_id\": \"5a9bea7d9b212d3904716545\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:45:49.072Z\",\n              \"createdAt\": \"2018-03-04T12:45:49.072Z\"\n          },\n          {\n              \"_id\": \"5a9bea8c9b212d3904716546\",\n              \"createdBy\": \"5a8157014d99ed52700bc99f\",\n              \"trainId\": \"AALRT-T-01\",\n              \"stationId\": \"5a74264fc461a418b08dae07\",\n              \"arrivalTime\": \"2018-03-04T02:00:00.000Z\",\n              \"departureTime\": \"2018-03-04T02:01:00.000Z\",\n              \"__v\": 0,\n              \"modifiedAt\": \"2018-03-04T12:46:04.657Z\",\n              \"createdAt\": \"2018-03-04T12:46:04.657Z\"\n          }\n      ]\n  }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>The id of train Schedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the shedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trainId",
+            "description": "<p>Unique id of train</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "arrivalTime",
+            "description": "<p>The arrival time of train at Schedule with id of stationId</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "departureTime",
+            "description": "<p>The departure time of train from Schedule with id of stationId</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "examples": [
+        {
+          "title": "Schedule-Not-Found-Response:",
+          "content": "* HTTP 400 Bad request\n{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/schedules/:id",
+    "title": "Get Schedule By Id",
+    "version": "0.1.0",
+    "name": "GetSchedule",
+    "group": "Schedule",
+    "permission": [
+      {
+        "name": "authenticated user\n\n\nhttp://localhost:5000/schedules/5a9bea8c9b212d3904716546"
+      }
+    ],
+    "description": "<p>Retrieve schedule by their Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The schedule id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The schedule id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The schedule name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Success-Example:",
+          "content": " HTTP 200 OK\n    {\n    \"_id\": \"5a9bea8c9b212d3904716546\",\n    \"createdBy\": \"5a8157014d99ed52700bc99f\",\n    \"trainId\": \"AALRT-T-01\",\n    \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n    \"departureTime\": \"04-Mar-2018 05:01 AM\",\n    \"createdAt\": \"04-Mar-2018 03:46 PM\",\n    \"modifiedAt\": \"04-Mar-2018 03:46 PM\",\n    \"request\": {\n        \"method\": \"GET\",\n        \"url\": \"http://localhost/schedules/5a9bea8c9b212d3904716546\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "examples": [
+        {
+          "title": "Invalid-Schedule-Id-Response:",
+          "content": "HTTP 400 Bad request\n{\n    \"message\": \"Schedule Id is not valid\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Schedule-Not-Found-Response:",
+          "content": "* HTTP 400 Bad request\n{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/schedules/search/:name",
+    "title": "Search By Schedule Name",
+    "version": "0.1.0",
+    "name": "SearchSchedule",
+    "group": "Schedule",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "description": "<p>Search schedule by their name</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The schedule id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The schedule id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The schedule name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Success-Example:",
+          "content": "HTTP 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "examples": [
+        {
+          "title": "Schedule-Not-Found-Response:",
+          "content": "* HTTP 400 Bad request\n{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/schedules/:id",
+    "title": "Delete Schedule",
+    "name": "deleteSchedule",
+    "group": "Schedule",
+    "description": "<p>Delete schedule by id</p>",
+    "version": "0.1.0",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "\n{\n  \"id\": \"5a96591a2d8b790b8c9bc243\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "HTTP 200 OK\n{\n\"message\":\"schedule removed successfully\",\n{\n  \"_id\": \"5a96591a2d8b790b8c9bc243\",\n  \"createdBy\": \"5a8157014d99ed52700bc99f\",\n  \"scheduleId\": 10200509513304,\n  \"name\": \"Gurd Shola 2\",\n  \"route\": \"EW\",\n  \"longitude\": 38.8139838,\n  \"latitude\": 9.0158921,\n  \"createdAt\": \"28-Feb-2018 10:24 AM\",\n  \"modifiedAt\": \"28-Feb-2018 10:24 AM\",\n  \"request\": {\n      \"method\": \"POST\",\n      \"url\": \"http://localhost/schedules\"\n  }\n}\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>The id of train Schedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the shedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trainId",
+            "description": "<p>Unique id of train</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "arrivalTime",
+            "description": "<p>The arrival time of train at Schedule with id of stationId</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "departureTime",
+            "description": "<p>The departure time of train from Schedule with id of stationId</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Schedule-Not-Found-Response:",
+          "content": "* HTTP 400 Bad request\n{\n   \"message\": \"No maching document found.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/schedules/:cid",
+    "title": "Find Schedule By Custom Id",
+    "version": "0.1.0",
+    "name": "findSchedule",
+    "group": "Schedule",
+    "permission": [
+      {
+        "name": "authenticated user\n\n\nhttp://localhost:5000/schedules/211"
+      }
+    ],
+    "description": "<p>Find schedule by their custom Id</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The schedule id</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Request-Example:",
+        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "type": "js"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>The schedule id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The schedule name</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Response-Success-Example:",
+          "content": "  HTTP 200 OK\n{\n    \"_id\": \"5a8415c0542c19147c03c52f\",\n    \"createdBy\": {\n        \"_id\": \"5a80496050df3044fcf084fd\",\n        \"email\": \"tarikuwa.abeje@gmail.com\",\n        \"phone\": \"251-917-123456\",\n        \"userType\": \"passenger\",\n        \"createdAt\": \"2018-02-11T13:47:00.000Z\",\n        \"modifiedAt\": \"2018-02-11T13:47:00.000Z\"\n    },\n    \"scheduleId\": 211,\n    \"name\": \"Nefas Silik 2\",\n    \"route\": \"NS\",\n    \"longitude\": 38.7614768999999,\n    \"latitude\": 9.0109684,\n    \"createdAt\": \"14-Feb-2018 01:56 PM\",\n    \"modifiedAt\": \"14-Feb-2018 01:56 PM\",\n    \"request\": {\n        \"method\": \"GET\",\n        \"url\": \"http://localhost/schedules/customid/211\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "POST",
+    "url": "/schedules/",
+    "title": "Create schedule",
+    "name": "postSchedule",
+    "group": "Schedule",
+    "description": "<p>Creates a new Schedule</p>",
+    "version": "0.1.0",
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "\n {\n\n    \"stationId\" : \"5a74264fc461a418b08dae07\",\n    \"trainId\" : \"AALRT-T-01\",\n    \"arrivalTime\" :\"5:00\",\n    \"departureTime\" : \"5:01\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "HTTP 200 OK\n {\n    \"_id\": \"5a9bea8c9b212d3904716546\",\n    \"createdBy\": \"5a8157014d99ed52700bc99f\",\n    \"trainId\": \"AALRT-T-01\",\n    \"arrivalTime\": \"04-Mar-2018 05:00 AM\",\n    \"departureTime\": \"04-Mar-2018 05:01 AM\",\n    \"createdAt\": \"04-Mar-2018 03:46 PM\",\n    \"modifiedAt\": \"04-Mar-2018 03:46 PM\",\n    \"request\": {\n        \"method\": \"POST\",\n        \"url\": \"http://localhost/schedules\"\n    }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>The id of train Schedule</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the shedule</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "trainId",
+            "description": "<p>Unique id of train</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "arrivalTime",
+            "description": "<p>The arrival time of train at Schedule with id of stationId</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "departureTime",
+            "description": "<p>The departure time of train from Schedule with id of stationId</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/schedules/:id",
+    "title": "Update Schedule",
+    "name": "putSchedule",
+    "group": "Schedule",
+    "description": "<p>Update Schedule</p>",
+    "version": "0.1.0",
+    "permission": [
+      {
+        "name": "admin"
+      }
+    ],
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "{\n  \"id\": \"5a83fa1b1104c34bd8a66e72\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "{\n \"_id\": \"5a83fa1b1104c34bd8a66e72\",\n \"createdBy\": \"5a80496050df3044fcf084fd\",\n \"scheduleId\": 27,\n \"name\": \"Abo Junction\",\n \"route\": \"NS\",\n \"longitude\": 38.7706822,\n \"latitude\": 8.9451405,\n \"createdAt\": \"14-Feb-2018 11:58 AM\",\n \"modifiedAt\": \"28-Feb-2018 11:19 AM\",\n \"request\": {\n     \"method\": \"PUT\",\n     \"url\": \"http://localhost/schedules/5a83fa1b1104c34bd8a66e72\"\n }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "stationId",
+            "description": "<p>The id of train Schedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "createdBy",
+            "description": "<p>The name of admin user who created the shedule</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trainId",
+            "description": "<p>Unique id of train</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "arrivalTime",
+            "description": "<p>The arrival time of train at Schedule with id of stationId</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "departureTime",
+            "description": "<p>The departure time of train from Schedule with id of stationId</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/schedule.js",
+    "groupTitle": "Schedule",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"message\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "GET",
     "url": "/stations/",
     "title": "Find All Stations",
     "name": "FindAllStations",

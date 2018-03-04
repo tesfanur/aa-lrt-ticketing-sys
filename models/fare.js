@@ -1,27 +1,46 @@
 const mongoose = require('mongoose');
 const paginator = require('mongoose-paginate');
-const moment   = require('moment');
+const moment = require('moment');
 
-const Schema   = mongoose.Schema;
+const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 /**
-*Train Transport payment/fare Schema
-*/
+ *Train Transport payment/fare Schema
+ */
 var FareSchema = new Schema({
-    userId : {type: ObjectId, required: true, ref:'User'},
-    from   : {type: ObjectId, required: true, ref:'Station'},
-    to     : {type: ObjectId, required: true, ref:'Station'},
-    route  : {type: String, required: true,
-                      enum: ["EW","NS",""],
-                       default: ""},
-    distance    : Number,
-    fare        : Number,
+  userId: {
+    type: ObjectId,
+    required: true,
+    ref: 'User'
+  },
+  from: {
+    type: ObjectId,
+    required: true,
+    ref: 'Station'
+  },
+  to: {
+    type: ObjectId,
+    required: true,
+    ref: 'Station'
+  },
+  route: {
+    type: String,
+    required: true,
+    enum: ["EW", "NS", ""],
+    default: ""
+  },
+  distance: Number,
+  fare: Number,
 
-    createdAt   : {type:Date},
-    modifiedAt  : {type:Date}
+  createdAt: {
+    type: Date
+  },
+  modifiedAt: {
+    type: Date
+  }
 });
 //=======================================
-FareSchema.methods.toJSON = function () {
+FareSchema.methods.toJSON = function() {
   var fare = this;
   var fareObject = fare.toObject();
   // var toPublic ={};
@@ -32,17 +51,17 @@ FareSchema.methods.toJSON = function () {
   // toPublic.createdAt = fareObject.createdAt;
   // toPublic.modifiedAt =fareObject.modifiedAt;
 
-  console.log("fareObject :",fareObject);
-  return _.pick(fareObject, ['_id', 'from','name','to','userId',"distance","fare",'createdAt','modifiedAt']);
+  console.log("fareObject :", fareObject);
+  return _.pick(fareObject, ['_id', 'from', 'name', 'to', 'userId', "distance", "fare", 'createdAt', 'modifiedAt']);
   //return toPublic;
 };
 //CALULATE FARE AMOUNT USING DISTANCE AS INPUT
-FareSchema.pre('save', function (next) {
+FareSchema.pre('save', function(next) {
   var _this = this;
-  _this.fare=parseInt(_this.distance)*6/16000;//payment in birr
+  _this.fare = parseInt(_this.distance) * 6 / 16000; //payment in birr
   next();
 });
-FareSchema.pre('save', (next)=> {
+FareSchema.pre('save', (next) => {
   var _this = this;
 
   // set date modifications
@@ -56,7 +75,7 @@ FareSchema.pre('save', (next)=> {
 });
 FareSchema.statics.whitelist = {
   _id: 1,
-  userId:   1,
+  userId: 1,
   from: 1,
   to: 1,
   fare: 1,

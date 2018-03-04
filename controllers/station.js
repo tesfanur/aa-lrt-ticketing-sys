@@ -1,14 +1,14 @@
 /**
 *Load module dependecies
 */
-var debug    = require('debug');
-var moment   = require('moment');
-var mongoose = require('mongoose');
-var _        = require('lodash');//lodash can also do the same.check?
-var Station  = require('../models/station');
+const debug    = require('debug');
+const moment   = require('moment');
+const mongoose = require('mongoose');
+const _        = require('lodash');//lodash can also do the same.check?
+const Station  = require('../models/station');
 
-var StationDal   = require('../dal/station');
-var utils        = require('../lib/utils');
+const StationDal   = require('../dal/station');
+const utils        = require('../lib/utils');
 
 //private members
 function _validateStationRegistationInput(req, res,next){

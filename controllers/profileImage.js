@@ -1,6 +1,6 @@
-var express = require('express');
-var ProfileImage  = require('../models/profileImage');
-var router = express.Router();
+const express = require('express');
+const ProfileImage  = require('../models/profileImage');
+const router = express.Router();
 
 //1. save profile image detail info on mongodb
 module.exports.uploadImage =  function ( req, res, next){

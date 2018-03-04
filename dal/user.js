@@ -1,173 +1,180 @@
 /**
-*Load module dependencies
-*/
+ *Load module dependencies
+ */
 var q = require('q');
-  'use strict';
+'use strict';
 var UserModel = require('../models/user');
 
-var debug     = require('debug')('api:User-dal');
-var config    = require('../config/config')
+var debug = require('debug')('api:User-dal');
+var config = require('../config/config')
 
-var UserDalModule = (function(UserModel){
+var UserDalModule = (function(UserModel) {
 
-/**
-*1. create user dal
-*/
-function createNewUser(userData){
-  debug('CREATING USER COLLECTION');
-  var user = new UserModel(userData);
-  var defferd = q.defer();
+  /**
+   *1. create user dal
+   */
+  function createNewUser(userData) {
+    debug('CREATING USER COLLECTION');
+    var user = new UserModel(userData);
+    var defferd = q.defer();
 
     user.save().then(() => {
       return user.generateAuthToken();
     }).then((token) => {
-      if(!token) return defferd.reject();
-      var result =[token, user];
+      if (!token) return defferd.reject();
+      var result = [token, user];
       defferd.resolve(result);
     })
     return defferd.promise;
 
-}
-/**
-*2. Get all Users
-*/
-function getAllUsers(query){
+  }
+  /**
+   *2. Get all Users
+   */
+  function getAllUsers(query) {
     debug('GETTING ALL USER DOCUMENTS');
-    var defferd =q.defer();
+    var defferd = q.defer();
     //null here refers to get all user or don't use limit value
- UserModel.find(query)
-        //.populate('userId',"firstName lastName username profileImage")
-        .sort({createdAt: -1})//sort by descending order latest on the top
-        .exec((err, users) => {
-          if(err) return defferd.reject(err);
-          return defferd.resolve(users);
-        })
-   return defferd.promise;
-}
-/**
-*3.Get User by Id
-*/
-function getUserById(userId){
+    UserModel.find(query)
+      //.populate('userId',"firstName lastName username profileImage")
+      .sort({
+        createdAt: -1
+      }) //sort by descending order latest on the top
+      .exec((err, users) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(users);
+      })
+    return defferd.promise;
+  }
+  /**
+   *3.Get User by Id
+   */
+  function getUserById(userId) {
     debug('GETTING USER BY ID');
-    var defferd =q.defer();
- UserModel.findOne({_id:userId})
-        //.populate('userId',"firstName lastName username profileImage")
-        .exec((err, user) => {
-          if(err) return defferd.reject(err);
-          return defferd.resolve(user);
-        })
-   return defferd.promise;
-}
-/**
-*4.FIND USER BY EMAIL
-*/
-function findUserByEmail(email){
+    var defferd = q.defer();
+    UserModel.findOne({
+        _id: userId
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
+  /**
+   *4.FIND USER BY EMAIL
+   */
+  function findUserByEmail(email) {
     debug('GETTING USER BY EMAIL');
-    var defferd =q.defer();
- UserModel.findOne({email:email})
-        //.populate('userId',"firstName lastName username profileImage")
-        .exec((err, user) => {
-          if(err) return defferd.reject(err);
-          return defferd.resolve(user);
-        })
-   return defferd.promise;
-}
-/**
-*5. Update User
-*/
-function updateUser(query, setUpdates){
+    var defferd = q.defer();
+    UserModel.findOne({
+        email: email
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
+  /**
+   *5. Update User
+   */
+  function updateUser(query, setUpdates) {
     debug('UPDATING A USER', query);
-    var defferd =q.defer();
+    var defferd = q.defer();
     var opts = {
-        'new': true//return updated user info
+      'new': true //return updated user info
     };
- UserModel.findOneAndUpdate(query, setUpdates, opts)
-        .exec()
-        .then(function (err, updatedUser){
-          if(err) return defferd.reject(err);
-          return defferd.resolve(updatedUser);
-        });
-        return defferd.promise;
-}
-/**
-*6. Remove User
-*/
-  function deleteUser(query){
-      debug('DELETING USER');
-      var defferd =q.defer();
-   UserModel.findOneAndRemove(query)
-            .then( function (err,user){
-                if(err) return defferd.reject(err);
-                if(user) return defferd.resolve(user);
-                defferd.reject("User not found")
-               });
-        return defferd.promise;
+    UserModel.findOneAndUpdate(query, setUpdates, opts)
+      .exec()
+      .then(function(err, updatedUser) {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(updatedUser);
+      });
+    return defferd.promise;
+  }
+  /**
+   *6. Remove User
+   */
+  function deleteUser(query) {
+    debug('DELETING USER');
+    var defferd = q.defer();
+    UserModel.findOneAndRemove(query)
+      .then(function(err, user) {
+        if (err) return defferd.reject(err);
+        if (user) return defferd.resolve(user);
+        defferd.reject("User not found")
+      });
+    return defferd.promise;
 
   }
-/**
-*7. Get User by pagination
-*/
-function getUserByPagination(query, qs, cb){
+  /**
+   *7. Get User by pagination
+   */
+  function getUserByPagination(query, qs, cb) {
     debug('fetching a collection of Users');
 
     var opts = {
-        sort: qs.sort || {},
-        page: qs.page || 1,
-        limit: qs.per_page || 10
+      sort: qs.sort || {},
+      page: qs.page || 1,
+      limit: qs.per_page || 10
     };
 
-    UserModel.paginate(query, opts, function (err, data){
-        if(err) return cb(err,null);
+    UserModel.paginate(query, opts, function(err, data) {
+      if (err) return cb(err, null);
 
-        var response = {
-            page: data.page,
-            total_docs: data.total,
-            total_pages: data.pages,
-            per_page: data.limit,
-            docs: data.docs
-        };
+      var response = {
+        page: data.page,
+        total_docs: data.total,
+        total_pages: data.pages,
+        per_page: data.limit,
+        docs: data.docs
+      };
 
-        cb(null, response);
+      cb(null, response);
     });
-}
-function userLogin (userData){
-  return new Promise((resolve, reject)=>{
+  }
 
-  UserModel.findByCredentials(userData.email, userData.password)
-           .then((user) => {
-               //console.log("user", user)
-               if(!user || user===404) return resolve(403);
-              return user.generateAuthToken().then((token) => {
-              var result =[token,user];
-              // result[0]=token;
-              // result[1]=user;
-               console.log("token", token)
-              if(!token) {
-                console.log("token", "no token")
-                return resolve(token);
-              }
+  function userLogin(userData) {
+    return new Promise((resolve, reject) => {
 
-              resolve(result);
-            });
-          }).catch(e=>reject(e));
+      UserModel.findByCredentials(userData.email, userData.password)
+        .then((user) => {
+          //console.log("user", user)
+          if (!user || user === 404) return resolve(403);
+          return user.generateAuthToken().then((token) => {
+            var result = [token, user];
+            // result[0]=token;
+            // result[1]=user;
+            console.log("token", token)
+            if (!token) {
+              console.log("token", "no token")
+              return resolve(token);
+            }
 
-});
-}
-/**
-* return UserDalModule public APIs
-*/
+            resolve(result);
+          });
+        }).catch(e => reject(e));
+
+    });
+  }
+  /**
+   * return UserDalModule public APIs
+   */
   return {
-  create : createNewUser,
-  login : userLogin,
-  findAll : getAllUsers,
-  findById : getUserById,
-  update : updateUser,
-  delete : deleteUser,
-  findUserByEmail:findUserByEmail,
-  paginate : getUserByPagination
-};
+    create: createNewUser,
+    login: userLogin,
+    findAll: getAllUsers,
+    findById: getUserById,
+    update: updateUser,
+    delete: deleteUser,
+    findUserByEmail: findUserByEmail,
+    paginate: getUserByPagination
+  };
 }(UserModel));
 /**
-* export UserDalModule
-*/
-module.exports= UserDalModule;
+ * export UserDalModule
+ */
+module.exports = UserDalModule;

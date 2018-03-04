@@ -1,28 +1,28 @@
 /**
-*Load third party module dependecies
-*/
-var cors         = require('cors'),
-		morgan       = require('morgan'),
-		express      = require('express'),
-		passport     = require('passport'),
-		mongoose     = require('mongoose'),
-    bodyParser   = require('body-parser'),
-		debug        = require('debug')('api'),
-		cookieParser = require('cookie-parser'),
-		session      = require('express-session'),
-		validate     = require('express-validator');
- /**
+ *Load third party module dependecies
+ */
+var cors = require('cors'),
+	morgan = require('morgan'),
+	express = require('express'),
+	passport = require('passport'),
+	mongoose = require('mongoose'),
+	bodyParser = require('body-parser'),
+	debug = require('debug')('api'),
+	cookieParser = require('cookie-parser'),
+	session = require('express-session'),
+	validate = require('express-validator');
+/**
  *Load local module dependecies
  */
-var  router  = require('./routes'),
-     utils   = require('./lib/utils'),
-		 User    = require('./models/user'),
-		 config  = require('./config/config'),
-		 connect     = require('./config/connection'),
-		 authenticate  = require('./lib/middleware/authenticate');
+var router = require('./routes'),
+	utils = require('./lib/utils'),
+	User = require('./models/user'),
+	config = require('./config/config'),
+	connect = require('./config/connection'),
+	authenticate = require('./lib/middleware/authenticate');
 
 //instantiate express -server
-var app  = express();
+var app = express();
 app.disable('x-powered-by');
 app.set('x-powered-by', false);
 
@@ -30,7 +30,7 @@ debug('AA LRT ONLINE TICKETING SYSTEM');
 //configuration express app
 app.set('PORT', config.PORT);
 app.set('SECRET', config.SECRET);
-app.use(express.static(__dirname+'/docs/'));
+app.use(express.static(__dirname + '/docs/'));
 
 //strat database connection
 connect.toMongoDB(mongoose);
@@ -39,9 +39,11 @@ connect.toMongoDB(mongoose);
 // parse application/json
 app.use(bodyParser.json());
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
 
-app.use(cors(config.CORS_OPTS));//prevent CORS errors
+app.use(cors(config.CORS_OPTS)); //prevent CORS errors
 
 app.use(validate());
 app.use(morgan('dev'));
@@ -49,24 +51,24 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(session(config.SESSION_OPTS));
 
-app.use("/uploads",express.static('uploads'));
+app.use("/uploads", express.static('uploads'));
 //filter endpoints and Authenticate the rest
 app.use(authenticate().unless(config.UNLESS_OPTS));
 /**
-*pass express app to the routing object
-*/
+ *pass express app to the routing object
+ */
 router(app);
 /**
-*Handle if page requested not found
-*/
+ *Handle if page requested not found
+ */
 app.use(utils.pageNotfound);
 /**
-*handle errors thrown from the previous middlewares
-*/
+ *handle errors thrown from the previous middlewares
+ */
 app.use(utils.handleErrors);
 /**
-*start express server
-*/
+ *start express server
+ */
 app.listen(app.get('PORT'), utils.handleServerStartup);
 
-module.exports=app;
+module.exports = app;
