@@ -26,6 +26,8 @@ router.delete('/:id', UserProfileController.delete);
 
 //search user profile by username
 router.get('/search/:username', UserProfileController.searchByUsername);
+//search user profile by username
+router.get('/paginated/profiles', UserProfileController.paginate);
 
 //expose router to other files
 module.exports =router;

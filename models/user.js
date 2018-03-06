@@ -5,6 +5,7 @@ var
   jwt = require('jsonwebtoken'),
   _ = require('lodash'),
   moment = require('moment'),
+  paginator = require('mongoose-paginate'),
   config = require('../config/config'); //the higher the value the more secure hash it generates
 //find all other function that are supported by mongoose model/Schema
 //before you do from scratch
@@ -159,6 +160,9 @@ UserSchema.pre('save', function(next) {
     next();
   }
 });
+
+//Add mongoose paginate
+UserSchema.plugin(paginator);
 
 //export user model
 //module.exports = mongoose.model('User', UserSchema);

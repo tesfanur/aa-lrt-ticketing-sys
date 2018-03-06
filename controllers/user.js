@@ -105,7 +105,7 @@ function user_login(req, res, next) {
         "ERROR": "ACCESS FORBID"
       });
       let [token, user] = result;
-      res.header('x-auth', token).send({
+      res.header('Authorization', token).send({
         "message": "Succesfully login.",
         user
       });

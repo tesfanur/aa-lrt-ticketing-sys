@@ -21,10 +21,6 @@ function _validateUserProfileInput(req, res, next) {
   req.checkBody('firstName', 'firstName is required').notEmpty();
   req.checkBody('lastName', 'lastName is required').notEmpty();
   req.checkBody('address', 'address is required').notEmpty();
-  // req.checkBody('address.subcity','subcity is required').notEmpty();
-  // req.checkBody('woreda','woreda is required').notEmpty();
-  // req.checkBody('kebele','kebele is required').notEmpty();
-  // req.checkBody('St','St is required').notEmpty();
 
   var errors = req.validationErrors();
   if (errors) {
@@ -40,6 +36,7 @@ function createUserProfile(req, res, next) {
   _validateUserProfileInput(req, res, next);
   var body = req.body;
   body.userId = req.user._id;
+  body.username = body.username;
   body.subcity = body.address.subcity;
   body.wored = body.address.woreda;
   body.kebele = body.address.kebele;
@@ -47,18 +44,15 @@ function createUserProfile(req, res, next) {
 
   //pick only the required attributes from the body
   var body = _.pick(req.body, ["address", "username", "firstName", "lastName", "userId", "subcity", "kebele", "St"]);
-  //console.log("body",body);
+  console.log("body", body);
   //  create if fare doesn't exists from to userProfile
   UserProfileDal.create(body)
-    .then((retrievedUserProfile) => {
-      console.log("userProfile : ", retrievedUserProfile)
-      if (retrievedUserProfile == 400) return res.status(400).send({
-        "message": body.username + " already exists"
-      });
-      return res.status(201).json(retrievedUserProfile); //userProfile created succesfully
-    }, function(err) {
-      res.send(err)
-    })
+    .then(retrievedUserProfile =>{
+      if(retrievedUserProfile===400)
+      return res.status(400).json({message:`${body.username} already in use.`})
+      res.status(201).json(retrievedUserProfile)
+    },
+      error => res.send(error))
 }
 /**
  *2. Find all list of userProfiles controller
@@ -71,7 +65,7 @@ function findAllUserProfile(req, res, next) {
       if (!userProfiles) return res.status(404).json({
         "ERROR": "NO userProfile FOUND"
       });
-      return res.json(userProfiles);
+    res.json(userProfiles);
     }, function(error) {
       res.status(500).send({
         "ERROR": "Unable to fecth userProfile document!"
@@ -86,16 +80,17 @@ function searchProfileByUserName(req, res, next) {
   var username = req.params.username;
 
   UserProfileDal.searchByName(username)
-    .then(function(userProfile) {
-      if (userProfile === 404) return res.status(404).json({
-        "message": "No muching userProfile found"
+    .then(userProfile=> {
+      console.log("userProfile",userProfile.length)
+      if (userProfile===404) return res.status(404).json({
+        "message": "No matching user profile found"
       });
-      res.status(200).json(userProfile);
-    }, function(err) {
-      res.status(500).send({
-        "Error": "Unable to find userProfile"
-      })
-    })
+      res.json(userProfile);
+    }, error=> res.send(error)
+    )
+}
+function validObjectId(id){
+return mongoose.Types.ObjectId.isValid(id.toString());
 }
 /**
  *4. Find userProfile by their ID controller
@@ -104,18 +99,14 @@ function findUserProfileById(req, res) {
   debug('GETTING USERPROFILE BY ID:');
   var userProfileId = req.params.id;
   //chech if userProfile ObjectId is valid or not
-  var validObjectId = mongoose.Types.ObjectId.isValid(userProfileId);
-
-  if (validObjectId) {
+  if (validObjectId(userProfileId)) {
     UserProfileDal.findById(userProfileId)
       .then(userProfile => {
-        if (userProfile === 404) return res.status(404).send({
-          "message": "No muching userProfile found"
-        });
+        if(!userProfile)   return res.status(404).send({
+          message: "No matching userProfile found"
+        }); //userProfile not found
         res.json(userProfile);
-      }, function(err) {
-        res.status(500).sendStatus(err);
-      })
+      }, error=> res.send(error))
 
   } else {
     res.status(400).send({
@@ -125,20 +116,21 @@ function findUserProfileById(req, res) {
 }
 
 function getUserProfileByCustomId(req, res) {
-  debug('GETTIGN STATION')
+  debug('GETTING USERPROFILE')
   var customid = req.params.cid;
   //console.log("my userProfile id : " + customid);
 
   UserProfileDal.findByCustomId(customid)
     .then((userProfile) => {
       if (userProfile === 404) return res.status(404).send({
-        "message": "No muching userProfile found"
+        "message": "No matching userProfile found"
       });
       console.log(userProfile)
       res.status(200).send(userProfile);
-    }, function(err) {
-      res.status(500).send({
-        "message": "unable to find userProfile"
+    }, err =>{
+      error.status(500).send({
+        "message": "unable to find userProfile",
+        error:error
       });
     });
 }
@@ -175,21 +167,22 @@ function updateUserProfileInfo(req, res) {
   var updateOptions = {
     new: true
   };
-
+  if(validObjectId(query._id)){
   UserProfileDal.update(query, setUpdates, updateOptions)
     .then(updateduserProfile => {
-      //no content found
+      //if no content found
       if (!updateduserProfile)
-        //use 204 instead of 404 for update operation if the document to be updates
-        //didn't exist
-        return res.status(404).send({
+        return res.status(400).send({
           "Message": "No content found to update"
         });
 
       res.send(updateduserProfile);
-    }, function(err) {
-      res.status(500).json(e);
-    })
+    }, error => res.status(500).json(error))
+  }else{
+   res.status(400).send({
+        "Message": "Invalid user profile id"
+      });
+    }
 }
 /**
  *6. Delete userProfile Controller
@@ -198,41 +191,46 @@ function deleteUserProfileById(req, res) {
   var query = {
     _id: req.params.id
   };
+  if (validObjectId(query._id)) {
   UserProfileDal.delete(query)
     .then(userProfile => {
-      if (userProfile === 404) return res.status(404).send({
+      if (!userProfile) return res.status(404).send({
         "message": "Content already removed"
       });
       return res.send({
-        "message": "succesfully removed",
+        "message": "uccesfully removed",
         userProfile
       });
-    }, err => {
-      res.status(404).send({
-        "error": e
+    }, error => {
+      res.status(500).send({
+        "error": error
       });
-    })
+    })}else{
+      return res.status(400).send({
+    "message": "Invalid User Profile Id."
+})
+    }
 
 }
 /**
- *7. Get collection paginate//refactor this code//use promises instead of caalbacks
+ *7. GET ALL USER PROFILE DOCUMENTS BY PAGINATION
  */
-function findUserProfileByPagination(req, res, next) {
-  debug('GET STATION COLLECTION BY PAGINATION');
 
-  var query = req.query.query || {};
-  var qs = req.query;
+function findUserProfileByPagination (req, res, next){
+    debug('GET USERPROFILE COLLECTION BY PAGINATION');
 
-  UserProfileDal.paginate(query, qs)
-    .then(function(docs) {
-      if (docs) return res.json(docs);
-    })
-    .catch(err => {
-      customError.type = 'GET_STATIONs_PAGINATE_ERROR';
-      //return handleError(res, err, errorObj);
-      return errorHandler(res, customError);
-    });
+    var query = req.query.query || {};
+    var qs = req.query;
+
+UserProfileDal.paginate(query, qs)
+              .then(function(docs){
+                  if(!docs)
+                     return res.status(404).json({message:"Profile not found"});
+                  res.json(docs);
+              })
+              .catch(error=>next(error));
 }
+
 
 /**
  *II. Export userProfile Controllers
@@ -244,7 +242,6 @@ module.exports = {
   update: updateUserProfileInfo,
   delete: deleteUserProfileById,
   paginate: findUserProfileByPagination,
-  //findByName: findUserProfileByName,
   findByCustomId: getUserProfileByCustomId,
   searchByUsername: searchProfileByUserName
 }

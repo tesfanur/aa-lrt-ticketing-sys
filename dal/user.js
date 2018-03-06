@@ -36,7 +36,7 @@ var UserDalModule = (function(UserModel) {
     var defferd = q.defer();
     //null here refers to get all user or don't use limit value
     UserModel.find(query)
-      //.populate('userId',"firstName lastName username profileImage")
+      //.populate('userId',"firstName lastName username")
       .sort({
         createdAt: -1
       }) //sort by descending order latest on the top

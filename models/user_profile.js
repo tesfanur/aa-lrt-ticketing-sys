@@ -1,6 +1,7 @@
 var
   mongoose = require('mongoose')
-_ = require('lodash'),
+  _ = require('lodash'),
+  paginator = require('mongoose-paginate'),
   config = require('../config/config'); //the higher the value the more secure hash it generates
 //find all other function that are supported by mongoose model/Schema
 //before you do from scratch
@@ -74,6 +75,8 @@ ProfileSchema.methods.toJSON = function() {
   ]);
 };
 
+//Add mongoose paginate
+ProfileSchema.plugin(paginator);
 
 var UserProfile = mongoose.model('UserProfile', ProfileSchema);
 module.exports = UserProfile;
