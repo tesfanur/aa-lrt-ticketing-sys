@@ -404,7 +404,7 @@ const FareDalModule = (function(FareModel) {
                 source = to;
                 destination = from;
               }
-
+           //calculateTicketPrice(from,to);
               getCompleteFareInfo(route,
                   source,
                   destination
@@ -416,15 +416,18 @@ const FareDalModule = (function(FareModel) {
                     var counter = 0;
                     //calculate ticket price
                     info.forEach(function(station) {
+                      counter++;
                       totalDistance += station.distance;
                       totalPrice += station.ticketPrice;
                     });
+                    //console.log("counter", counter);
 
                     // console.log("travel strats at "+ from + " and ends at " +to);
                     // console.log("total distance =",totalDistance);
                     // console.log("paid =",totalPrice.toFixed(2)+"ETB");
                     //var createdAt = moment( new Date(), 'MM-DD-YYYY HH:mm:ss',true).format("YYYY-MMM-DDD HH:mm:ss");
                     var createdAt = moment(new Date()).format("DD-MMM-YYYY hh:mm A");
+                    if(!calculateTicketPrice(counter)) return reject({message:"Invalid station range"})
 
                     var ticketInfo = {
                       //fetch user info by passing as arguiment
@@ -441,9 +444,12 @@ const FareDalModule = (function(FareModel) {
                       source_id: sourceStation._id,
                       destination_id: destinationStation._id,
                       paid: totalPrice.toFixed(2),
+                      existingPrice:calculateTicketPrice(counter).toFixed(2) +"ETB",
                       status: "unused",
-                      boughtAt: createdAt
+                      boughtAt: createdAt,
+
                     };
+                    //console.log(ticketInfo)
                     return resolve(ticketInfo);
                   } //end of if block
                   resolve(400);
@@ -459,6 +465,20 @@ const FareDalModule = (function(FareModel) {
         });
     }); //end of promise
   }
+  function calculateTicketPrice(counter){
+    var numOfStationsTravelled = Math.abs(counter);
+  //console.log("numOfStationsTravelled",numOfStationsTravelled)
+    if(numOfStationsTravelled>=1 && numOfStationsTravelled<=8)
+    {
+      return 2;
+    }else if(numOfStationsTravelled>8 && numOfStationsTravelled<=16){
+      return 4;
+  }else if(numOfStationsTravelled>16 & numOfStationsTravelled<25){
+    return 6;
+  } else{
+    return false;//invalid range
+  }
+}
   /**
    *11.return FareDalModule public APIs
    */

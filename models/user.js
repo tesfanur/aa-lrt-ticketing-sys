@@ -6,6 +6,7 @@ var
   _ = require('lodash'),
   moment = require('moment'),
   paginator = require('mongoose-paginate'),
+  cryptoJS = require("crypto-js"),
   config = require('../config/config'); //the higher the value the more secure hash it generates
 //find all other function that are supported by mongoose model/Schema
 //before you do from scratch
@@ -26,10 +27,15 @@ var UserSchema = new Schema({
       message: '{VALUE} is not a valid email'
     }
   },
-
   password: {
     type: String,
     require: true,
+    minlength: 6
+  },
+  username: {
+    type: String,
+    require: true,
+    unique: true,
     minlength: 6
   },
   phone: {
@@ -76,19 +82,18 @@ var UserSchema = new Schema({
   usePushEach: true
 });
 
-UserSchema.statics.findByCredentials = function(email, password) {
+UserSchema.statics.findByCredentials = function(userData, password) {
   var User = this;
 
   return new Promise((resolve, reject) => {
-    User.findOne({
-      email
-    }).then((user) => {
+    User.findOne( {$or: [ { email: userData }, { phone: userData }, { username: userData } ] }).then((user) => {
       if (!user) return resolve(404);
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, compResult) => {
         if (compResult) {
           resolve(user);
         } else {
+
           //console.log("user", user)
           reject("user not authenticated");
         }
@@ -98,6 +103,98 @@ UserSchema.statics.findByCredentials = function(email, password) {
 
   }); //end of findOne userModel function
 };
+// ////
+// UserSchema.statics.findByCredentials = function(email,username,phone, password) {
+//   console.log("email",email)
+//   console.log("username",username)
+//   console.log("phone",phone)
+//   console.log("password",password)
+//   var User = this;
+//
+//   return new Promise((resolve, reject) => {
+//   getUserByEmail(email,password).then(resultByEmail =>{
+//    console.log("result",resultByEmail,password,resultByEmail.password)
+//       if (!resultByEmail){
+//         getUserByPhone(phone,password)
+//         .then(resultByPhone =>{
+//           console.log("result",resultByPhone,password,resultByPhone.password)
+//           if(!resultByPhone) {
+//             getUserByUsername(username,password)
+//             .then(resulByUsername =>{
+//               console.log("result",resultByPhone,password,resulByUsername.password);
+//             if(!resulByUsername)  return resolve(404);
+//              }).catch(error=>reject());
+//         }
+//       }).catch(error=>reject());
+//       //console.log("result",resultByEmail,password,resultByEmail.password)
+//     }
+// });
+// }); //end of findOne userModel function
+// };
+//
+// function getUserByEmail(userEmail,password){
+//   console.log("userEmail",userEmail);
+//   //console.log("User",User);
+//   return new Promise((resolve, reject)=>{
+//   User.findOne({
+//     email:userEmail
+//   }).then((userByEmail) => {
+//       console.log("userByEmail",userByEmail);
+//       if(!userByEmail) return resolve(404)
+//     // Use bcrypt.compare to compare password and user.password
+//     bcrypt.compare(password, userByEmail.password, (err, compResult) => {
+//       if (compResult) {
+//         resolve(userByEmail);
+//       } else {
+//         //console.log("user", user)
+//         reject("user not authenticated");
+//       }
+//     }); //end of bycrypt
+//
+//     console.log("user",userByEmail)
+//    //resolve(userByEmail);
+// }, error=> reject(error));
+// });
+// }
+// function getUserByPhone(phone,password){
+//   return new Promise((resolve, reject)=>{
+//   User.findOne({
+//     phone:phone
+//   }).then((userByPhone) => {
+//     console.log("userByPhone",userByPhone)
+//     if(!userByPhone) return resolve(404)
+//   // Use bcrypt.compare to compare password and user.password
+//   bcrypt.compare(password, userByPhone.password, (err, compResult) => {
+//     if (compResult) {
+//       resolve(userByPhone);
+//     } else {
+//       //console.log("user", user)
+//       reject("user not authenticated");
+//     }
+//   }); //end of bycrypt
+// }, error=> reject(error));
+// });
+// }
+//
+// function getUserByUsername(username){
+//   return new Promise((resolve, reject)=>{
+//   User.findOne({
+//     username:username
+//   }).then((userByUsername) => {
+//       console.log("userByUsername",userByUsername)
+//     if(!userByUsername) return resolve(404)
+//   // Use bcrypt.compare to compare password and user.password
+//   bcrypt.compare(password, userByUsername.password, (err, compResult) => {
+//     if (compResult) {
+//       resolve(userByUsername);
+//     } else {
+//       //console.log("user", user)
+//       reject("user not authenticated");
+//     }
+//   }); //end of bycrypt
+// }, error=> reject(error));
+// });
+// }
 //=======================================
 UserSchema.methods.toJSON = function() {
 
@@ -107,8 +204,11 @@ UserSchema.methods.toJSON = function() {
 
   var userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email', 'phone', 'userType', 'createdAt', 'modifiedAt']);
+  return _.pick(userObject, ['_id', 'email','username', 'phone', 'userType', 'createdAt', 'modifiedAt']);
 };
+function generateHashedToken(token){
+  return cryptoJS.MD5(token).toString();
+}
 
 UserSchema.methods.generateAuthToken = function() {
   var _this = this;
@@ -118,6 +218,8 @@ UserSchema.methods.generateAuthToken = function() {
       access
     },
     config.JWT_SECRET).toString();
+
+    //token = generateHashedToken(token);
 
   _this.tokens.push({
     access,
@@ -130,10 +232,18 @@ UserSchema.methods.generateAuthToken = function() {
   });
 };
 
+UserSchema.methods.removeToken = function(token){
+    const user = this;
+
+    return user.update({$pull: {
+        tokens: {token}
+    }});
+};
+
 UserSchema.statics.findByToken = function(token) {
   var User = this;
   var decoded;
-
+  console.log("token",token);
   try {
     decoded = jwt.verify(token, config.JWT_SECRET);
   } catch (e) {

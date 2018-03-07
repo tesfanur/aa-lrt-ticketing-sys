@@ -35,8 +35,12 @@ function handleUserResponse(res, method, doc) {
 function create_user(req, res, next) {
   //validate user input
   req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
-  req.checkBody('confirmPassword', 'password is required').matches();
-  req.checkBody('password', 'Password doesn\'t match').equals(req.body.confirmPassword);
+  req.checkBody('username', 'username is required').notEmpty();
+  req.checkBody('phone', 'phone is required').notEmpty();
+  //req.checkBody('confirmPassword', 'password is required').matches();
+  //req.checkBody('password', 'Password doesn\'t match').equals(req.body.confirmPassword);
+  req.checkBody('password', 'Password is required').notEmpty();
+
 
   var errors = req.validationErrors();
   if (errors) {
@@ -47,7 +51,7 @@ function create_user(req, res, next) {
   }
   //take only the required field from req.body object
   //use array and destract method to make the following code
-  var newUserData = _.pick(req.body, ["email", "password", "phone"]);
+  var newUserData = _.pick(req.body, ["email", "password", "phone","username"]);
   //before creating user check user if it exists
   UserDal.findUserByEmail(newUserData.email)
     .then(user => {
@@ -60,7 +64,7 @@ function create_user(req, res, next) {
             //test first whether token exists or not
             //if(token)  res.header('x-auth')
             //res.status(201);
-            res.status(201).header('x-auth', token).send(user);
+            res.status(201).header('x-auth', token).send({query_result:"success"});
           })
           .catch(e => {
             res.status(400).send(e);
@@ -81,7 +85,7 @@ function create_user(req, res, next) {
  *2. user login controller
  */
 function user_login(req, res, next) {
-  req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
+  //req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
   req.checkBody('password', 'password is required').notEmpty();
 
   var errors = req.validationErrors();
@@ -92,7 +96,8 @@ function user_login(req, res, next) {
     });
   }
 
-  var userData = _.pick(req.body, ['email', 'password']);
+  var userData = _.pick(req.body, ['email','username','phone', 'password']);
+  console.log("userData",userData);
   /**
    *TODO: REFACTOR USER LOGIN DAL SO THAT IT HANDLES
    *      ALL POSSIBLE AUTHENTICATION VIOLATIONS
@@ -102,12 +107,12 @@ function user_login(req, res, next) {
       console.log("result", result)
       //destruct result into token and user object
       if (!result || result === 403) return res.status(403).json({
-        "ERROR": "ACCESS FORBID"
+        "ERROR": "ACCESS DENIED"
       });
       let [token, user] = result;
       res.header('Authorization', token).send({
         "message": "Succesfully login.",
-        user
+        result
       });
     })
     .catch(error => next(error));
@@ -178,7 +183,7 @@ function updateUserInfo(req, res) {
 /**
  *6. Delete User Controller
  */
-function deleteUserById(req, res) {
+function deleteUserById(req, res,next) {
   var userId = req.params.userId;
   //chech if User ObjectId is valid or not
   var validObjectId = mongoose.Types.ObjectId.isValid(userId);
@@ -205,6 +210,20 @@ function deleteUserById(req, res) {
 
 
 }
+
+function logoutUser(req, res,next) {
+   const user = req.user;
+   const auth_token = req.token;
+
+   user.removeToken(auth_token)
+       .then(()=>{
+           res.status(204).send({message: "LOGGED OUT"})
+       })
+       .catch((err)=>{
+           res.send(400).send();
+       })
+   ;
+}
 /**
  *II. Export User Controllers
  */
@@ -214,5 +233,6 @@ module.exports = {
   findById: findUserById,
   update: updateUserInfo,
   delete: deleteUserById,
-  login: user_login
+  login: user_login,
+  logout :logoutUser
 }

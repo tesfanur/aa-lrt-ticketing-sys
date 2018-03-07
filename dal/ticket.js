@@ -6,6 +6,7 @@ const q = require('q');
 const moment = require('moment');
 const cryptoJS = require("crypto-js");
 const nodeZxing = require('node-zxing');
+ 
 
 const TicketModel = require('../models/ticket');
 const logMsg = require('../lib/utils').showMsg;

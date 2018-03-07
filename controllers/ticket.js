@@ -161,7 +161,7 @@ function createTicket(req, res, next) {
     FareDal.generateTicket(route, from, to, user)
       .then(ticket => {
         if (ticket) {
-          console.log(ticket);
+          //console.log(ticket);
           //return res.send(ticket);
           if (!ticket.id) ticket.id = shortid.generate();
 
@@ -171,26 +171,35 @@ function createTicket(req, res, next) {
             passengerId: ticket.passengerId,
             from: ticket.source_id,
             to: ticket.destination_id,
-            price: ticket.paid
+            price: ticket.paid,
+            priceByDistance: ticket.paid,
+            existingPrice:ticket.existingPrice
           };
-          //console.log(ticketData)
+          //console.log("ticketData",ticketData)
           TicketDal.create(ticketData)
             .then(createdTicket => {
-              console.log("createdTicket", createdTicket)
+              //console.log("createdTicket", createdTicket)
               if (createdTicket)
                 return createdTicket;
               //return res.status(201).send(createdTicket);
             }).then(
               generatedTicket => {
                 if (generatedTicket) {
-                  console.log("generatedTicket_id:::", generatedTicket._id)
+                  console.log("generatedTicket_id:::", generatedTicket)
                   TicketDal.findById({
                       _id: generatedTicket._id
                     })
                     .then(result => {
+                    //console.log(result)
                       //tesfaye todo
-                      var newResult = encryptTicket(result)
-                      console.log(decryptTicket(newResult))
+                      var completeticket =new Object();
+                      completeticket.generateTicket=result;
+                      completeticket.existingPrice = ticketData.existingPrice;
+                      //completeticket.stationCount = counter;
+                      console.log("completeticket",completeticket)
+                      //var newResult = encryptTicket({completeticket,newPrice:ticketData.existingPrice})
+                      var newResult = encryptTicket(completeticket)
+                      //console.log(decryptTicket(newResult))
                       if (result)
                         return res.status(201)
                           .send(decryptTicket(newResult))
@@ -199,7 +208,7 @@ function createTicket(req, res, next) {
                         res.status(500).send(err);
                       }
                     )
-                }
+                }//end of if generateTicket
 
               }
 

@@ -22,3 +22,15 @@ console.log( checkTime(time));
  var newTime =moment(time, "hh:mm:ss");
 
  console.log("new time",newTime.format("hh:mm:ss A"));
+
+
+ /**
+  *Load module dependecies
+  */ 
+ const cryptoJS = require("crypto-js");
+
+ //test cryptoJS md5 function
+ //tesfaye belachew
+ var token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YTllYTVhNzFmOGU1YzAxODRmMDJiM2MiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNTIwNDExMzkxfQ.1qelryWlkmUKVUPGsoNU6xs-J6Rmde-aCm_erJhWL_Q"
+ var hashedToken = cryptoJS.MD5(token).toString();
+ console.log("hashedToken",hashedToken);

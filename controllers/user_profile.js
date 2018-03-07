@@ -81,7 +81,6 @@ function searchProfileByUserName(req, res, next) {
 
   UserProfileDal.searchByName(username)
     .then(userProfile=> {
-      console.log("userProfile",userProfile.length)
       if (userProfile===404) return res.status(404).json({
         "message": "No matching user profile found"
       });

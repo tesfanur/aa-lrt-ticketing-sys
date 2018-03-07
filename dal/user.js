@@ -138,25 +138,33 @@ var UserDalModule = (function(UserModel) {
   }
 
   function userLogin(userData) {
+    console.log("userData from userLogin",userData)
+    var email =userData.email || "";
+    var username =userData.username || "";
+    var phone =userData.phone || "";
+    var password =userData.password || "";
+    var userID =userData.email || userData.username || userData.phone;
+
     return new Promise((resolve, reject) => {
 
-      UserModel.findByCredentials(userData.email, userData.password)
+      UserModel.findByCredentials(userID, password)
         .then((user) => {
-          //console.log("user", user)
+          console.log("user from dal", user)
           if (!user || user === 404) return resolve(403);
-          return user.generateAuthToken().then((token) => {
-            var result = [token, user];
-            // result[0]=token;
-            // result[1]=user;
-            console.log("token", token)
-            if (!token) {
-              console.log("token", "no token")
-              return resolve(token);
-            }
+          return user.generateAuthToken()
+            .then((token) => {
+              var result = [token, user];
+              // result[0]=token;
+              // result[1]=user;
+              console.log("token", token)
+              if (!token) {
+                console.log("token", "no token")
+                return resolve(token);
+              }
 
-            resolve(result);
-          });
-        }).catch(e => reject(e));
+              resolve(result);
+            });
+        }).catch(error => reject(error));
 
     });
   }

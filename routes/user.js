@@ -268,5 +268,8 @@ router.put('/:userId', userController.update);
  *@apiUse UnauthorizedError
  */
 router.delete('/:userId', userController.delete);
+//router.delete('/me/logout', userController.logout);
+router.get('/me/logout', userController.logout);
+
 //expose router to other files
 module.exports =router;
