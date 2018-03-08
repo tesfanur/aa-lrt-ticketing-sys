@@ -79,7 +79,7 @@ console.log(query);
         //user already exists
         //console.log("error: "+ newUser.email + " already exists");
         return res.status(400).json({
-          message: userData.username + " already in use."
+          query_result: userData.username + " already in use."
         });
       }
     })
