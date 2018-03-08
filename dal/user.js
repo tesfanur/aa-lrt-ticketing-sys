@@ -78,6 +78,19 @@ var UserDalModule = (function(UserModel) {
       })
     return defferd.promise;
   }
+  function findUserByUsername(username) {
+    debug('GETTING USER BY USERNAME');
+    var defferd = q.defer();
+    UserModel.findOne({
+        username: username
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
   /**
    *5. Update User
    */
@@ -179,6 +192,7 @@ var UserDalModule = (function(UserModel) {
     update: updateUser,
     delete: deleteUser,
     findUserByEmail: findUserByEmail,
+    findUserByUsername:findUserByUsername,
     paginate: getUserByPagination
   };
 }(UserModel));
