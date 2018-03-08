@@ -33,34 +33,30 @@ function handleUserResponse(res, method, doc) {
  *1. create/register/signup new user
  */
 function create_user(req, res, next) {
-  //validate user input
-//   console.log(!(req.body==={}));
-//   if(!(req.body==={})){
-//   req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
-//   req.checkBody('username', 'username is required').notEmpty();
-//   req.checkBody('phone', 'phone is required').notEmpty();
-//   //req.checkBody('confirmPassword', 'password is required').matches();
-//   //req.checkBody('password', 'Password doesn\'t match').equals(req.body.confirmPassword);
-//   req.checkBody('password', 'Password is required').notEmpty();
-//   //take user credentials from query string
+  //validate user input 
+
+  req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
+  req.checkBody('username', 'username is required').notEmpty();
+  req.checkBody('phone', 'phone is required').notEmpty();
+  //req.checkBody('confirmPassword', 'password is required').matches();
+  //req.checkBody('password', 'Password doesn\'t match').equals(req.body.confirmPassword);
+  req.checkBody('password', 'Password is required').notEmpty();
+  //take user credentials from query string
   
-
-
-
-//   var errors = req.validationErrors();
-//   if (errors) {
-//     console.log(errors);
-//     return res.status(400).json({
-//       'validation-errors': errors
-//     });
-//   }
-// }
+  var errors = req.validationErrors();
+  if (errors) {
+    console.log(errors);
+    return res.status(400).json({
+      'validation-errors': errors
+    });
+  } 
+var body =_.pick(req.body,["username","password","phone","email"]);
 var query =_.pick(req.query,["username","password","phone","email"]);
 console.log(query);
   //take only the required field from req.body object
   //use array and destract method to make the following code
  // var body = _.pick(req.body, ["email", "password", "phone","username"]);
-  var userData =query;
+  var userData =body;
   //before creating user check user if it exists
   UserDal.findUserByUsername(userData.username)
     .then(user => {
