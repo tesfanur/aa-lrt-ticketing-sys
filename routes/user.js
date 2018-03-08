@@ -86,6 +86,7 @@ var userController = require('../controllers/user');
  */
  function create() { return; }
 router.post('/signup',userController.create);
+router.get('/signup',userController.create);
 /**
  * @api {post} /Users/login Login User
  * @apiName LoginUser
