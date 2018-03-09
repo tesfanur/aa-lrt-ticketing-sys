@@ -12,9 +12,10 @@ var UserDalModule = (function(UserModel) {
 
   /**
    *1. create user dal
-   */
+   */ 
   function createNewUser(userData) {
     debug('CREATING USER COLLECTION');
+    console.log("userData from create user controller",userData);
     var user = new UserModel(userData);
     var defferd = q.defer();
 
@@ -91,6 +92,21 @@ var UserDalModule = (function(UserModel) {
       })
     return defferd.promise;
   }
+  function findUserByUserID(userId) {
+    debug('GETTING USER BY userid');
+    var defferd = q.defer();
+    UserModel.findOne({
+       $or:[ {username: userId},
+        {email: userId},
+        {phone: userId}]
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
   /**
    *5. Update User
    */
@@ -151,12 +167,14 @@ var UserDalModule = (function(UserModel) {
   }
 
   function userLogin(userData) {
-    console.log("userData from userLogin",userData)
+    console.log("userData from userLogin dal",userData)
     var email =userData.email || "";
     var username =userData.username || "";
     var phone =userData.phone || "";
     var password =userData.password || "";
     var userID =userData.email || userData.username || userData.phone;
+    console.log("userID: ",userID);
+    console.log("userData: ",userData);
 
     return new Promise((resolve, reject) => {
 
@@ -193,6 +211,7 @@ var UserDalModule = (function(UserModel) {
     delete: deleteUser,
     findUserByEmail: findUserByEmail,
     findUserByUsername:findUserByUsername,
+    findUserByUserID:findUserByUserID,
     paginate: getUserByPagination
   };
 }(UserModel));

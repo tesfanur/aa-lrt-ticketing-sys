@@ -21,11 +21,11 @@ var UserSchema = new Schema({
     trim: true,
     minlength: 3,
     unique: [true, "Email should be unique"],
-    validate: {
-      isAsync: true,
-      validator: validator.isEmail,
-      message: '{VALUE} is not a valid email'
-    }
+    // validate: {
+    //   isAsync: true,
+    //   validator: validator.isEmail,
+    //   message: '{VALUE} is not a valid email'
+    // }
   },
   password: {
     type: String,
