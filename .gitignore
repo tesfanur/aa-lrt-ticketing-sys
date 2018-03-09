@@ -1,8 +1,8 @@
 # Node build artifacts
 node_modules/
 npm-debug.log
-images/
-test/
+images
+test
 # Local development
 *.env
 *.dev

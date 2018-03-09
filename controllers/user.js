@@ -85,7 +85,7 @@ var body =_.pick(req.body,["username","password","phone","email"]);
         //user already exists
         //console.log("error: "+ newUser.email + " already exists");
         return res.status(400).json({
-          query_result: user.username + " already in use."
+          query_result: userID + " already in use."
         });
       }
     })
@@ -118,7 +118,7 @@ function user_login(req, res, next) {
       console.log("result", result)
       //destruct result into token and user object
       if (!result || result === 403) return res.status(403).json({
-        "ERROR": "ACCESS DENIED"
+          "query_result": "Authorization faild"
       });
       let [token, user] = result;
       res.header('Authorization', token).send({
