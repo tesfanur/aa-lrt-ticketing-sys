@@ -12,7 +12,7 @@ var UserDalModule = (function(UserModel) {
 
   /**
    *1. create user dal
-   */ 
+   */
   function createNewUser(userData) {
     debug('CREATING USER COLLECTION');
     console.log("userData from create user controller",userData);

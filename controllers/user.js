@@ -60,7 +60,18 @@ var body =_.pick(req.body,["username","password","phone","email"]);
   console.log("userData",userData)
   //before creating user check user if it exists
   //findByCredentials
-  var userID = userData.username || userData || userData.phone;
+  var username =userData.username ||"";
+  var email =userData.email ||"";
+  var phone =userData.phone ||"";
+  var validPhone=function(v) {
+    return /^\+[0-9]{12,13}$/.test(v);
+  }
+  if(!validPhone(phone) && phone!==""){
+      return res.status(400).json({
+        'query_result': phone + " phone is not valid"
+      });
+  }
+  var userID = userData.username || userData.email || userData.phone;
   UserDal.findUserByUserID(userID)
   //UserModel.findByCredentials(userData)
     .then(user => {

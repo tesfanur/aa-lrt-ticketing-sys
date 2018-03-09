@@ -17,10 +17,11 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
   email: {
     type: String,
-    required: 'Email is required',
+    //required: 'Email is required',
     trim: true,
-    minlength: 3,
-    unique: [true, "Email should be unique"],
+    minlength: 6,
+    default:"noemail@nodomain.com"
+    //unique: [true, "Email should be unique"],
     // validate: {
     //   isAsync: true,
     //   validator: validator.isEmail,
@@ -44,13 +45,14 @@ var UserSchema = new Schema({
     trim: true,
     validate: {
       validator: function(v) {
-        //return /\d{3}-\d{3}-\d{4}/.test(v);
+        //return /\d{3}\d{3}\d{4}/.test(v);
         //+251912657147 or +2510912657147
         return /^\+[0-9]{10,13}$/.test(v);
       },
       message: '{VALUE} is not a valid phone number!'
     },
-    required: [true, 'User phone number required']
+    required: [true, 'Uscser phone number required'],
+    default:"+251000000000"
   },
 
   userType: {
