@@ -86,6 +86,7 @@ var UserSchema = new Schema({
 
 UserSchema.statics.findByCredentials = function(userAccount, password) {
   var User = this;
+  console.log(userAccount,password);
 
   return new Promise((resolve, reject) => {
     User.findOne({

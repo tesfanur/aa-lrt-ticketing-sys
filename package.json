@@ -12,7 +12,8 @@
     "url": "http://git.gebeya.com/tesfaye.belachew/aa_lrt_ticketing_sys_api.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha ./test",
+    "test-watch": "nodemon --exec \"npm test\"",
     "start": "node app.js",
     "start-dev": "DEBUG=api* nodemon app.js",
     "build-doc": "apidoc -i routes/ -o docs/"
@@ -54,6 +55,7 @@
   "devDependencies": {
     "apidoc": "^0.17.6",
     "chai": "^4.1.2",
+    "expect": "^22.4.0",
     "mocha": "^5.0.1",
     "nodemon": "^1.14.12",
     "supertest": "^3.0.0"
