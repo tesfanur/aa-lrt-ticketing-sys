@@ -39,6 +39,27 @@ const utils = require('../lib/utils');
 /**
  *
  *******/
+
+ function getTicketAttributes(req,method,ticket){
+   if(!ticket) return {};
+   var url = req.protocol +'://'+
+             req.hostname+ req.originalUrl;
+   var createdAt  = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
+   var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
+   var passenger       = ticket.passengerId
+   return  {
+                _id       : ticket._id,
+                //passenger : passenger,//user should be admin
+                ticketId : ticket.id,
+                route     : ticket.from.route,
+                from: ticket.from.name,
+                to: ticket.to.name,
+                createdAt : createdAt,
+                modifiedAt:modifiedAt,
+               request: {method,url}
+             };
+
+ }
 function encryptTicket(ticket) {
   // Encrypt
   ciphertext = cryptoJS.AES.encrypt(JSON.stringify(ticket), config.CRYPTO_SECRET);
@@ -232,15 +253,44 @@ function createTicket(req, res, next) {
  */
 function findAllTicket(req, res, next) {
   var alltickets = {};
+  if(!req.isAdmin) alltickets = {passengerId:req.user._id};
+  
   TicketDal.findAll(alltickets)
-    .then((tickets) => {
-      var ticketCount = 0;
-      if (tickets) ticketCount = tickets.length;
-      handleTicketResponse(res, {
-        "Number of tickets sold:": ticketCount,
-        tickets
-      });
-    })
+    .then(tickets=>{
+     var tickets =JSON.parse(JSON.stringify(tickets));//solves individual property accessors
+
+
+     var publickTicket=[];
+     var ticket={}
+     for (var i = 0; i < tickets.length; i++){
+       ticket=tickets[i];
+        var createdAt  = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+       var response ={
+         source:ticket.from.name,
+         destination:ticket.to.name,
+         route:ticket.from.route,
+         createdAt:createdAt
+       };
+      // console.log(response)
+       publickTicket.push(response);
+
+     }
+          var ticketCount =tickets.length;
+          var response = {
+            ticketCount:ticketCount,
+            tickets: tickets.map((ticket)=>{
+
+                return getTicketAttributes(req,"GET",ticket)
+            })
+          }
+
+
+
+     ///console.log(typeof response.tickets);
+      //return res.status(200).json(response);
+      // return res.status(200).json(publickTicket);
+        return res.status(200).json({"query_result":response});
+   })
     .catch(error => next(error));
 }
 //fineMine

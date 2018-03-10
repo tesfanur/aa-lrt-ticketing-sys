@@ -6,7 +6,7 @@ const q = require('q');
 const moment = require('moment');
 const cryptoJS = require("crypto-js");
 const nodeZxing = require('node-zxing');
- 
+
 
 const TicketModel = require('../models/ticket');
 const logMsg = require('../lib/utils').showMsg;
@@ -42,18 +42,18 @@ const TicketDalModule = (function(TicketModel) {
     TicketModel.find(query, {
         createdAt: -1
       })
-      .populate('from', "name route stationId")
-      .populate('to', "name route stationId")
-      .populate('passengerId', "email phone userType")
+      .populate('from', "name route stationId id")
+      .populate('to', "name route stationId id")
+      .populate('passengerId', "email phone username userType")
       .sort({
         createdAt: -1
       })
       .exec()
       .then((tickets) => {
         if (tickets) {
-          var publickTicket = tickets;
+          var publickTicket =JSON.parse(JSON.stringify(tickets));
+          //var publickTicket = tickets;
           publickTicket.createdAt = moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
-          logMsg(tickets.createdAt);
           defferd.resolve(publickTicket);
         }
       }, function(err) {

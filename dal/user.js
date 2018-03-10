@@ -187,10 +187,11 @@ var UserDalModule = (function(UserModel) {
               var result = [token, user];
               // result[0]=token;
               // result[1]=user;
-              console.log("token", token)
+              //console.log("token", token)
               if (!token) {
-                console.log("token", "no token")
-                return resolve(token);
+                //console.log("token", "no token")
+                //return resolve(token);
+                return reject("Authenication faild");
               }
 
               resolve(result);
