@@ -135,7 +135,8 @@ function user_login(req, res, next) {
       let [token, user] = result;
       res.header('Authorization', token).send({
         "query_result": "Successfully login.",
-        result
+        user,
+        token
       });
     })
     .catch(error => next(error));
