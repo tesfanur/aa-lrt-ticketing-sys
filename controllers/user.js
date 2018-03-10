@@ -71,6 +71,7 @@ var body =_.pick(req.body,["username","password","phone","email"]);
         'query_result': phone + " phone is not valid"
       });
   }
+
   var userID = userData.username || userData.email || userData.phone;
   UserDal.findUserByUserID(userID)
   //UserModel.findByCredentials(userData)
@@ -129,11 +130,11 @@ function user_login(req, res, next) {
       console.log("result", result)
       //destruct result into token and user object
       if (!result || result === 403) return res.status(403).json({
-          "query_result": "Authorization faild"
+          "query_result": "Username or password is incorrect!"
       });
       let [token, user] = result;
       res.header('Authorization', token).send({
-        "query_result": "Succesfully login.",
+        "query_result": "Successfully login.",
         result
       });
     })
