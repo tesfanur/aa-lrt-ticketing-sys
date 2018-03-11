@@ -73,10 +73,10 @@ const TicketDalModule = (function(TicketModel) {
     TicketModel.find(query)
       .populate('from', "name route stationId")
       .populate('to', "name route stationId")
-      .populate('passengerId', "email phone")
-      .sort({
-        createdAt: -1
-      })
+      .populate('passengerId', "email phone username")
+      // .sort({
+      //   createdAt: -1
+      // })
       .exec()
       .then((tickets) => {
         defferd.resolve(tickets);

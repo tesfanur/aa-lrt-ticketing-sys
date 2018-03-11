@@ -265,7 +265,10 @@ function findAllTicket(req, res, next) {
      for (var i = 0; i < tickets.length; i++){
        ticket=tickets[i];
         var createdAt  = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+        var passenger= ticket.passengerId.username;
        var response ={
+         tikcetId:ticket.id,
+         passenger:passenger,
          source:ticket.from.name,
          destination:ticket.to.name,
          price:ticket.price,
