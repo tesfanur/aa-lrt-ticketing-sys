@@ -444,7 +444,8 @@ const FareDalModule = (function(FareModel) {
                       source_id: sourceStation._id,
                       destination_id: destinationStation._id,
                       paid: totalPrice.toFixed(2),
-                      existingPrice:calculateTicketPrice(counter).toFixed(2) +"ETB",
+                      //existingPrice:calculateTicketPrice(counter).toFixed(2) +"ETB",
+                      existingPrice:calculateTicketPrice(counter).toFixed(2),
                       status: "unused",
                       boughtAt: createdAt,
 

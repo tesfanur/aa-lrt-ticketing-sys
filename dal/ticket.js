@@ -39,9 +39,10 @@ const TicketDalModule = (function(TicketModel) {
   function getAllTickets(query) {
     debug('getting all ticket collection');
     var defferd = q.defer();
-    TicketModel.find(query, {
-        createdAt: -1
-      })
+    // TicketModel.find(query, {
+    //     createdAt: -1
+    //   })
+    TicketModel.find(query)
       .populate('from', "name route stationId id")
       .populate('to', "name route stationId id")
       .populate('passengerId', "email phone username userType")
@@ -49,12 +50,13 @@ const TicketDalModule = (function(TicketModel) {
         createdAt: -1
       })
       .exec()
-      .then((tickets) => {
-        if (tickets) {
-          var publickTicket =JSON.parse(JSON.stringify(tickets));
+      .then((docs) => {
+        if (docs) {
+          console.log(docs)
+          //var publickTicket =JSON.parse(JSON.stringify(tickets));
           //var publickTicket = tickets;
-          publickTicket.createdAt = moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
-          defferd.resolve(publickTicket);
+          //publickTicket.createdAt = moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
+          defferd.resolve(docs);
         }
       }, function(err) {
         defferd.reject(err);

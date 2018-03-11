@@ -39,6 +39,10 @@ var TicketSchema = new Schema({
     type: Number,
     required: true
   },
+  existingPrice: {
+    type: Number,
+    required: true
+  },
   route: {
     type: String,
     required: true

@@ -254,7 +254,7 @@ function createTicket(req, res, next) {
 function findAllTicket(req, res, next) {
   var alltickets = {};
   if(!req.isAdmin) alltickets = {passengerId:req.user._id};
-  
+
   TicketDal.findAll(alltickets)
     .then(tickets=>{
      var tickets =JSON.parse(JSON.stringify(tickets));//solves individual property accessors
@@ -268,21 +268,24 @@ function findAllTicket(req, res, next) {
        var response ={
          source:ticket.from.name,
          destination:ticket.to.name,
-         route:ticket.from.route,
+         price:ticket.price,
+         existingPrice:ticket.existingPrice,
+         route:ticket.route,
+         status:ticket.status,
          createdAt:createdAt
        };
       // console.log(response)
        publickTicket.push(response);
 
      }
-          var ticketCount =tickets.length;
-          var response = {
-            ticketCount:ticketCount,
-            tickets: tickets.map((ticket)=>{
-
-                return getTicketAttributes(req,"GET",ticket)
-            })
-          }
+          // var ticketCount =tickets.length;
+          // var response = {
+          //   ticketCount:ticketCount,
+          //   tickets: tickets.map((ticket)=>{
+          //
+          //       return getTicketAttributes(req,"GET",ticket)
+          //   })
+          // }
 
 
 
