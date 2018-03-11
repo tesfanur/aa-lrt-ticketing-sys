@@ -11,6 +11,7 @@ const _ = require('lodash'); //lodash can also do the same.check?
 const debug = require('debug')('Ticket-api');
 const shortid = require('shortid');
 
+
 /**
  *Steps to convert Ticket object into qr code
  *1. get/generate ticket info/object
@@ -40,26 +41,30 @@ const utils = require('../lib/utils');
  *
  *******/
 
- function getTicketAttributes(req,method,ticket){
-   if(!ticket) return {};
-   var url = req.protocol +'://'+
-             req.hostname+ req.originalUrl;
-   var createdAt  = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
-   var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
-   var passenger       = ticket.passengerId
-   return  {
-                _id       : ticket._id,
-                //passenger : passenger,//user should be admin
-                ticketId : ticket.id,
-                route     : ticket.from.route,
-                from: ticket.from.name,
-                to: ticket.to.name,
-                createdAt : createdAt,
-                modifiedAt:modifiedAt,
-               request: {method,url}
-             };
+function getTicketAttributes(req, method, ticket) {
+  if (!ticket) return {};
+  var url = req.protocol + '://' +
+    req.hostname + req.originalUrl;
+  var createdAt = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
+  var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
+  var passenger = ticket.passengerId
+  return {
+    _id: ticket._id,
+    //passenger : passenger,//user should be admin
+    ticketId: ticket.id,
+    route: ticket.from.route,
+    from: ticket.from.name,
+    to: ticket.to.name,
+    createdAt: createdAt,
+    modifiedAt: modifiedAt,
+    request: {
+      method,
+      url
+    }
+  };
 
- }
+}
+
 function encryptTicket(ticket) {
   // Encrypt
   ciphertext = cryptoJS.AES.encrypt(JSON.stringify(ticket), config.CRYPTO_SECRET);
@@ -148,9 +153,15 @@ function handleTicketResponse(res, ticket) {
 function createTicket(req, res, next) {
   //use station customid to buy ticket
   //front end guy can use station for final users
+
+
   var from = parseInt(req.body.from);
   var to = parseInt(req.body.to);
   var route = (req.body.route).toUpperCase();
+
+  function startsWith(id) {
+    return id.toString().substr(0, 1);
+  }
 
   function validateStationIds(id, route) {
     if (!isNaN(id) && route == "EW") {
@@ -164,7 +175,30 @@ function createTicket(req, res, next) {
   var validSourceId = validateStationIds(from, route);
   var validDestinationId = validateStationIds(to, route);
 
+
   //console.log("route = "+route + " from = " + from +" to = "+ to)
+  if (startsWith(req.body.from) !== startsWith(req.body.to)) {
+    StationDal.findByCustomId(from)
+              .then(source=>{
+                var source = JSON.parse(JSON.stringify(source));
+                var result=[];
+                console.log(source,source);
+                StationDal.findByCustomId(to)
+                .then(destination=>{
+                    var destination = JSON.parse(JSON.stringify(destination));
+                  console.log(destination,destination);
+                  result =[source, destination];
+                  return res.status(400).send({
+                    "query_result": `${source.name} and ${destination.name} ids are not on the same route`
+                  })
+                   .catch(error =>next(error))
+                })
+
+              })
+              .catch(error =>next(error))
+
+  }
+
 
   if (!(validSourceId && validDestinationId)) {
     var validStationIdRange = "Valid station Id range for ";
@@ -194,7 +228,7 @@ function createTicket(req, res, next) {
             to: ticket.destination_id,
             price: ticket.paid,
             priceByDistance: ticket.paid,
-            existingPrice:ticket.existingPrice
+            existingPrice: ticket.existingPrice
           };
           //console.log("ticketData",ticketData)
           TicketDal.create(ticketData)
@@ -211,13 +245,13 @@ function createTicket(req, res, next) {
                       _id: generatedTicket._id
                     })
                     .then(result => {
-                    //console.log(result)
+                      //console.log(result)
                       //tesfaye todo
-                      var completeticket =new Object();
-                      completeticket.generateTicket=result;
+                      var completeticket = new Object();
+                      completeticket.generateTicket = result;
                       completeticket.existingPrice = ticketData.existingPrice;
                       //completeticket.stationCount = counter;
-                      console.log("completeticket",completeticket)
+                      console.log("completeticket", completeticket)
                       //var newResult = encryptTicket({completeticket,newPrice:ticketData.existingPrice})
                       var newResult = encryptTicket(completeticket)
                       //console.log(decryptTicket(newResult))
@@ -229,7 +263,7 @@ function createTicket(req, res, next) {
                         res.status(500).send(err);
                       }
                     )
-                }//end of if generateTicket
+                } //end of if generateTicket
 
               }
 
@@ -253,60 +287,64 @@ function createTicket(req, res, next) {
  */
 function findAllTicket(req, res, next) {
   var alltickets = {};
-  if(!req.isAdmin) alltickets = {passengerId:req.user._id};
+  if (!req.isAdmin) alltickets = {
+    passengerId: req.user._id
+  };
 
   TicketDal.findAll(alltickets)
-    .then(tickets=>{
-     var tickets =JSON.parse(JSON.stringify(tickets));//solves individual property accessors
+    .then(tickets => {
+      var tickets = JSON.parse(JSON.stringify(tickets)); //solves individual property accessors
 
 
-     var publickTicket=[];
-     var ticket={}
-     for (var i = 0; i < tickets.length; i++){
-       ticket=tickets[i];
-        var createdAt  = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+      var publickTicket = [];
+      var ticket = {}
+      for (var i = 0; i < tickets.length; i++) {
+        ticket = tickets[i];
+        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
         /**
         "phone" : "+251000000000",
  "email" : "noemail@nodomain.com",
         */
-        var username =ticket.passengerId.username;
-        var email  =ticket.passengerId.email;
-        var phone =ticket.passengerId.phone;
+        var username = ticket.passengerId.username;
+        var email = ticket.passengerId.email;
+        var phone = ticket.passengerId.phone;
 
-        var userId=ticket.passengerId.username;
-         if(email!="noemail@nodomain.com" & phone!="noemail@nodomain.com")
-          userId= ticket.passengerId.email|| ticket.passengerId.pone;
-       var response ={
-         ticketId:ticket.id,
-         passenger:userId,
-         source:ticket.from.name,
-         destination:ticket.to.name,
-         price:ticket.price,
-         existingPrice:ticket.existingPrice,
-         route:ticket.route,
-         status:ticket.status,
-         createdAt:createdAt
-       };
-      // console.log(response)
-       publickTicket.push(response);
+        var userId = ticket.passengerId.username;
+        if (email != "noemail@nodomain.com" & phone != "noemail@nodomain.com")
+          userId = ticket.passengerId.email || ticket.passengerId.pone;
+        var response = {
+          ticketId: ticket.id,
+          passenger: userId,
+          source: ticket.from.name,
+          destination: ticket.to.name,
+          price: ticket.price,
+          existingPrice: ticket.existingPrice,
+          route: ticket.route,
+          status: ticket.status,
+          createdAt: createdAt
+        };
+        // console.log(response)
+        publickTicket.push(response);
 
-     }
-          // var ticketCount =tickets.length;
-          // var response = {
-          //   ticketCount:ticketCount,
-          //   tickets: tickets.map((ticket)=>{
-          //
-          //       return getTicketAttributes(req,"GET",ticket)
-          //   })
-          // }
+      }
+      // var ticketCount =tickets.length;
+      // var response = {
+      //   ticketCount:ticketCount,
+      //   tickets: tickets.map((ticket)=>{
+      //
+      //       return getTicketAttributes(req,"GET",ticket)
+      //   })
+      // }
 
 
 
-     ///console.log(typeof response.tickets);
+      ///console.log(typeof response.tickets);
       //return res.status(200).json(response);
       // return res.status(200).json(publickTicket);
-        return res.status(200).json({"query_result":response});
-   })
+      return res.status(200).json({
+        "query_result": publickTicket
+      });
+    })
     .catch(error => next(error));
 }
 //fineMine
