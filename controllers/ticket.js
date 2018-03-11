@@ -347,6 +347,9 @@ function findAllTicket(req, res, next) {
           status: ticket.status,
           createdAt: createdAt
         };
+
+         
+        response.encryptTicket=encryptTicket(response);
         // console.log(response)
         publickTicket.push(response);
 
