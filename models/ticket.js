@@ -11,10 +11,16 @@ var TicketSchema = new Schema({
     required: true,
     default: "no id"
   },
+  // type: {
+  //   type: String,
+  //   enum: ['for child', 'for adult', 'for handicaped'],
+  //   default: 'for adult',
+  //   required: true
+  // },
   type: {
     type: String,
-    enum: ['for child', 'for adult', 'for handicaped'],
-    default: 'for adult',
+    enum: ['one way', 'round trip', 'package'],
+    default: 'one way',
     required: true
   },
 
@@ -50,7 +56,7 @@ var TicketSchema = new Schema({
 
   status: {
     type: String,
-    enum: ['unused', 'used', 'cancelled'],
+    enum: ['unused', 'used', 'returned'],
     default: 'unused',
     required: true
   },
@@ -59,6 +65,10 @@ var TicketSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  returnedAt: {
+    type: Date,
+    default: null
   },
   modifiedAt: {
     type: Date,

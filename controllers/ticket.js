@@ -102,6 +102,8 @@ encodeQRcode(encryptedTicket);
 function decryptTicket(encryptedTicket) {
   var bytes = cryptoJS.AES.decrypt(encryptedTicket, config.CRYPTO_SECRET);
   var decryptedTicket = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+// decryptedTicket =decryptedTicket.toObject()
+  //decryptedTicket =_.pick(decryptedTicket,"generateTicket _id route passengerId from to price existingPrice createdAt status type id")
   var result = {
     encryptedTicket: encryptedTicket,
     decryptedTicket: decryptedTicket
@@ -240,20 +242,41 @@ function createTicket(req, res, next) {
             }).then(
               generatedTicket => {
                 if (generatedTicket) {
-                  console.log("generatedTicket_id:::", generatedTicket)
+                  console.log("generatedTicket_id:::", ticket)
                   TicketDal.findById({
                       _id: generatedTicket._id
                     })
                     .then(result => {
                       //console.log(result)
                       //tesfaye todo
-                      var completeticket = new Object();
+                      //var completeticket = new Object();
+                      var completeticket = JSON.parse(JSON.stringify(result)); //solves individual property accessors
+
+                      var publickTicket = {
+                        _id:completeticket._id,
+                        ticketId: completeticket.id,
+                        //passenger: userId,
+                        source: completeticket.from.name,
+                        destination: completeticket.to.name,
+                        price: completeticket.price,
+                        existingPrice: completeticket.existingPrice,
+                        route: completeticket.route,
+                        type: completeticket.type,
+                        status: completeticket.status,
+                        //createdAt: completeticket.createdAt
+                      };
+
+                       //remove unwanted codes
+                      console.log("publickTicket =",publickTicket)
                       completeticket.generateTicket = result;
                       completeticket.existingPrice = ticketData.existingPrice;
+
                       //completeticket.stationCount = counter;
-                      console.log("completeticket", completeticket)
+                      //console.log("completeticket", completeticket)
                       //var newResult = encryptTicket({completeticket,newPrice:ticketData.existingPrice})
-                      var newResult = encryptTicket(completeticket)
+                      //  var newResult = encryptTicket(completeticket)
+                      //publickTicket
+                      var newResult = encryptTicket(publickTicket)
                       //console.log(decryptTicket(newResult))
                       if (result)
                         return res.status(201)
@@ -320,6 +343,7 @@ function findAllTicket(req, res, next) {
           price: ticket.price,
           existingPrice: ticket.existingPrice,
           route: ticket.route,
+          type: ticket.type,
           status: ticket.status,
           createdAt: createdAt
         };
