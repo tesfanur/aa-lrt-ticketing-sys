@@ -9,9 +9,21 @@ const moment = require('moment');
  *Load custom module dependecies
  */
 const FareModel = require('../models/fare');
+const _FareModel = require('../models/_fare');
 const StationDal = require('../dal/station');
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
+
+const fares     = require('../lib/fares');
+console.log(typeof stations)
+
+_FareModel.collection.insert(fares, (error, docs)=> {
+    if (error) {
+    return console.log("Unable to insert stations")
+    } else {
+        console.info('%d fares were successfully stored.', docs.length);
+    }
+});
 
 const FareDalModule = (function(FareModel) {
   'use strict';
