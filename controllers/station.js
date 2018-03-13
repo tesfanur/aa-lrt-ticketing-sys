@@ -94,7 +94,7 @@ function createStation(req, res, next) {
       next(error);
     })
 }
-
+/*
  *2. Find all list of stations controller
  */
 function findAllStation(req, res, next) {
