@@ -569,14 +569,13 @@ decrypt_ticket(encryptedTicket)
                              if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
                              ticket = JSON.parse(JSON.stringify(ticket));
 
-                             var username = ticket.passengerId.username;
-                             var email = ticket.passengerId.email;
-                             var phone = ticket.passengerId.phone;
+                            var username = ticket.passengerId.username ||"";
+                            var email = ticket.passengerId.email||"";
+                            var phone = ticket.passengerId.phone||"";
                             var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
 
-                             var userId = ticket.passengerId.username;
                              if (email != "noemail@nodomain.com" & phone != "+251000000000")
-                               userId = username|| email||phone;
+                             var userId = username|| email||phone;
                              var response = {
                                _id: ticket._id,
                                ticketId: ticket.id,
@@ -591,8 +590,8 @@ decrypt_ticket(encryptedTicket)
                                createdAt: createdAt
                              };
 
-                            // res.send({query_result:response});
-                             res.send(response);
+                          res.send({"query_result":response});
+                             //res.send(response);
                              //res.send(result.decryptedTicket);
                              //console.log(ticket);
                            })
