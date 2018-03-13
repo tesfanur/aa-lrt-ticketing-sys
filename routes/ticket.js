@@ -362,6 +362,8 @@ router.get('/paginate', ticketController.paginate);
   *@apiUse InternalServerError
  */
 router.get('/:id', ticketController.findById);
+//validateTicket
+router.post('/validate/ticket/', ticketController.validateTicket);
 
 router.get('/customid/:cid', ticketController.findByCustomId);
 /**

@@ -101,8 +101,23 @@ encodeQRcode(encryptedTicket);
 
 function decryptTicket(encryptedTicket) {
   var bytes = cryptoJS.AES.decrypt(encryptedTicket, config.CRYPTO_SECRET);
+  var str =bytes.toString(cryptoJS.enc.Utf8);
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+      console.log("Invalid json object")
+        return false;
+    }
+      console.log("Valid json object")
+    return true;
+}
+if(!IsJsonString(str)){
+  return console.log({query_result:"Invalid json"});
+}
+
   var decryptedTicket = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
-// decryptedTicket =decryptedTicket.toObject()
+  // decryptedTicket =decryptedTicket.toObject()
   //decryptedTicket =_.pick(decryptedTicket,"generateTicket _id route passengerId from to price existingPrice createdAt status type id")
   var result = {
     encryptedTicket: encryptedTicket,
@@ -110,6 +125,39 @@ function decryptTicket(encryptedTicket) {
   }
   return result;
 }
+/**
+*decrypt ticket
+*/
+function newDecryptTicket(encryptedTicket) {
+return new Promise((resolve,reject)=>{
+  var bytes = cryptoJS.AES.decrypt(encryptedTicket, config.CRYPTO_SECRET);
+  var str =bytes.toString(cryptoJS.enc.Utf8);
+  function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+    //  reject("Invalid json object")
+        return false;
+    }
+      //console.log("Valid json object")
+    return true;
+}
+if(!IsJsonString(str)){
+  //console.log({query_result:"Invalid json"});
+  return reject({query_result:"Invalid json"});
+}
+
+  var decryptedTicket = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+  // decryptedTicket =decryptedTicket.toObject()
+  //decryptedTicket =_.pick(decryptedTicket,"generateTicket _id route passengerId from to price existingPrice createdAt status type id")
+  var result = {
+    encryptedTicket: encryptedTicket,
+    decryptedTicket: decryptedTicket
+  }
+  return resolve(result);
+});
+}
+
 
 var imagePath = "./images/ante.png";
 /**
@@ -146,6 +194,9 @@ function _validateTicketRegistraionInput(req, res, next) {
 
 function handleTicketResponse(res, ticket) {
   if (!ticket || ticket === 404) return utils.handleResponse(res, 404, ticket);
+  ticket = JSON.parse(JSON.stringify(ticket));
+  console.log("ticket.from.name",ticket.from.name)
+  console.log("ticket",ticket)
   return utils.handleResponse(res, 200, ticket);
 }
 /**
@@ -181,23 +232,23 @@ function createTicket(req, res, next) {
   //console.log("route = "+route + " from = " + from +" to = "+ to)
   if (startsWith(req.body.from) !== startsWith(req.body.to)) {
     StationDal.findByCustomId(from)
-              .then(source=>{
-                var source = JSON.parse(JSON.stringify(source));
-                var result=[];
-                console.log(source,source);
-                StationDal.findByCustomId(to)
-                .then(destination=>{
-                    var destination = JSON.parse(JSON.stringify(destination));
-                  console.log(destination,destination);
-                  result =[source, destination];
-                  return res.status(400).send({
-                    "query_result": `${source.name} and ${destination.name} ids are not on the same route`
-                  })
-                   .catch(error =>next(error))
-                })
-
+      .then(source => {
+        var source = JSON.parse(JSON.stringify(source));
+        var result = [];
+        console.log(source, source);
+        StationDal.findByCustomId(to)
+          .then(destination => {
+            var destination = JSON.parse(JSON.stringify(destination));
+            console.log(destination, destination);
+            result = [source, destination];
+            return res.status(400).send({
+                "query_result": `${source.name} and ${destination.name} ids are not on the same route`
               })
-              .catch(error =>next(error))
+              .catch(error => next(error))
+          })
+
+      })
+      .catch(error => next(error))
 
   }
 
@@ -253,7 +304,7 @@ function createTicket(req, res, next) {
                       var completeticket = JSON.parse(JSON.stringify(result)); //solves individual property accessors
 
                       var publickTicket = {
-                        _id:completeticket._id,
+                        _id: completeticket._id,
                         ticketId: completeticket.id,
                         //passenger: userId,
                         source: completeticket.from.name,
@@ -266,8 +317,8 @@ function createTicket(req, res, next) {
                         //createdAt: completeticket.createdAt
                       };
 
-                       //remove unwanted codes
-                      console.log("publickTicket =",publickTicket)
+                      //remove unwanted codes
+                      console.log("publickTicket =", publickTicket)
                       completeticket.generateTicket = result;
                       completeticket.existingPrice = ticketData.existingPrice;
 
@@ -316,24 +367,21 @@ function findAllTicket(req, res, next) {
 
   TicketDal.findAll(alltickets)
     .then(tickets => {
-      var tickets = JSON.parse(JSON.stringify(tickets)); //solves individual property accessors
-
+      //var tickets = JSON.parse(JSON.stringify(tickets)); //solves individual property accessors
 
       var publickTicket = [];
       var ticket = {}
       for (var i = 0; i < tickets.length; i++) {
         ticket = tickets[i];
         var createdAt = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
-        /**
-        "phone" : "+251000000000",
- "email" : "noemail@nodomain.com",
-        */
+
         var username = ticket.passengerId.username;
         var email = ticket.passengerId.email;
         var phone = ticket.passengerId.phone;
+        console.log("username",username)
 
         var userId = ticket.passengerId.username;
-        if (email != "noemail@nodomain.com" & phone != "noemail@nodomain.com")
+        if (email != "noemail@nodomain.com" & phone != "+251000000000")
           userId = ticket.passengerId.email || ticket.passengerId.pone;
         var response = {
           ticketId: ticket.id,
@@ -348,8 +396,8 @@ function findAllTicket(req, res, next) {
           createdAt: createdAt
         };
 
-         
-        response.encryptTicket=encryptTicket(response);
+
+        response.encryptTicket = encryptTicket(response);
         // console.log(response)
         publickTicket.push(response);
 
@@ -363,11 +411,6 @@ function findAllTicket(req, res, next) {
       //   })
       // }
 
-
-
-      ///console.log(typeof response.tickets);
-      //return res.status(200).json(response);
-      // return res.status(200).json(publickTicket);
       return res.status(200).json({
         "query_result": publickTicket
       });
@@ -414,7 +457,7 @@ function findTicketById(req, res, next) {
 }
 
 function findTicketByCustomId(req, res, next) {
-  debug('GETTIGN STATION')
+  debug('GETTIGN TICKET')
   var customid = req.params.cid;
   //console.log("my ticket id : " + customid);
 
@@ -484,7 +527,7 @@ function deleteTicketById(req, res, next) {
  *7. Get ticket documents by pagination
  */
 function findTicketByPagination(req, res, next) {
-  debug('GET STATION COLLECTION BY PAGINATION');
+  debug('GET TICKET COLLECTION BY PAGINATION');
 
   var query = req.query.query || {}; //default : find all tickets
   var queryParams = req.query;
@@ -495,6 +538,26 @@ function findTicketByPagination(req, res, next) {
     })
     .catch(error => next(error));
 }
+
+/**
+ *Ticket Validation Controller
+ */
+function validateTicket(req, res, next) {
+  debug('GET TICKET COLLECTION BY PAGINATION');
+var encryptedTicket = req.body.encryptedTicket||encodeURIComponent(req.query.encryptedTicket);
+var encryptedTicket2="U2FsdGVkX1+Vte8rzfGwFRYDwQqwOw8kKKm+CXmODoOEyEnb0FmND9DCa0kxdigZkc63m6D4rj1e1kX2mV0hNXBO/MCSsnqZCssRW1jpV6pCIyaVG1z30Anxh39Q/oB6ZVjcbiqx9q343QxiOQFqrLBd3ngEFgVK1juBP4t8+kLcg/8utpMp64R/3aDMJvGAZ2SycIkehJgIL6URm5GtHzvrUb7m78VoGzBPDuw4YICW7g9LCaOsVwy+fO+yTbdDqfeBd7Y6X9lYfIHv/fvBsE0jr1EYlGTbEVw7UQ40myiu9MY9QZeN7RQwKTu+0ORu"
+ console.log("encryptedTicket===encryptedTicket2 =>",encryptedTicket===encryptedTicket2)
+  console.log("encryptedTicket :",encryptedTicket)
+
+newDecryptTicket(encryptedTicket)
+                .then(result=>{
+                  res.send(result);
+                  console.log(result);
+                })
+                .catch (error=> next(error));
+
+}
+
 /**
  *II. Export ticket Controllers
  */
@@ -506,5 +569,6 @@ module.exports = {
   update: updateTicketInfo,
   delete: deleteTicketById,
   paginate: findTicketByPagination,
-  findByCustomId: findTicketByCustomId
+  findByCustomId: findTicketByCustomId,
+  validateTicket:validateTicket
 }

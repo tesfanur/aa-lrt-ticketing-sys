@@ -170,7 +170,7 @@ UserSchema.methods.removeToken = function(token) {
 UserSchema.statics.findByToken = function(token) {
   var User = this;
   var decoded;
-  console.log("token", token);
+  //console.log("token", token);
   try {
     decoded = jwt.verify(token, config.JWT_SECRET);
   } catch (e) {

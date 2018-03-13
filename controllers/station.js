@@ -176,10 +176,12 @@ function getStationByCustomId(req,res,next){
 function updateStationInfo(req,res,next){
   var modifiedAt = new Date();
   req.body.modifiedAt=modifiedAt;
-  var stationData= _.pick(req.body,["name","stationId","latitude","longitude","route","modifiedAt"]);
+  var stationData= _.pick(req.body,["name","nameEng","nameAmh","stationId","latitude","longitude","route","modifiedAt"]);
   console.log("stationData", stationData)
   var updates ={
     name:req.body.name,
+    nameEng:req.body.nameEng,
+    nameAmh:req.body.nameAmh,
     stationId:req.body.stationId,
     latitude:req.body.latitude,
     longitude:req.body.longitude,

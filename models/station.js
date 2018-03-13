@@ -23,11 +23,11 @@ var StationSchema = new Schema({
     enum: ["EW", "NS", ""],
     default: ""
   },
-  nameEn: {
+  nameEng: {
     type: String,
     unique: true
   },
-  nameAm: {
+  nameAmh: {
     type: String,
     unique: true
   },
