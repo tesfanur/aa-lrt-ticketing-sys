@@ -105,8 +105,7 @@ UserSchema.statics.findByCredentials = function(userAccount, password) {
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, compResult) => {
         if (compResult)   return resolve(user);
-          console.log("user inside bcrypt", user)
-          var message = new Error("Wrong password!");
+          //console.log("user inside bcrypt", user)
           return reject({
               "query_result": "Wrong password!"
           });

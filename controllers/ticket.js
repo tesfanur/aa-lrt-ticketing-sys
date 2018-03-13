@@ -384,6 +384,7 @@ function findAllTicket(req, res, next) {
         if (email != "noemail@nodomain.com" & phone != "+251000000000")
           userId = ticket.passengerId.email || ticket.passengerId.pone;
         var response = {
+          _id: ticket._id,
           ticketId: ticket.id,
           passenger: userId,
           source: ticket.from.name,
