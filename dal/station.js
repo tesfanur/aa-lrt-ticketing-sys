@@ -112,6 +112,8 @@ const StationDalModule = (function(StationModel) {
         .then(function(result) {
           //if not station found return 404
           if (!result) return resolve(404);
+          result = JSON.parse(JSON.stringify(result));
+          //console.log("result", result)
           filterdStations = _.filter(result, station => {
             return station.name
               .toLowerCase()

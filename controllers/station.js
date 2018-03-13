@@ -37,16 +37,23 @@ function _validateStationRegistationInput(req, res,next){
   }
 function getStationAttributes(req,method,station){
   if(!station) return {};
+  station = JSON.parse(JSON.stringify(station));
   var url = req.protocol +'://'+
             req.hostname+ req.originalUrl;
   var createdAt  = moment(station.createdAt).format("DD-MMM-YYYY hh:mm A");
   var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY hh:mm A");
   var user       = station.userId;
+  var nameEng    = station.nameEng;
+  var nameAmh    = station.nameAmh;
+  var name       = station.name||"";
+
   return  {
                _id       : station._id,
                createdBy : user,//user should be admin
                stationId : station.stationId,
-               name      : station.name,
+               name      : name,
+               nameEng      : station.nameEng,
+               nameAmh      : station.nameAmh,
                route     : station.route,
                longitude : station.longitude,
                latitude  : station.latitude,
@@ -106,6 +113,7 @@ function findAllStation(req, res, next){
  */
  function searchStationByName(req, res, next){
     var name = req.params.name.trim().toLowerCase();
+    console.log("station name", name)
         StationDal.searchByName(name)
               .then((stations)=>{
                    if(stations===404)
@@ -128,7 +136,7 @@ function findAllStation(req, res, next){
 */
 function findStationById(req, res,next){
   console.log('GETTING STATION BY ID:');
-  var stationId=req.params.id;
+  var stationId=req.params.id.trim();
   //chech if station ObjectId is valid or not
   var validObjectId=mongoose.Types.ObjectId.isValid(stationId);
 
@@ -137,6 +145,8 @@ function findStationById(req, res,next){
             .then(station => {
     if(station){
               var token =req.token;
+              station = JSON.parse(JSON.stringify(station));
+              console.log("station from controller", station)
               var response = getStationAttributes(req,"GET",station);
                 //set header
                 //console.log("token",token);
