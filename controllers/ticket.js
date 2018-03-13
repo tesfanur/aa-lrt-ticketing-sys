@@ -535,6 +535,7 @@ function updateTicketInfo(req, res, next) {
 
   TicketDal.updateStatus(query, updates)
     .then(updatedticket => {
+      if(updatedticket===404 || updatedticket===400) return res.status(404).send({"query_result":"This ticket has been already used."})
       if(updatedticket){
       updatedticket=JSON.parse(JSON.stringify(updatedticket));
       var modifiedAt =moment(updatedticket.modifiedAt).format("Do-MMM-YYYY");

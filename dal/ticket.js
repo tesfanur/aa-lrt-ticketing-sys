@@ -220,8 +220,11 @@ const TicketDalModule = (function(TicketModel) {
         .populate("to")
         .exec()
         .then((ticket) => {
-          if(!ticket) return resolve();//no content found
+          if(!ticket) return resolve(404);//no content found
+          //ticket =JSON.parse(JSON.stringify(ticket));
+          if(ticket.status==="used") return resolve(400);//bad request
           ticket.status =updates.status;
+          ticket.modifiedAt =updates.modifiedAt;
           ticket.save()
             .then((result) => {
               resolve(result);
