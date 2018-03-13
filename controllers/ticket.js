@@ -559,6 +559,7 @@ decrypt_ticket(encryptedTicket)
                            .then(ticket =>{
                              if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
                              res.send({query_result:result.decryptedTicket});
+                             //res.send(result.decryptedTicket);
                              //console.log(ticket);
                            })
                            .catch(error => next(error));

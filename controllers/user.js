@@ -129,9 +129,10 @@ function user_login(req, res, next) {
     .then(result => {
       console.log("result", result)
       //destruct result into token and user object
-      if (!result || result === 403) return res.status(403).json({
+      if (!result || !token || result === 403) return res.status(403).json({
           "query_result": "Username or password is incorrect!"
       });
+      console.log("token",token)
       let [token, user] = result;
       res.header('Authorization', token).send({
         "query_result": "Successfully login.",
