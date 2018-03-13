@@ -14,7 +14,8 @@ const utils        = require('../lib/utils');
 //private members
 function _validateStationRegistationInput(req, res,next){
   req.checkBody('stationId','station id is required').notEmpty();
-  //req.checkBody('name','station name is required').notEmpty();
+  req.checkBody('nameEng','station nameEng is required').notEmpty();
+  req.checkBody('nameAmh','station nameAmh is required').notEmpty();
   req.checkBody('route','route is required').notEmpty();
   req.checkBody('latitude','latitude is required').notEmpty();
   req.checkBody('longitude','longitude is required').notEmpty();
@@ -73,7 +74,7 @@ function createStation (req, res, next){
             body.userId = req.user._id;
         var stationId = body.stationId;
         //pick only the required attributes from the body
-        var body = _.pick(req.body,["name","stationId","userId","longitude","latitude","route"]);
+        var body = _.pick(req.body,["nameEng","nameAmh","stationId","userId","longitude","latitude","route"]);
         //console.log("body",body);
                   //  create if fare doesn't exists from to station
                  StationDal.create(body)
@@ -96,7 +97,7 @@ function _createStation (req, res, next){
             body.userId = req.user._id;
         var stationId = body.stationId;
         //pick only the required attributes from the body
-        var body = _.pick(req.body,["name","stationId","userId","longitude","latitude","route"]);
+        var body = _.pick(req.body,["nameEng","nameAmh","stationId","userId","longitude","latitude","route"]);
         //console.log("body",body);
                   //  create if fare doesn't exists from to station
                  StationDal._create(body)
