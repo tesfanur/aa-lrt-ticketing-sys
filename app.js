@@ -49,7 +49,7 @@ app.use(validate());
 app.use(morgan('dev'));
 //Logging HTTP Method and URL
 app.use(cookieParser());
-app.use(session(config.SESSION_OPTS));
+//app.use(session(config.SESSION_OPTS));
 
 app.use("/uploads", express.static('uploads'));
 //filter endpoints and Authenticate the rest
