@@ -100,15 +100,19 @@ UserSchema.statics.findByCredentials = function(userAccount, password) {
         username: userAccount
       }]
     }).then((user) => {
+      console.log("user from model method", user)
       if (!user) return resolve(404);
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, compResult) => {
         if (compResult) {
+          console.log("compResult",compResult)
           resolve(user);
         } else {
 
           //console.log("user", user)
-          reject("user not authenticated");
+          reject({
+              "query_result": "Wrong assword!"
+          });
         }
       }); //end of bycrypt
 
