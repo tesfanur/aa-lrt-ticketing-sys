@@ -592,7 +592,7 @@ decrypt_ticket(encryptedTicket)
                                createdAt: createdAt
                              };
 
-                          res.send({"query_result":response});
+                          res.send(response);
                            })
                            .catch(error => next(error));
 
