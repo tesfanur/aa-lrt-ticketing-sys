@@ -147,7 +147,12 @@ function user_login(req, res, next) {
    });
 
     })
-    .catch(error => next(error));
+    .catch(error =>{
+      error =JSON.parse(JSON.stringify(error))
+      if(error.query_result) return res.status(403).json(error);
+
+
+      next(error)});
 
 }
 /**
