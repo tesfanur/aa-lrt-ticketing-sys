@@ -89,4 +89,4 @@ FareSchema.plugin(paginator);
 
 
 //export fare model
-module.exports = mongoose.model('_Fare', FareSchema);
+module.exports = mongoose.model('Fare', FareSchema);

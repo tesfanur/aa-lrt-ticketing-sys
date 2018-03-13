@@ -9,21 +9,20 @@ const moment = require('moment');
  *Load custom module dependecies
  */
 const FareModel = require('../models/fare');
-const _FareModel = require('../models/_fare');
 const StationDal = require('../dal/station');
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
 
 const fares     = require('../lib/fares');
-console.log(typeof stations)
-
-_FareModel.collection.insert(fares, (error, docs)=> {
-    if (error) {
-    return console.log("Unable to insert stations")
-    } else {
-        console.info('%d fares were successfully stored.', docs.length);
-    }
-});
+//console.log(typeof fares)
+//bulk insert: array of fares
+  // FareModel.collection.insert(fares, (error, docs)=> {
+  //     if (error) {
+  //     return console.log("Unable to insert stations")
+  //     } else {
+  //         console.info('%d fares were successfully stored.', docs.length);
+  //     }
+  // });
 
 const FareDalModule = (function(FareModel) {
   'use strict';
@@ -169,8 +168,8 @@ const FareDalModule = (function(FareModel) {
       .then(fares => {
         var publicFares = {};
         //publicFares = fares[0];
-        publicFares.from = fares[0].from.name;
-        publicFares.to = fares[0].to.name;
+        publicFares.from = fares[0].from.nameEng;
+        publicFares.to = fares[0].to.nameEng;
         publicFares.distance = fares[0].distance;
         publicFares.fare = fares[0].fare;
         if (fares) return defferd.resolve(fares);
@@ -191,8 +190,8 @@ const FareDalModule = (function(FareModel) {
     FareModel.findOne({
         _id: fareId
       })
-      .populate("from", "name")
-      .populate("to", "name")
+      .populate("from")
+      .populate("to")
       .populate("userId", "email phone")
       .exec()
       .then(fare => {

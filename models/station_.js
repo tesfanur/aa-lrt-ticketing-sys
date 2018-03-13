@@ -71,4 +71,4 @@ StationSchema.statics.findByName = function(name) {
 StationSchema.plugin(paginator);
 
 //export user model
-module.exports = mongoose.model('_Station', StationSchema); 
+module.exports = mongoose.model('Station_', StationSchema); 

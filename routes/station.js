@@ -139,9 +139,7 @@ var router = express.Router();
  *@apiUse UnauthorizedError
  @apiUse InternalServerError
  */
-router.post('/', stationController.create);
-router.post('/create', stationController._create);
-//_create
+router.post('/', stationController.create);  
 
 /**
  * @api {GET} /stations/ Find All Stations
