@@ -128,7 +128,7 @@ if(!IsJsonString(str)){
 /**
 *decrypt ticket
 */
-function newDecryptTicket(encryptedTicket) {
+function decrypt_ticket(encryptedTicket) {
 return new Promise((resolve,reject)=>{
   var bytes = cryptoJS.AES.decrypt(encryptedTicket, config.CRYPTO_SECRET);
   var str =bytes.toString(cryptoJS.enc.Utf8);
@@ -545,16 +545,33 @@ function findTicketByPagination(req, res, next) {
 function validateTicket(req, res, next) {
   debug('GET TICKET COLLECTION BY PAGINATION');
 var encryptedTicket = req.body.encryptedTicket||encodeURIComponent(req.query.encryptedTicket);
-var encryptedTicket2="U2FsdGVkX1+Vte8rzfGwFRYDwQqwOw8kKKm+CXmODoOEyEnb0FmND9DCa0kxdigZkc63m6D4rj1e1kX2mV0hNXBO/MCSsnqZCssRW1jpV6pCIyaVG1z30Anxh39Q/oB6ZVjcbiqx9q343QxiOQFqrLBd3ngEFgVK1juBP4t8+kLcg/8utpMp64R/3aDMJvGAZ2SycIkehJgIL6URm5GtHzvrUb7m78VoGzBPDuw4YICW7g9LCaOsVwy+fO+yTbdDqfeBd7Y6X9lYfIHv/fvBsE0jr1EYlGTbEVw7UQ40myiu9MY9QZeN7RQwKTu+0ORu"
- console.log("encryptedTicket===encryptedTicket2 =>",encryptedTicket===encryptedTicket2)
-  console.log("encryptedTicket :",encryptedTicket)
+// var encryptedTicket2="U2FsdGVkX1+Vte8rzfGwFRYDwQqwOw8kKKm+CXmODoOEyEnb0FmND9DCa0kxdigZkc63m6D4rj1e1kX2mV0hNXBO/MCSsnqZCssRW1jpV6pCIyaVG1z30Anxh39Q/oB6ZVjcbiqx9q343QxiOQFqrLBd3ngEFgVK1juBP4t8+kLcg/8utpMp64R/3aDMJvGAZ2SycIkehJgIL6URm5GtHzvrUb7m78VoGzBPDuw4YICW7g9LCaOsVwy+fO+yTbdDqfeBd7Y6X9lYfIHv/fvBsE0jr1EYlGTbEVw7UQ40myiu9MY9QZeN7RQwKTu+0ORu"
+//  console.log("encryptedTicket===encryptedTicket2 =>",encryptedTicket===encryptedTicket2)
+//   console.log("encryptedTicket :",encryptedTicket)
 
-newDecryptTicket(encryptedTicket)
+decrypt_ticket(encryptedTicket)
                 .then(result=>{
-                  res.send(result);
-                  console.log(result);
+                  if(!result) return res.status(404).send({query_result:"No matching ticket found"})
+                  result = JSON.parse(JSON.stringify(result));
+                  var customId = result.decryptedTicket.ticketId;
+                  //console.log("customid", customId);
+                  TicketDal.findByCustomId(customId)
+                           .then(ticket =>{
+                             if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
+                             res.send({query_result:result.decryptedTicket});
+                             //console.log(ticket);
+                           })
+                           .catch(error => next(error));
+
+
                 })
-                .catch (error=> next(error));
+                .catch (error=> {
+                  console.log("error", error);
+                  if(error.message==="Malformed UTF-8 data"){
+                    return res.status(400).send({query_result:"Invalid Ticket"})
+                  }
+                  next(error)
+                });
 
 }
 
