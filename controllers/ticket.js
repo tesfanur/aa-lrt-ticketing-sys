@@ -377,7 +377,7 @@ function findAllTicket(req, res, next) {
       var ticket = {}
       for (var i = 0; i < tickets.length; i++) {
         ticket = tickets[i];
-        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
 
         var username = ticket.passengerId.username;
         var email = ticket.passengerId.email;
@@ -560,9 +560,11 @@ decrypt_ticket(encryptedTicket)
                   if(!result) return res.status(404).send({query_result:"No matching ticket found"})
                   result = JSON.parse(JSON.stringify(result));
                   var customId = result.decryptedTicket.ticketId;
+                  var _id = result.decryptedTicket._id;
                   //console.log("customid", customId);
                   //TODO:change replace customId by _id
-                  TicketDal.findByCustomId(customId)
+                  //TicketDal.findByCustomId(customId)
+                  TicketDal.findById(_id)
                            .then(ticket =>{
                              if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
                              ticket = JSON.parse(JSON.stringify(ticket));
@@ -570,7 +572,7 @@ decrypt_ticket(encryptedTicket)
                              var username = ticket.passengerId.username;
                              var email = ticket.passengerId.email;
                              var phone = ticket.passengerId.phone;
-                            var createdAt = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+                            var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
 
                              var userId = ticket.passengerId.username;
                              if (email != "noemail@nodomain.com" & phone != "+251000000000")
@@ -589,7 +591,8 @@ decrypt_ticket(encryptedTicket)
                                createdAt: createdAt
                              };
 
-                             res.send({query_result:response});
+                            // res.send({query_result:response});
+                             res.send(response);
                              //res.send(result.decryptedTicket);
                              //console.log(ticket);
                            })
