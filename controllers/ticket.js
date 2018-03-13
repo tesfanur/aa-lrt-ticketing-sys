@@ -79,12 +79,12 @@ function encryptTicket(ticket) {
 /**
  *Convert encrypted data into QR image
  **/
-var ticket = {
-  "name": "Tesfaye Belachew Abebe",
-  "profession": "Developer"
-};
-
-var encryptedTicket = encryptTicket(ticket);
+  // var ticket = {
+  //   "name": "Tesfaye Belachew Abebe",
+  //   "profession": "Developer"
+  // };
+  //
+  // var encryptedTicket = encryptTicket(ticket);
 //console.log(encryptedTicket);
 // var decryptedTicket =decryptTicket(encryptedTicket).decryptedTicket;
 // console.log(decryptedTicket);
@@ -102,7 +102,7 @@ function encodeQRcode(encryptedData) {
   var ticketId = "r1NHbR5Pf"
   qr_png.pipe(fs.createWriteStream("./uploads/" + ticketId + ".png"));
 }
-encodeQRcode(encryptedTicket);
+//encodeQRcode(encryptedTicket);
 
 function decryptTicket(encryptedTicket) {
   var bytes = cryptoJS.AES.decrypt(encryptedTicket, config.CRYPTO_SECRET);
@@ -382,7 +382,6 @@ function findAllTicket(req, res, next) {
         var username = ticket.passengerId.username;
         var email = ticket.passengerId.email;
         var phone = ticket.passengerId.phone;
-        console.log("username",username)
 
         var userId = ticket.passengerId.username;
         if (email != "noemail@nodomain.com" & phone != "+251000000000")
@@ -444,7 +443,7 @@ function findAllMyTicket(req, res, next) {
  */
 function findTicketById(req, res, next) {
   console.log('Getting ticket by id:');
-  var ticketId = req.params.id;
+  var ticketId = req.params.id.trim();
   //chech if ticket ObjectId is valid or not
   var validObjectId = mongoose.Types.ObjectId.isValid(ticketId);
 
@@ -564,9 +563,11 @@ decrypt_ticket(encryptedTicket)
                   //console.log("customid", customId);
                   //TODO:change replace customId by _id
                   //TicketDal.findByCustomId(customId)
+                  console.log("_id",_id)
                   TicketDal.findById(_id)
                            .then(ticket =>{
-                             if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
+                            console.log("ticket",ticket)
+                             if(!ticket || ticket===404) return res.status(404).send({query_result:"Invalid Ticket"})
                              ticket = JSON.parse(JSON.stringify(ticket));
 
                             var username = ticket.passengerId.username ||"";
@@ -577,6 +578,7 @@ decrypt_ticket(encryptedTicket)
                              if (email != "noemail@nodomain.com" & phone != "+251000000000")
                              var userId = username|| email||phone;
                              var response = {
+                                message:"Valid ticket",
                                _id: ticket._id,
                                ticketId: ticket.id,
                                passenger: userId,
@@ -591,9 +593,6 @@ decrypt_ticket(encryptedTicket)
                              };
 
                           res.send({"query_result":response});
-                             //res.send(response);
-                             //res.send(result.decryptedTicket);
-                             //console.log(ticket);
                            })
                            .catch(error => next(error));
 
