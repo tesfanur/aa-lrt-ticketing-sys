@@ -46,9 +46,9 @@ const TicketDalModule = (function(TicketModel) {
       .populate('from', "name route stationId id")
       .populate('to', "name route stationId id")
       .populate('passengerId', "email phone username userType")
-      .sort({
-        createdAt: -1
-      })
+      // .sort({
+      //   createdAt: -1
+      // })
       .exec()
       .then((docs) => {
         if (docs) {
@@ -74,9 +74,9 @@ const TicketDalModule = (function(TicketModel) {
       .populate('from', "name route stationId")
       .populate('to', "name route stationId")
       .populate('passengerId', "email phone username")
-      // .sort({
-      //   createdAt: -1
-      // })
+      .sort({
+        createdAt: -1
+      })
       .exec()
       .then((tickets) => {
         defferd.resolve(tickets);
@@ -245,7 +245,7 @@ const TicketDalModule = (function(TicketModel) {
     TicketModel.paginate(query, opts, (err, data) => {
       if (err) return defferd.reject(err);
 
-      if (!data) return defferd.reject("Ticket not found");
+      //if (!data) return defferd.reject("Ticket not found");
 
       var response = {
         page: data.page,

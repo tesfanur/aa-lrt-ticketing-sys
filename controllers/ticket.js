@@ -48,6 +48,11 @@ function getTicketAttributes(req, method, ticket) {
   var createdAt = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
   var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
   var passenger = ticket.passengerId
+  var source = ticket.from.name || "";
+  var destination = ticket.to.name || "";
+  var passenger = ticket.passengerId
+  var passenger = ticket.passengerId
+
   return {
     _id: ticket._id,
     //passenger : passenger,//user should be admin
@@ -195,8 +200,6 @@ function _validateTicketRegistraionInput(req, res, next) {
 function handleTicketResponse(res, ticket) {
   if (!ticket || ticket === 404) return utils.handleResponse(res, 404, ticket);
   ticket = JSON.parse(JSON.stringify(ticket));
-  console.log("ticket.from.name",ticket.from.name)
-  console.log("ticket",ticket)
   return utils.handleResponse(res, 200, ticket);
 }
 /**
@@ -367,7 +370,8 @@ function findAllTicket(req, res, next) {
 
   TicketDal.findAll(alltickets)
     .then(tickets => {
-      //var tickets = JSON.parse(JSON.stringify(tickets)); //solves individual property accessors
+      //solve individual property accessor problem
+      var tickets = JSON.parse(JSON.stringify(tickets));
 
       var publickTicket = [];
       var ticket = {}
@@ -382,7 +386,7 @@ function findAllTicket(req, res, next) {
 
         var userId = ticket.passengerId.username;
         if (email != "noemail@nodomain.com" & phone != "+251000000000")
-          userId = ticket.passengerId.email || ticket.passengerId.pone;
+          userId = ticket.passengerId.email || ticket.passengerId.phone;
         var response = {
           _id: ticket._id,
           ticketId: ticket.id,
@@ -429,6 +433,7 @@ function findAllMyTicket(req, res, next) {
   };
   TicketDal.findAll(allMyTickets)
     .then((tickets) => {
+
       handleTicketResponse(res, tickets);
     })
     .catch(error => next(error));
@@ -556,10 +561,35 @@ decrypt_ticket(encryptedTicket)
                   result = JSON.parse(JSON.stringify(result));
                   var customId = result.decryptedTicket.ticketId;
                   //console.log("customid", customId);
+                  //TODO:change replace customId by _id
                   TicketDal.findByCustomId(customId)
                            .then(ticket =>{
                              if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
-                             res.send({query_result:result.decryptedTicket});
+                             ticket = JSON.parse(JSON.stringify(ticket));
+
+                             var username = ticket.passengerId.username;
+                             var email = ticket.passengerId.email;
+                             var phone = ticket.passengerId.phone;
+                            var createdAt = moment(ticket.createdAt).format("Do-MMM-YYY hh:mm A");
+
+                             var userId = ticket.passengerId.username;
+                             if (email != "noemail@nodomain.com" & phone != "+251000000000")
+                               userId = username|| email||phone;
+                             var response = {
+                               _id: ticket._id,
+                               ticketId: ticket.id,
+                               passenger: userId,
+                               source: ticket.from.name,
+                               destination: ticket.to.name,
+                               price: ticket.price,
+                               existingPrice: ticket.existingPrice,
+                               route: ticket.route,
+                               type: ticket.type,
+                               status: ticket.status,
+                               createdAt: createdAt
+                             };
+
+                             res.send({query_result:response});
                              //res.send(result.decryptedTicket);
                              //console.log(ticket);
                            })
