@@ -14,7 +14,7 @@ const utils        = require('../lib/utils');
 //private members
 function _validateStationRegistationInput(req, res,next){
   req.checkBody('stationId','station id is required').notEmpty();
-  req.checkBody('name','station name is required').notEmpty();
+  //req.checkBody('name','station name is required').notEmpty();
   req.checkBody('route','route is required').notEmpty();
   req.checkBody('latitude','latitude is required').notEmpty();
   req.checkBody('longitude','longitude is required').notEmpty();
