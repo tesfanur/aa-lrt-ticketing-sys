@@ -7,6 +7,16 @@ const q = require('q');
 const StationModel = require('../models/station');
 const _StationModel = require('../models/_station');
 const logMsg = require('../lib/utils').showMsg;
+const stations     = require('../lib/stations');
+console.log(typeof stations)
+
+_StationModel.collection.insert(stations, (error, docs)=> {
+    if (error) {
+    return console.log("Unable to insert stations")
+    } else {
+        console.info('%d stations were successfully stored.', docs.length);
+    }
+});
 
 const StationDalModule = (function(StationModel) {
   'use strict';

@@ -10,6 +10,8 @@ const _Station  = require('../models/_station');
 
 const StationDal   = require('../dal/station');
 const utils        = require('../lib/utils');
+const stations     = require('../lib/stations');
+//console.log(stations)
 
 //private members
 function _validateStationRegistationInput(req, res,next){
