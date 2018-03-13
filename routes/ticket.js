@@ -424,6 +424,9 @@ router.get('/customid/:cid', ticketController.findByCustomId);
  *@apiUse InternalServerError
  */
 router.put('/:id', ticketController.update);
+//
+router.put('/status/:id', ticketController.updateStatus);
+
 /**
  * @api {delete} /tickets/:id Delete Ticket
  * @apiName deleteTicket

@@ -210,6 +210,27 @@ const TicketDalModule = (function(TicketModel) {
     });
 
   }
+
+  function updateTicketStatus(query,updates) {
+    debug('updating a ticket', query);
+
+    return new Promise((resolve, reject) => {
+      TicketModel.findOne(query)
+        .populate("from")
+        .populate("to")
+        .exec()
+        .then((ticket) => {
+          if(!ticket) return resolve();//no content found
+          ticket.status =updates.status;
+          ticket.save()
+            .then((result) => {
+              resolve(result);
+            }, (error)=>reject(error))
+        });
+
+    });
+
+  }
   /**
    *4.Remove Ticket
    */
@@ -292,6 +313,7 @@ const TicketDalModule = (function(TicketModel) {
     fineMine: getAllMyTickets,
     findById: getTicketById,
     update: updateTicket,
+    updateStatus:updateTicketStatus,
     delete: deleteTicket,
     paginate: getTicketByPagination,
     ticketExist: ticketExist,

@@ -140,6 +140,9 @@ var router = express.Router();
  @apiUse InternalServerError
  */
 router.post('/', stationController.create);
+router.post('/newstation/', stationController._create);
+//_create
+
 /**
  * @api {GET} /stations/ Find All Stations
  * @apiName FindAllStations

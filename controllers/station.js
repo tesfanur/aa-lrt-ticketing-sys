@@ -6,6 +6,7 @@ const moment   = require('moment');
 const mongoose = require('mongoose');
 const _        = require('lodash');//lodash can also do the same.check?
 const Station  = require('../models/station');
+const _Station  = require('../models/_station');
 
 const StationDal   = require('../dal/station');
 const utils        = require('../lib/utils');
@@ -76,6 +77,29 @@ function createStation (req, res, next){
         //console.log("body",body);
                   //  create if fare doesn't exists from to station
                  StationDal.create(body)
+                           .then((createdStation)=> {
+                             console.log("station :: ",createdStation)
+                                if(createdStation===400)
+                                return res.status(400).send({"message":body.stationId +" station already exists"});
+                                var response =getStationAttributes(req,"POST",createdStation);
+                                utils.handleResponse(res,201,response);//station created succesfully
+                           }, (error)=>{
+                             next(error);
+                           })
+}
+/**
+* create station with new schema
+***/
+function _createStation (req, res, next){
+        _validateStationRegistationInput(req, res, next);
+        var body = req.body;
+            body.userId = req.user._id;
+        var stationId = body.stationId;
+        //pick only the required attributes from the body
+        var body = _.pick(req.body,["name","stationId","userId","longitude","latitude","route"]);
+        //console.log("body",body);
+                  //  create if fare doesn't exists from to station
+                 StationDal._create(body)
                            .then((createdStation)=> {
                              console.log("station :: ",createdStation)
                                 if(createdStation===400)
@@ -257,6 +281,7 @@ function findStationByPagination (req, res, next){
 module.exports = {
     //create    : create_station,
     create    :createStation,
+    _create :_createStation,
     searchByName    : searchStationByName,
     findAll   : findAllStation,
     findById  : findStationById,

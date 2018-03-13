@@ -498,9 +498,61 @@ function updateTicketInfo(req, res, next) {
     new: true
   };
 
-  TicketDal.update(query, setUpdates, updateOptions)
+    TicketDal.update(query, setUpdates, updateOptions)
+      .then(updatedticket => {
+        if(updatedticket){
+        updatedticket=JSON.parse(JSON.strignify(updatedticket));
+        var response ={
+          _id:updatedticket._id,
+          ticketId:updatedticket.ticketId,
+          source:updatedticket.from.name,
+          destination:updatedticket.to.name,
+          source:updatedticket.from.name,
+          price:updatedticket.price,
+          existingPricee:updatedticket.existingPricee,
+        }
+        console.log("ticket",response);
+        }
+          console.log("ticket",response);
+        handleTicketResponse(res, response);
+      })
+      .catch(error => next(error));
+  }
+  /**
+  *update ticket status
+  */
+  function updateTicketStatus(req, res, next) {
+    var modifiedAt = new Date();
+    req.body.modifiedAt = modifiedAt;
+    var query = {_id:req.params.id};
+    console.log("query",query)
+    var ticketData = _.pick(req.body, ["status","modifiedAt","_id"]);
+    console.log("ticketData", ticketData)
+    var updates = {
+      status: ticketData.status,
+      modifiedAt:ticketData.modifiedAt,
+    };
+
+  TicketDal.updateStatus(query, updates)
     .then(updatedticket => {
-      handleTicketResponse(res, updatedticket);
+      if(updatedticket){
+      updatedticket=JSON.parse(JSON.stringify(updatedticket));
+      var modifiedAt =moment(updatedticket.modifiedAt).format("Do-MMM-YYYY");
+      var response ={
+        query_result:"updated",
+        _id:updatedticket._id,
+        ticketId:updatedticket.id,
+        source:updatedticket.from.name,
+        destination:updatedticket.to.name,
+        price:updatedticket.price,
+        existingPrice:updatedticket.existingPrice,
+        status:updatedticket.status,
+        modifiedAt:modifiedAt,
+      }
+      console.log("ticket",response);
+      }
+        console.log("ticket",response);
+      handleTicketResponse(res, response);
     })
     .catch(error => next(error));
 }
@@ -617,6 +669,7 @@ module.exports = {
   findMine: findAllMyTicket,
   findById: findTicketById,
   update: updateTicketInfo,
+  updateStatus:updateTicketStatus,
   delete: deleteTicketById,
   paginate: findTicketByPagination,
   findByCustomId: findTicketByCustomId,

@@ -36,6 +36,30 @@ const StationDalModule = (function(StationModel) {
     })
 
   }
+  function _createStation(data) {
+    debug('CREATING A NEW FARE');
+    //save fare info
+    let station = new _StationModel(data);
+    return new Promise((resolve, reject) => {
+    _StationModel.findOne({
+          stationId: data.stationId
+        })
+        .exec()
+        .then(result => {
+          if (!result) { //return resolve(400);//bad request to create station that already exists
+            station.save()
+              .then((result) => {
+                resolve(result);
+              }, function(err) {
+                return reject(err);
+              })
+          } else {
+            resolve(400)
+          }
+        });
+    })
+
+  }
 
   /**
    *2. Get all StationModels
@@ -244,6 +268,7 @@ const StationDalModule = (function(StationModel) {
    */
   return {
     create: createStation,
+    _create:_createStation,
     findAll: getAllStations,
     findById: getStationById,
     update: updateStation,
