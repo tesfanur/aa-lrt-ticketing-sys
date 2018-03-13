@@ -5,6 +5,7 @@ const debug = require('debug')('api:station-dal');
 const q = require('q');
 
 const StationModel = require('../models/station');
+const _StationModel = require('../models/_station');
 const logMsg = require('../lib/utils').showMsg;
 
 const StationDalModule = (function(StationModel) {

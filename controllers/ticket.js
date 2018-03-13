@@ -625,7 +625,7 @@ decrypt_ticket(encryptedTicket)
                             var username = ticket.passengerId.username ||"";
                             var email = ticket.passengerId.email||"";
                             var phone = ticket.passengerId.phone||"";
-                            var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
+                            var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
 
                              if (email != "noemail@nodomain.com" & phone != "+251000000000")
                              var userId = username|| email||phone;

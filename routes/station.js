@@ -140,7 +140,7 @@ var router = express.Router();
  @apiUse InternalServerError
  */
 router.post('/', stationController.create);
-router.post('/newstation/', stationController._create);
+router.post('/create', stationController._create);
 //_create
 
 /**
