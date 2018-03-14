@@ -8,10 +8,14 @@ var ObjectId = Schema.Types.ObjectId;
  *Train Stations Schema
  */
 var StationSchema = new Schema({
-  stationId: {
+  _id: {
     type: Number,
     unique: true
   },
+  // stationId: {
+  //   type: Number,
+  //   unique: true
+  // },
   userId: {
     type: ObjectId,
     required: true,

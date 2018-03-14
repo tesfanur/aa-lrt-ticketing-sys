@@ -10,23 +10,23 @@ const logMsg = require('../lib/utils').showMsg;
 const stations = require('../lib/stations');
 const newStations = require('../lib/newstations');
 console.log(typeof newStations)
-//bulk insert array of stations
-  StationModel.collection.insert(newStations, (error, stationdocs) => {
-    if (error) {
-      return console.log("Unable to insert stations")
-    } else {
-      console.info('%d stations were successfully stored.', stationdocs.length);
-    }
-  });
-  var userId ="5aa26404ea849857d8df0800";
-  var createdAt =new Date(); 
-  var modifiedAt =new Date();
+  //bulk insert array of stations
+    StationModel.collection.insert(newStations, (error, stationdocs) => {
+      if (error) {
+        return console.log("Unable to insert stations")
+      } else {
+        console.info('%d stations were successfully stored.', stationdocs.length);
+      }
+    });
+    var userId ="5aa93a5698d05d0004b8ca45";
+    var createdAt =new Date();
+    var modifiedAt =new Date();
 
-  StationModel.collection.updateMany({}, {$set:
-    {createdAt:createdAt,
-    modifiedAt:modifiedAt,
-    userId:userId
-  }})
+    StationModel.collection.updateMany({}, {$set:
+      {createdAt:createdAt,
+      modifiedAt:modifiedAt,
+      userId:userId
+    }})
 
 const StationDalModule = (function(StationModel) {
   'use strict';
@@ -124,6 +124,7 @@ const StationDalModule = (function(StationModel) {
    *3. Search station by query instead of req.body
    */
   function searchStationByName(name) {
+    console.log("name", name)
     var filterdStations = [];
     return new Promise((resolve, reject) => {
       StationModel.find({})
@@ -133,9 +134,10 @@ const StationDalModule = (function(StationModel) {
         .then(function(result) {
           //if not station found return 404
           if (!result) return resolve(404);
-          result = JSON.parse(JSON.stringify(result));
-          //console.log("result", result)
+
           filterdStations = _.filter(result, station => {
+            console.log("result",result)
+            console.log("station",station)
             return station.nameEng
               .toLowerCase()
               .indexOf(name) > -1;

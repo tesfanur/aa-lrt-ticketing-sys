@@ -13,13 +13,23 @@ var FareSchema = new Schema({
     required: true,
     ref: 'User'
   },
+  // from: {
+  //   type: ObjectId,
+  //   required: true,
+  //   ref: 'Station'
+  // },
+  // to: {
+  //   type: ObjectId,
+  //   required: true,
+  //   ref: 'Station' 
+  // },
   from: {
-    type: ObjectId,
+    type: Number,
     required: true,
     ref: 'Station'
   },
   to: {
-    type: ObjectId,
+    type: Number,
     required: true,
     ref: 'Station'
   },

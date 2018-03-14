@@ -13,16 +13,25 @@ const StationDal = require('../dal/station');
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
 
-const fares = require('../lib/newfares');
-console.log(typeof fares)
-//bulk insert: array of fares
-FareModel.collection.insert(fares, (error, docs)=> {
-    if (error) {
-    return console.log("Unable to insert stations")
-    } else {
-        console.info('%d fares were successfully stored.', docs.length);
-    }
-});
+  const fares = require('../lib/newfares');
+  console.log(typeof fares)
+  //bulk insert: array of fares
+  FareModel.collection.insert(fares, (error, docs)=> {
+      if (error) {
+      return console.log("Unable to insert stations")
+      } else {
+          console.info('%d fares were successfully stored.', docs.length);
+      }
+  });
+  var userId ="5aa26404ea849857d8df0800";
+  var createdAt =new Date();
+  var modifiedAt =new Date();
+
+  FareModel.collection.updateMany({}, {$set:
+    {createdAt:createdAt,
+    modifiedAt:modifiedAt,
+    userId:userId
+  }})
 
 const FareDalModule = (function(FareModel) {
   'use strict';
@@ -378,6 +387,7 @@ const FareDalModule = (function(FareModel) {
         //{$match:{"source.route":"EW","source.stationId":{"$gte":115,"$lte":120}}}
         // {"$limit":3}
       ]).exec(function(err, result) {
+        console.log("result from getCompleteFareInfo",result)
         if (err) {
           //console.log(err);
           return reject(err)
@@ -401,11 +411,13 @@ const FareDalModule = (function(FareModel) {
 
       StationDal.findByCustomId(parseInt(from))
         .then(sourceStation => {
+          console.log("sourceStation",sourceStation);
           return sourceStation;
         })
         .then((sourceStation) => {
           StationDal.findByCustomId(parseInt(to))
             .then(destinationStation => {
+                console.log("destinationStation",destinationStation);
               //=================================================
               var source = from;
               var destination = to;
