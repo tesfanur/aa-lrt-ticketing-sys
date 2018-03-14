@@ -13,16 +13,16 @@ const StationDal = require('../dal/station');
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
 
-const fares = require('../lib/fares');
-//console.log(typeof fares)
+const fares = require('../lib/newfares');
+console.log(typeof fares)
 //bulk insert: array of fares
-// FareModel.collection.insert(fares, (error, docs)=> {
-//     if (error) {
-//     return console.log("Unable to insert stations")
-//     } else {
-//         console.info('%d fares were successfully stored.', docs.length);
-//     }
-// });
+FareModel.collection.insert(fares, (error, docs)=> {
+    if (error) {
+    return console.log("Unable to insert stations")
+    } else {
+        console.info('%d fares were successfully stored.', docs.length);
+    }
+});
 
 const FareDalModule = (function(FareModel) {
   'use strict';
