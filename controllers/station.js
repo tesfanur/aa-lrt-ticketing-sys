@@ -42,7 +42,7 @@ function handleStationResponse(res, method, doc) {
 
 function getStationAttributes(req, method, station) {
   if (!station) return {};
-  station = JSON.parse(JSON.stringify(station));
+  //station = JSON.parse(JSON.stringify(station));
   var url = req.protocol + '://' +
     req.hostname + req.originalUrl;
   var createdAt = moment(station.createdAt).format("DD-MMM-YYYY");
