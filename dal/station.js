@@ -5,13 +5,13 @@ const debug = require('debug')('api:station-dal');
 const q = require('q');
 
 const StationModel = require('../models/station');
-const _StationModel = require('../models/station_');
+//const _StationModel = require('../models/station_');
 const logMsg = require('../lib/utils').showMsg;
 const stations = require('../lib/stations');
 const newStations = require('../lib/newstations');
 console.log(typeof newStations)
 //bulk insert array of stations
-  _StationModel.collection.insert(newStations, (error, stationdocs) => {
+  StationModel.collection.insert(newStations, (error, stationdocs) => {
     if (error) {
       return console.log("Unable to insert stations")
     } else {
@@ -19,10 +19,10 @@ console.log(typeof newStations)
     }
   });
   var userId ="5aa26404ea849857d8df0800";
-  var createdAt =new Date();
+  var createdAt =new Date(); 
   var modifiedAt =new Date();
 
-  _StationModel.collection.updateMany({}, {$set:
+  StationModel.collection.updateMany({}, {$set:
     {createdAt:createdAt,
     modifiedAt:modifiedAt,
     userId:userId

@@ -62,7 +62,8 @@ StationSchema.methods.toJSON = function() {
 StationSchema.statics.findByName = function(name) {
   //return promise object
   return this.findOne({
-    stationName: name
+    // stationName: name
+    nameEng: name
   }).exec();
 }
 
