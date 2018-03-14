@@ -136,7 +136,7 @@ const StationDalModule = (function(StationModel) {
           result = JSON.parse(JSON.stringify(result));
           //console.log("result", result)
           filterdStations = _.filter(result, station => {
-            return station.name
+            return station.nameEng
               .toLowerCase()
               .indexOf(name) > -1;
           })

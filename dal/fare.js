@@ -459,8 +459,8 @@ const FareDalModule = (function(FareModel) {
                         from: from,
                         to: to
                       },
-                      source: sourceStation.name,
-                      destination: destinationStation.name,
+                      source: sourceStation.nameEng,
+                      destination: destinationStation.nameEng,
                       source_id: sourceStation._id,
                       destination_id: destinationStation._id,
                       paid: totalPrice.toFixed(2),

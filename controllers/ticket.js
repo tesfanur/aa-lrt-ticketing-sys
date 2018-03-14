@@ -48,8 +48,8 @@ function getTicketAttributes(req, method, ticket) {
   var createdAt = moment(ticket.createdAt).format("DD-MMM-YYYY");
   var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY");
   var passenger = ticket.passengerId
-  var source = ticket.from.name || "";
-  var destination = ticket.to.name || "";
+  var source = ticket.from.nameEng || "";
+  var destination = ticket.to.nameEng || "";
   var passenger = ticket.passengerId
   var passenger = ticket.passengerId
 
@@ -58,8 +58,8 @@ function getTicketAttributes(req, method, ticket) {
     //passenger : passenger,//user should be admin
     ticketId: ticket.id,
     route: ticket.from.route,
-    from: ticket.from.name,
-    to: ticket.to.name,
+    from: ticket.from.nameEng,
+    to: ticket.to.nameEng,
     createdAt: createdAt,
     modifiedAt: modifiedAt,
     request: {
@@ -316,8 +316,8 @@ function createTicket(req, res, next) {
                         _id: completeticket._id,
                         ticketId: completeticket.id,
                         //passenger: userId,
-                        source: completeticket.from.name,
-                        destination: completeticket.to.name,
+                        source: completeticket.from.nameEng,
+                        destination: completeticket.to.nameEng,
                         price: completeticket.price,
                         existingPrice: completeticket.existingPrice,
                         route: completeticket.route,
@@ -396,8 +396,8 @@ function findAllTicket(req, res, next) {
           _id: ticket._id,
           ticketId: ticket.id,
           passenger: userId,
-          source: ticket.from.name,
-          destination: ticket.to.name,
+          source: ticket.from.nameEng,
+          destination: ticket.to.nameEng,
           price: ticket.price,
           existingPrice: ticket.existingPrice,
           route: ticket.route,
@@ -484,10 +484,10 @@ function findTicketByCustomId(req, res, next) {
 function updateTicketInfo(req, res, next) {
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
-  var ticketData = _.pick(req.body, ["name", "ticketId", "latitude", "longitude", "route", "modifiedAt"]);
+  var ticketData = _.pick(req.body, ["nameEng", "nameAmh","ticketId", "latitude", "longitude", "route", "modifiedAt"]);
   console.log("ticketData", ticketData)
   var updates = {
-    name: req.body.name,
+    name: req.body.nameEng,
     ticketId: req.body.ticketId,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
@@ -511,9 +511,8 @@ function updateTicketInfo(req, res, next) {
         var response = {
           _id: updatedticket._id,
           ticketId: updatedticket.ticketId,
-          source: updatedticket.from.name,
-          destination: updatedticket.to.name,
-          source: updatedticket.from.name,
+          source: updatedticket.from.nameEng,
+          destination: updatedticket.to.nameEng,
           price: updatedticket.price,
           existingPricee: updatedticket.existingPricee,
         }
@@ -553,8 +552,8 @@ function updateTicketStatus(req, res, next) {
           query_result: "updated",
           _id: updatedticket._id,
           ticketId: updatedticket.id,
-          source: updatedticket.from.name,
-          destination: updatedticket.to.name,
+          source: updatedticket.from.nameEng,
+          destination: updatedticket.to.nameEng,
           price: updatedticket.price,
           existingPrice: updatedticket.existingPrice,
           status: updatedticket.status,
@@ -649,8 +648,8 @@ function validateTicket(req, res, next) {
             _id: ticket._id,
             ticketId: ticket.id,
             passenger: userId,
-            source: ticket.from.name,
-            destination: ticket.to.name,
+            source: ticket.from.nameEng,
+            destination: ticket.to.nameEng,
             price: ticket.price,
             existingPrice: ticket.existingPrice,
             route: ticket.route,
