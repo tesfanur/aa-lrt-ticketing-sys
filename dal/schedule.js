@@ -18,12 +18,12 @@ const ScheduleDalModule = (function(ScheduleModel) {
     let schedule = new ScheduleModel(data);
     return new Promise((resolve, reject) => {
       schedule.save()
-              .then((result) => {
-                resolve(result);
-              }, (err)=> {
-                return reject(err);
-              }); 
+        .then((result) => {
+          resolve(result);
+        }, (err) => {
+          return reject(err);
         });
+    });
 
   }
 

@@ -32,7 +32,7 @@ function _validateStationRegistationInput(req, res, next) {
  *1. create new station
  */
 /**
- *Handle faq responses
+ *Handle common faq(frequently asked questions) responses
  **/
 function handleStationResponse(res, method, doc) {
   if (!doc || doc === 404) return utils.handleResponse(res, 404, doc);
@@ -42,18 +42,29 @@ function handleStationResponse(res, method, doc) {
 
 function getStationAttributes(req, method, station) {
   if (!station) return {};
-  station = JSON.parse(JSON.stringify(station));
+  //station = JSON.parse(JSON.stringify(station));
   var url = req.protocol + '://' +
     req.hostname + req.originalUrl;
-  var createdAt = moment(station.createdAt).format("DD-MMM-YYYY hh:mm A");
-  var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY hh:mm A");
+  var createdAt = moment(station.createdAt).format("DD-MMM-YYYY");
+  var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY");
   var user = station.userId;
+
+  var email =user.email || "";
+  var phone =user.phone || "";
+  if(user.email !="noemail@nodomain.com")
+      email =user.email;
+  if(user.phone != "+251000000000");
+      phone =user.phone || "";
+  var userId = user.username || email || phone;
+
   var nameEng = station.nameEng;
   var nameAmh = station.nameAmh;
+  console.log("nameEng",nameEng);
+  console.log("nameAmh",nameAmh);
 
-  return {
+var response ={
     _id: station._id,
-    createdBy: user, //user should be admin
+    createdBy: userId, //user should be admin
     stationId: station.stationId,
     nameEng: station.nameEng,
     nameAmh: station.nameAmh,
@@ -67,6 +78,8 @@ function getStationAttributes(req, method, station) {
       url
     }
   };
+  console.log("station",response)
+  return response;
 
 }
 /**
@@ -111,6 +124,7 @@ function findAllStation(req, res, next) {
           return getStationAttributes(req, "GET", st);
         })
       }
+      //console.log(stations)
       //return res.status(200).json(response});
       utils.handleResponse(res, 200, response);
     }, (error) => {
@@ -289,6 +303,5 @@ module.exports = {
   update: updateStationInfo,
   delete: deleteStationById,
   paginate: findStationByPagination,
-  //findByName: findStationByName,
   findByCustomId: getStationByCustomId
 }

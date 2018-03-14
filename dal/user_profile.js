@@ -74,8 +74,8 @@ const UserProfileDalModule = (function(UserProfileModel) {
         .exec()
         .then((result) => {
           if (!result) return reject({
-          message: "No muching userProfile found"
-        }); //userProfile not found
+            message: "No muching userProfile found"
+          }); //userProfile not found
           return resolve(result);
         }, function(err) {
           reject(err);
@@ -107,25 +107,25 @@ const UserProfileDalModule = (function(UserProfileModel) {
    *3. Search userProfile by query instead of req.body
    */
   function searchUserProfileByName(name) {
-    var filterdProfiles =[];
+    var filterdProfiles = [];
     return new Promise((resolve, reject) => {
-      UserProfileModel.find({ })
+      UserProfileModel.find({})
         .populate("userId", "email phone")
-        .then(result =>{
+        .then(result => {
           filterdProfiles = _.filter(result, profile => {
             return profile.username
               .toLowerCase()
               .indexOf(name) > -1;
           })
-          console.log("filterdProfiles",filterdProfiles)
+          console.log("filterdProfiles", filterdProfiles)
           if (filterdProfiles.length === 0) return resolve(404);
           resolve(filterdProfiles);
-        }, error=> reject(error) )
+        }, error => reject(error))
     });
   }
 
   /**
-   *5.Get ticket by pagination
+   *5.Get tickets by pagination
    */
   function getTicketByPagination(query, qs) {
     debug('fetching a collection of tickets');
@@ -205,8 +205,8 @@ const UserProfileDalModule = (function(UserProfileModel) {
     return new Promise((resolve, reject) => {
       UserProfileModel.findOneAndUpdate(query, update, opts)
         .exec()
-        .then(result => resolve(result) ,
-              error  => reject(error) );
+        .then(result => resolve(result),
+          error => reject(error));
     });
 
   }
@@ -220,7 +220,7 @@ const UserProfileDalModule = (function(UserProfileModel) {
     return new Promise((resolve, reject) => {
       UserProfileModel.findOneAndRemove(query)
         .then(result => resolve(result),
-               error =>  reject(error));
+          error => reject(error));
     })
 
 
@@ -229,30 +229,30 @@ const UserProfileDalModule = (function(UserProfileModel) {
   /**
    *5.Get userProfile by pagination
    */
-   function getUserProfileByPagination(query, qs) {
-     debug('fetching a collection of profiles');
-     var defferd = q.defer();
-     var opts = {
-       sort: qs.sort || {},
-       page: qs.page || 1,
-       limit: qs.per_page || 10
-     };
-     UserProfileModel.paginate(query, opts)
-       .then((profiles) => {
-                 var response = {
-           page: profiles.page,
-           total_docs: profiles.total,
-           total_pages: profiles.pages,
-           per_page: profiles.limit,
-           docs: profiles.docs
-         };
-         return defferd.resolve(response);
-       })
-       .catch(err => {
-         defferd.reject(err);
-       });
-     return defferd.promise;
-   }
+  function getUserProfileByPagination(query, qs) {
+    debug('fetching a collection of profiles');
+    var defferd = q.defer();
+    var opts = {
+      sort: qs.sort || {},
+      page: qs.page || 1,
+      limit: qs.per_page || 10
+    };
+    UserProfileModel.paginate(query, opts)
+      .then((profiles) => {
+        var response = {
+          page: profiles.page,
+          total_docs: profiles.total,
+          total_pages: profiles.pages,
+          per_page: profiles.limit,
+          docs: profiles.docs
+        };
+        return defferd.resolve(response);
+      })
+      .catch(err => {
+        defferd.reject(err);
+      });
+    return defferd.promise;
+  }
 
   /**
    *6.return UserProfileDalModule public APIs

@@ -13,16 +13,16 @@ const StationDal = require('../dal/station');
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
 
-const fares     = require('../lib/fares');
+const fares = require('../lib/fares');
 //console.log(typeof fares)
 //bulk insert: array of fares
-  // FareModel.collection.insert(fares, (error, docs)=> {
-  //     if (error) {
-  //     return console.log("Unable to insert stations")
-  //     } else {
-  //         console.info('%d fares were successfully stored.', docs.length);
-  //     }
-  // });
+// FareModel.collection.insert(fares, (error, docs)=> {
+//     if (error) {
+//     return console.log("Unable to insert stations")
+//     } else {
+//         console.info('%d fares were successfully stored.', docs.length);
+//     }
+// });
 
 const FareDalModule = (function(FareModel) {
   'use strict';
@@ -318,7 +318,8 @@ const FareDalModule = (function(FareModel) {
   }
 
   function getCompleteFareInfo(route, from, to) {
-    console.log("route = " + route + " from = " + from + " to = " + to)
+    console.log("route = " + route + " from = " + from + " to = " + to);
+    console.log("typeof route = " + typeof route + " typeof from = " + typeof from + " typeof to = " +  typeof to)
 
     return new Promise((resolve, reject) => {
       FareModel.aggregate([
@@ -415,12 +416,15 @@ const FareDalModule = (function(FareModel) {
                 source = to;
                 destination = from;
               }
+              console.log("source",source);
+              console.log("destination",destination)
            //calculateTicketPrice(from,to);
               getCompleteFareInfo(route,
                   source,
                   destination
                 )
                 .then((info) => {
+                  console.log("info",info)//returns empty array;
                   if (info) {
                     var totalDistance = 0;
                     var totalPrice = 0;
@@ -431,14 +435,19 @@ const FareDalModule = (function(FareModel) {
                       totalDistance += station.distance;
                       totalPrice += station.ticketPrice;
                     });
-                    //console.log("counter", counter);
+                    console.log("counter", counter);
+                    console.log("totalDistance", totalDistance);
+                    console.log("totalPrice", totalPrice);
+
 
                     // console.log("travel strats at "+ from + " and ends at " +to);
                     // console.log("total distance =",totalDistance);
                     // console.log("paid =",totalPrice.toFixed(2)+"ETB");
                     //var createdAt = moment( new Date(), 'MM-DD-YYYY HH:mm:ss',true).format("YYYY-MMM-DDD HH:mm:ss");
                     var createdAt = moment(new Date()).format("DD-MMM-YYYY hh:mm A");
-                    if(!calculateTicketPrice(counter)) return reject({message:"Invalid station range"})
+                    if (!calculateTicketPrice(counter)) return reject({
+                      message: "Invalid station range"
+                    })
 
                     var ticketInfo = {
                       //fetch user info by passing as arguiment
@@ -456,7 +465,7 @@ const FareDalModule = (function(FareModel) {
                       destination_id: destinationStation._id,
                       paid: totalPrice.toFixed(2),
                       //existingPrice:calculateTicketPrice(counter).toFixed(2) +"ETB",
-                      existingPrice:calculateTicketPrice(counter).toFixed(2),
+                      existingPrice: calculateTicketPrice(counter).toFixed(2),
                       status: "unused",
                       boughtAt: createdAt,
 
@@ -477,20 +486,20 @@ const FareDalModule = (function(FareModel) {
         });
     }); //end of promise
   }
-  function calculateTicketPrice(counter){
+
+  function calculateTicketPrice(counter) {
     var numOfStationsTravelled = Math.abs(counter);
-  //console.log("numOfStationsTravelled",numOfStationsTravelled)
-    if(numOfStationsTravelled>=1 && numOfStationsTravelled<=8)
-    {
+    //console.log("numOfStationsTravelled",numOfStationsTravelled)
+    if (numOfStationsTravelled >= 1 && numOfStationsTravelled <= 8) {
       return 2;
-    }else if(numOfStationsTravelled>8 && numOfStationsTravelled<=16){
+    } else if (numOfStationsTravelled > 8 && numOfStationsTravelled <= 16) {
       return 4;
-  }else if(numOfStationsTravelled>16 & numOfStationsTravelled<25){
-    return 6;
-  } else{
-    return false;//invalid range
+    } else if (numOfStationsTravelled > 16 & numOfStationsTravelled < 25) {
+      return 6;
+    } else {
+      return false; //invalid range
+    }
   }
-}
   /**
    *11.return FareDalModule public APIs
    */

@@ -47,11 +47,13 @@ function createUserProfile(req, res, next) {
   console.log("body", body);
   //  create if fare doesn't exists from to userProfile
   UserProfileDal.create(body)
-    .then(retrievedUserProfile =>{
-      if(retrievedUserProfile===400)
-      return res.status(400).json({message:`${body.username} already in use.`})
-      res.status(201).json(retrievedUserProfile)
-    },
+    .then(retrievedUserProfile => {
+        if (retrievedUserProfile === 400)
+          return res.status(400).json({
+            message: `${body.username} already in use.`
+          })
+        res.status(201).json(retrievedUserProfile)
+      },
       error => res.send(error))
 }
 /**
@@ -65,7 +67,7 @@ function findAllUserProfile(req, res, next) {
       if (!userProfiles) return res.status(404).json({
         "ERROR": "NO userProfile FOUND"
       });
-    res.json(userProfiles);
+      res.json(userProfiles);
     }, function(error) {
       res.status(500).send({
         "ERROR": "Unable to fecth userProfile document!"
@@ -80,16 +82,16 @@ function searchProfileByUserName(req, res, next) {
   var username = req.params.username;
 
   UserProfileDal.searchByName(username)
-    .then(userProfile=> {
-      if (userProfile===404) return res.status(404).json({
+    .then(userProfile => {
+      if (userProfile === 404) return res.status(404).json({
         "message": "No matching user profile found"
       });
       res.json(userProfile);
-    }, error=> res.send(error)
-    )
+    }, error => res.send(error))
 }
-function validObjectId(id){
-return mongoose.Types.ObjectId.isValid(id.toString());
+
+function validObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id.toString());
 }
 /**
  *4. Find userProfile by their ID controller
@@ -101,11 +103,11 @@ function findUserProfileById(req, res) {
   if (validObjectId(userProfileId)) {
     UserProfileDal.findById(userProfileId)
       .then(userProfile => {
-        if(!userProfile)   return res.status(404).send({
+        if (!userProfile) return res.status(404).send({
           message: "No matching userProfile found"
         }); //userProfile not found
         res.json(userProfile);
-      }, error=> res.send(error))
+      }, error => res.send(error))
 
   } else {
     res.status(400).send({
@@ -126,10 +128,10 @@ function getUserProfileByCustomId(req, res) {
       });
       console.log(userProfile)
       res.status(200).send(userProfile);
-    }, err =>{
+    }, err => {
       error.status(500).send({
         "message": "unable to find userProfile",
-        error:error
+        error: error
       });
     });
 }
@@ -166,22 +168,22 @@ function updateUserProfileInfo(req, res) {
   var updateOptions = {
     new: true
   };
-  if(validObjectId(query._id)){
-  UserProfileDal.update(query, setUpdates, updateOptions)
-    .then(updateduserProfile => {
-      //if no content found
-      if (!updateduserProfile)
-        return res.status(400).send({
-          "Message": "No content found to update"
-        });
+  if (validObjectId(query._id)) {
+    UserProfileDal.update(query, setUpdates, updateOptions)
+      .then(updateduserProfile => {
+        //if no content found
+        if (!updateduserProfile)
+          return res.status(400).send({
+            "Message": "No content found to update"
+          });
 
-      res.send(updateduserProfile);
-    }, error => res.status(500).json(error))
-  }else{
-   res.status(400).send({
-        "Message": "Invalid user profile id"
-      });
-    }
+        res.send(updateduserProfile);
+      }, error => res.status(500).json(error))
+  } else {
+    res.status(400).send({
+      "Message": "Invalid user profile id"
+    });
+  }
 }
 /**
  *6. Delete userProfile Controller
@@ -191,43 +193,46 @@ function deleteUserProfileById(req, res) {
     _id: req.params.id
   };
   if (validObjectId(query._id)) {
-  UserProfileDal.delete(query)
-    .then(userProfile => {
-      if (!userProfile) return res.status(404).send({
-        "message": "Content already removed"
-      });
-      return res.send({
-        "message": "uccesfully removed",
-        userProfile
-      });
-    }, error => {
-      res.status(500).send({
-        "error": error
-      });
-    })}else{
-      return res.status(400).send({
-    "message": "Invalid User Profile Id."
-})
-    }
+    UserProfileDal.delete(query)
+      .then(userProfile => {
+        if (!userProfile) return res.status(404).send({
+          "message": "Content already removed"
+        });
+        return res.send({
+          "message": "uccesfully removed",
+          userProfile
+        });
+      }, error => {
+        res.status(500).send({
+          "error": error
+        });
+      })
+  } else {
+    return res.status(400).send({
+      "message": "Invalid User Profile Id."
+    })
+  }
 
 }
 /**
  *7. GET ALL USER PROFILE DOCUMENTS BY PAGINATION
  */
 
-function findUserProfileByPagination (req, res, next){
-    debug('GET USERPROFILE COLLECTION BY PAGINATION');
+function findUserProfileByPagination(req, res, next) {
+  debug('GET USERPROFILE COLLECTION BY PAGINATION');
 
-    var query = req.query.query || {};
-    var qs = req.query;
+  var query = req.query.query || {};
+  var qs = req.query;
 
-UserProfileDal.paginate(query, qs)
-              .then(function(docs){
-                  if(!docs)
-                     return res.status(404).json({message:"Profile not found"});
-                  res.json(docs);
-              })
-              .catch(error=>next(error));
+  UserProfileDal.paginate(query, qs)
+    .then(function(docs) {
+      if (!docs)
+        return res.status(404).json({
+          message: "Profile not found"
+        });
+      res.json(docs);
+    })
+    .catch(error => next(error));
 }
 
 

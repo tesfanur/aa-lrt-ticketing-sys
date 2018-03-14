@@ -50,33 +50,33 @@ function create_user(req, res, next) {
   //     'validation-errors': errors
   //   });
   // }
-var body =_.pick(req.body,["username","password","phone","email"]);
-//var query =_.pick(req.query,["username","password","phone","email"]);
-//console.log(query);
+  var body = _.pick(req.body, ["username", "password", "phone", "email"]);
+  //var query =_.pick(req.query,["username","password","phone","email"]);
+  //console.log(query);
   //take only the required field from req.body object
   //use array and destract method to make the following code
- // var body = _.pick(req.body, ["email", "password", "phone","username"]);
-  var userData =body;
-  console.log("userData",userData)
+  // var body = _.pick(req.body, ["email", "password", "phone","username"]);
+  var userData = body;
+  console.log("userData", userData)
   //before creating user check user if it exists
   //findByCredentials
-  var username =userData.username ||"";
-  var email =userData.email ||"";
-  var phone =userData.phone ||"";
-  var validPhone=function(v) {
+  var username = userData.username || "";
+  var email = userData.email || "";
+  var phone = userData.phone || "";
+  var validPhone = function(v) {
     return /^\+[0-9]{12,13}$/.test(v);
   }
-  if(!validPhone(phone) && phone!==""){
-      return res.status(400).json({
-        'query_result': phone + " phone is not valid"
-      });
+  if (!validPhone(phone) && phone !== "") {
+    return res.status(400).json({
+      'query_result': phone + " phone is not valid"
+    });
   }
 
   var userID = userData.username || userData.email || userData.phone;
   UserDal.findUserByUserID(userID)
-  //UserModel.findByCredentials(userData)
+    //UserModel.findByCredentials(userData)
     .then(user => {
-      console.log("user from user create controller",user)
+      console.log("user from user create controller", user)
       if (!user) {
         //create user
 
@@ -87,7 +87,9 @@ var body =_.pick(req.body,["username","password","phone","email"]);
             //test first whether token exists or not
             //if(token)  res.header('x-auth')
             //res.status(201);
-            res.status(201).header('x-auth', token).send({query_result:"success"});
+            res.status(201).header('x-auth', token).send({
+              query_result: "success"
+            });
           })
           .catch(e => {
             res.status(400).send(e);
@@ -119,8 +121,8 @@ function user_login(req, res, next) {
     });
   }
 
-  var userData = _.pick(req.body, ['email','username','phone', 'password']);
-  console.log("userData",userData);
+  var userData = _.pick(req.body, ['email', 'username', 'phone', 'password']);
+  console.log("userData", userData);
   /**
    *TODO: REFACTOR USER LOGIN DAL SO THAT IT HANDLES
    *      ALL POSSIBLE AUTHENTICATION VIOLATIONS
@@ -128,31 +130,33 @@ function user_login(req, res, next) {
   UserDal.login(userData)
     .then(result => {
       console.log("result", result)
+      var query_result = "Username or password is incorrect!";
 
       //destruct result into token and user object
       if (!result || result === 403) return res.status(403).json({
-          "query_result": "Username or password is incorrect!"
+        query_result
       });
       let [token, user] = result;
-      console.log("token",token)
-      if(token){
-      return res.header('Authorization', token).send({
-        "query_result": "Successfully login.",
-        user,
-        token
+      console.log("token", token)
+      if (token) {
+        return res.header('Authorization', token).send({
+          "query_result": "Successfully login.",
+          user,
+          token
+        });
+      }
+      return res.status(403).json({
+        query_result
       });
-    }
-    return res.status(403).json({
-       "query_result": "Username or password is incorrect!"
-   });
 
     })
-    .catch(error =>{
-      error =JSON.parse(JSON.stringify(error))
-      if(error.query_result) return res.status(403).json(error);
+    .catch(error => {
+      error = JSON.parse(JSON.stringify(error))
+      if (error.query_result) return res.status(403).json(error);
 
 
-      next(error)});
+      next(error)
+    });
 
 }
 /**
@@ -220,7 +224,7 @@ function updateUserInfo(req, res) {
 /**
  *6. Delete User Controller
  */
-function deleteUserById(req, res,next) {
+function deleteUserById(req, res, next) {
   var userId = req.params.userId;
   //chech if User ObjectId is valid or not
   var validObjectId = mongoose.Types.ObjectId.isValid(userId);
@@ -248,18 +252,19 @@ function deleteUserById(req, res,next) {
 
 }
 
-function logoutUser(req, res,next) {
-   const user = req.user;
-   const auth_token = req.token;
+function logoutUser(req, res, next) {
+  const user = req.user;
+  const auth_token = req.token;
 
-   user.removeToken(auth_token)
-       .then(()=>{
-           res.status(204).send({message: "LOGGED OUT"})
-       })
-       .catch((err)=>{
-           res.send(400).send();
-       })
-   ;
+  user.removeToken(auth_token)
+    .then(() => {
+      res.status(204).send({
+        message: "LOGGED OUT"
+      })
+    })
+    .catch((err) => {
+      res.send(400).send();
+    });
 }
 /**
  *II. Export User Controllers
@@ -271,5 +276,5 @@ module.exports = {
   update: updateUserInfo,
   delete: deleteUserById,
   login: user_login,
-  logout :logoutUser
+  logout: logoutUser
 }

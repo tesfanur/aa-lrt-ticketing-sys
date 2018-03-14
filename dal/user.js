@@ -15,7 +15,7 @@ var UserDalModule = (function(UserModel) {
    */
   function createNewUser(userData) {
     debug('CREATING USER COLLECTION');
-    console.log("userData from create user controller",userData);
+    console.log("userData from create user controller", userData);
     var user = new UserModel(userData);
     var defferd = q.defer();
 
@@ -79,6 +79,7 @@ var UserDalModule = (function(UserModel) {
       })
     return defferd.promise;
   }
+
   function findUserByUsername(username) {
     debug('GETTING USER BY USERNAME');
     var defferd = q.defer();
@@ -92,13 +93,21 @@ var UserDalModule = (function(UserModel) {
       })
     return defferd.promise;
   }
+  /**
+   *find user by one of these["email","username","phone"] fields
+   */ 
+
   function findUserByUserID(userId) {
     debug('GETTING USER BY userid');
     var defferd = q.defer();
     UserModel.findOne({
-       $or:[ {username: userId},
-        {email: userId},
-        {phone: userId}]
+        $or: [{
+          username: userId
+        }, {
+          email: userId
+        }, {
+          phone: userId
+        }]
       })
       //.populate('userId',"firstName lastName username profileImage")
       .exec((err, user) => {
@@ -167,14 +176,14 @@ var UserDalModule = (function(UserModel) {
   }
 
   function userLogin(userData) {
-    console.log("userData from userLogin dal",userData)
-    var email =userData.email || "";
-    var username =userData.username || "";
-    var phone =userData.phone || "";
-    var password =userData.password || "";
-    var userID =userData.email || userData.username || userData.phone;
-    console.log("userID: ",userID);
-    console.log("userData: ",userData);
+    console.log("userData from userLogin dal", userData)
+    var email = userData.email || "";
+    var username = userData.username || "";
+    var phone = userData.phone || "";
+    var password = userData.password || "";
+    var userID = userData.email || userData.username || userData.phone;
+    console.log("userID: ", userID);
+    console.log("userData: ", userData);
 
     return new Promise((resolve, reject) => {
 
@@ -211,8 +220,8 @@ var UserDalModule = (function(UserModel) {
     update: updateUser,
     delete: deleteUser,
     findUserByEmail: findUserByEmail,
-    findUserByUsername:findUserByUsername,
-    findUserByUserID:findUserByUserID,
+    findUserByUsername: findUserByUsername,
+    findUserByUserID: findUserByUserID,
     paginate: getUserByPagination
   };
 }(UserModel));

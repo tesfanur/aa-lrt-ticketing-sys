@@ -70,21 +70,23 @@ function createSchedule(req, res, next) {
   body.createdBy = req.user._id;
 
   function validTime(time) {
-              //Assuming 24 hour time
-              var patt = new RegExp("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
-              return patt.test(time);
-          }
+    //Assuming 24 hour time
+    var patt = new RegExp("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
+    return patt.test(time);
+  }
 
-  var invalidTime =(validTime(body.arrivalTime) && validTime(body.departureTime));
-  
-   if(!invalidTime)
-    return res.status(400).send({"message":"Invalid time"});
-    //otherwise assign time to the body object
-    body.arrivalTime= moment(body.arrivalTime, "hh:mm:ss");
-    body.departureTime= moment(body.departureTime, "hh:mm:ss");
+  var invalidTime = (validTime(body.arrivalTime) && validTime(body.departureTime));
+
+  if (!invalidTime)
+    return res.status(400).send({
+      "message": "Invalid time"
+    });
+  //otherwise assign time to the body object
+  body.arrivalTime = moment(body.arrivalTime, "hh:mm:ss");
+  body.departureTime = moment(body.departureTime, "hh:mm:ss");
 
   //pick only the required attributes from the body
-  var body = _.pick(req.body, ["createdBy","trainId", "stationId", "userId", "arrivalTime", "departureTime"]);
+  var body = _.pick(req.body, ["createdBy", "trainId", "stationId", "userId", "arrivalTime", "departureTime"]);
   //console.log("body",body);
   //  create if fare doesn't exists from to schedule
   ScheduleDal.create(body)
@@ -202,14 +204,14 @@ function getScheduleByCustomId(req, res, next) {
  */
 function updateScheduleInfo(req, res, next) {
   var createdBy = req.user._id;
-  console.log("createdBy",createdBy)
+  console.log("createdBy", createdBy)
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
 
-  var scheduleData = _.pick(req.body, ["createdBy","trainId", "stationId", "userId", "arrivalTime", "departureTime"]);
+  var scheduleData = _.pick(req.body, ["createdBy", "trainId", "stationId", "userId", "arrivalTime", "departureTime"]);
   console.log("scheduleData", scheduleData)
   var updates = {
-    createdBy:createdBy,
+    createdBy: createdBy,
     trainId: req.body.trainId,
     stationId: req.body.stationId,
     arrivalTime: req.body.arrivalTime,

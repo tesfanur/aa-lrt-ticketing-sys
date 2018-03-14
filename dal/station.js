@@ -5,17 +5,28 @@ const debug = require('debug')('api:station-dal');
 const q = require('q');
 
 const StationModel = require('../models/station');
+const _StationModel = require('../models/station_');
 const logMsg = require('../lib/utils').showMsg;
-const stations     = require('../lib/stations');
-  //console.log(typeof stations)
-  // //bulk insert array of stations
-  // StationModel.collection.insert(stations, (error, docs)=> {
-  //     if (error) {
-  //     return console.log("Unable to insert stations")
-  //     } else {
-  //         console.info('%d stations were successfully stored.', docs.length);
-  //     }
-  // });
+const stations = require('../lib/stations');
+const newStations = require('../lib/newstations');
+console.log(typeof newStations)
+//bulk insert array of stations
+  _StationModel.collection.insert(newStations, (error, stationdocs) => {
+    if (error) {
+      return console.log("Unable to insert stations")
+    } else {
+      console.info('%d stations were successfully stored.', stationdocs.length);
+    }
+  });
+  var userId ="5aa26404ea849857d8df0800";
+  var createdAt =new Date();
+  var modifiedAt =new Date();
+
+  _StationModel.collection.updateMany({}, {$set:
+    {createdAt:createdAt,
+    modifiedAt:modifiedAt,
+    userId:userId
+  }})
 
 const StationDalModule = (function(StationModel) {
   'use strict';
@@ -28,30 +39,6 @@ const StationDalModule = (function(StationModel) {
     let station = new StationModel(data);
     return new Promise((resolve, reject) => {
       StationModel.findOne({
-          stationId: data.stationId
-        })
-        .exec()
-        .then(result => {
-          if (!result) { //return resolve(400);//bad request to create station that already exists
-            station.save()
-              .then((result) => {
-                resolve(result);
-              }, function(err) {
-                return reject(err);
-              })
-          } else {
-            resolve(400)
-          }
-        });
-    })
-
-  }
-  function _createStation(data) {
-    debug('CREATING A NEW FARE');
-    //save fare info
-    let station = new _StationModel(data);
-    return new Promise((resolve, reject) => {
-    _StationModel.findOne({
           stationId: data.stationId
         })
         .exec()
@@ -278,7 +265,6 @@ const StationDalModule = (function(StationModel) {
    */
   return {
     create: createStation,
-    _create:_createStation,
     findAll: getAllStations,
     findById: getStationById,
     update: updateStation,

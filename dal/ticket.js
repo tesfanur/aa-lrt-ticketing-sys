@@ -211,7 +211,7 @@ const TicketDalModule = (function(TicketModel) {
 
   }
 
-  function updateTicketStatus(query,updates) {
+  function updateTicketStatus(query, updates) {
     debug('updating a ticket', query);
 
     return new Promise((resolve, reject) => {
@@ -220,15 +220,15 @@ const TicketDalModule = (function(TicketModel) {
         .populate("to")
         .exec()
         .then((ticket) => {
-          if(!ticket) return resolve(404);//no content found
+          if (!ticket) return resolve(404); //no content found
           //ticket =JSON.parse(JSON.stringify(ticket));
-          if(ticket.status==="used") return resolve(400);//bad request
-          ticket.status =updates.status;
-          ticket.modifiedAt =updates.modifiedAt;
+          if (ticket.status === "used") return resolve(400); //bad request
+          ticket.status = updates.status;
+          ticket.modifiedAt = updates.modifiedAt;
           ticket.save()
             .then((result) => {
               resolve(result);
-            }, (error)=>reject(error))
+            }, (error) => reject(error))
         });
 
     });
@@ -316,7 +316,7 @@ const TicketDalModule = (function(TicketModel) {
     fineMine: getAllMyTickets,
     findById: getTicketById,
     update: updateTicket,
-    updateStatus:updateTicketStatus,
+    updateStatus: updateTicketStatus,
     delete: deleteTicket,
     paginate: getTicketByPagination,
     ticketExist: ticketExist,

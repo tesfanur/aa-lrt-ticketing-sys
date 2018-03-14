@@ -20,7 +20,7 @@ var UserSchema = new Schema({
     //required: 'Email is required',
     trim: true,
     minlength: 6,
-    default:"noemail@nodomain.com"
+    default: "noemail@nodomain.com"
     //unique: [true, "Email should be unique"],
     // validate: {
     //   isAsync: true,
@@ -52,7 +52,7 @@ var UserSchema = new Schema({
       message: '{VALUE} is not a valid phone number!'
     },
     required: [true, 'Uscser phone number required'],
-    default:"+251000000000"
+    default: "+251000000000"
   },
 
   userType: {
@@ -88,7 +88,7 @@ var UserSchema = new Schema({
 
 UserSchema.statics.findByCredentials = function(userAccount, password) {
   var User = this;
-  console.log(userAccount,password);
+  console.log(userAccount, password);
 
   return new Promise((resolve, reject) => {
     User.findOne({
@@ -104,13 +104,12 @@ UserSchema.statics.findByCredentials = function(userAccount, password) {
       if (!user) return resolve(404);
       // Use bcrypt.compare to compare password and user.password
       bcrypt.compare(password, user.password, (err, compResult) => {
-        if (compResult)   return resolve(user);
-          //console.log("user inside bcrypt", user)
-          return reject({
-              "query_result": "Wrong password!"
-          });
-      }
-    ); //end of bycrypt
+        if (compResult) return resolve(user);
+        //console.log("user inside bcrypt", user)
+        return reject({
+          "query_result": "Wrong password!"
+        });
+      }); //end of bycrypt
 
     }); //end of promise constructor
 

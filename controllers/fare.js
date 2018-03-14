@@ -15,7 +15,7 @@ const errorHandler = require('../lib/utils').errorHandler;
 const logMsg = require('../lib/utils').showMsg;
 const utils = require('../lib/utils');
 /**
- *Handle fare responses
+ *Handle common fare responses
  **/
 function handleFareResponse(res, method, doc) {
   if (!doc || doc === 404) return utils.handleResponse(res, 404, doc);
@@ -260,7 +260,7 @@ var FareModule = (function(FareDal) {
     if (!(validSourceId && validDestinationId)) {
       var validStationIdRange = "Valid station Id range for ";
       if (route == "NS") {
-        validStationIdRange += "NS route is from 26 to 226"
+        validStationIdRange += "NS route is from 26 to 227"
       } else if (route === "EW") {
         validStationIdRange += "NS route is from 11 to 122"
       }
@@ -330,7 +330,6 @@ var FareModule = (function(FareDal) {
     create: createFare,
     getAll: getAllFares,
     getById: getFareById,
-    //search   : searchFare,
     update: updateFare,
     delete: deleteFare,
     paginate: getFareByPagination,
