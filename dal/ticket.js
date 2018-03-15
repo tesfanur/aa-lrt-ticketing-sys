@@ -100,8 +100,8 @@ const TicketDalModule = (function(TicketModel) {
       TicketModel.findOne({
           _id: id
         })
-        .populate('from', "name route stationId")
-        .populate('to', "name route stationId")
+        .populate('from', "nameEng nameAmh route _id")
+        .populate('to', "nameEng nameAmh route _id")
         .populate('passengerId', "email phone")
         .exec()
         .then((result) => {
@@ -225,7 +225,7 @@ const TicketDalModule = (function(TicketModel) {
         .then((ticket) => {
           if (!ticket) return resolve(404); //no content found
           //ticket =JSON.parse(JSON.stringify(ticket));
-          if (ticket.status === "used") return resolve(400); //bad request
+          if (ticket.status === "used" || ticket.status === "returned") return resolve(400); //bad request
           ticket.status = updates.status;
           ticket.modifiedAt = updates.modifiedAt;
           ticket.save()

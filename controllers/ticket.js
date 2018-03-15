@@ -264,7 +264,7 @@ function createTicket(req, res, next) {
                 //console.log("source",sourceStation)
                 return sourceStation
               }).then(sourceStation=>{
-                console.log("source",sourceStation)
+                //console.log("source",sourceStation)
                 StationDal.findByCustomId(to)
                           .then(destinationStation =>{
                             //console.log("destinationStation",destinationStation)
@@ -277,13 +277,14 @@ function createTicket(req, res, next) {
                               numberOfStationsTravelled:stationCount,
                               route:route
                             }
-                            console.log("ticket",ticket)
+                            //console.log("ticket",ticket)
                         TicketDal.create(ticket)
                                  .then(result=>{
                                    if(result){
 
                                 console.log("ticket",result)
                                      if(ticketPrice){
+                                       ticket._id =result._id;
                                        var newResult = encryptTicket(ticket)
                                        //console.log(decryptTicket(newResult))
                                          return res.status(201)
@@ -357,10 +358,11 @@ function findAllTicket(req, res, next) {
           _id: ticket._id,
           ticketId: ticket.id,
           passenger: userId,
-          source: ticket.from.nameEng,
-          destination: ticket.to.nameEng,
+          sourceEng: ticket.from.nameEng,
+          destinationEng: ticket.to.nameEng,
+          sourceAmh: ticket.from.nameAmh,
+          destinationAmh: ticket.to.nameAmh,
           price: ticket.price,
-          existingPrice: ticket.existingPrice,
           route: ticket.route,
           type: ticket.type,
           status: ticket.status,
@@ -420,9 +422,11 @@ function findAllMyTicket(req, res, next) {
         var response = {
           _id: ticket._id,
           ticketId: ticket.id,
-          //passenger: userId,
-          source: ticket.from.nameEng,
-          destination: ticket.to.nameEng,
+          passenger: userId,
+          sourceEng: ticket.from.nameEng,
+          destinationEng: ticket.to.nameEng,
+          sourceAmh: ticket.from.nameAmh,
+          destinationAmh: ticket.to.nameAmh,
           price: ticket.price,
           route: ticket.route,
           type: ticket.type,
@@ -632,7 +636,6 @@ decrypt_ticket(encryptedTicket)
                             var email = ticket.passengerId.email||"";
                             var phone = ticket.passengerId.phone||"";
                             var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
-
                              if (email != "noemail@nodomain.com" & phone != "+251000000000")
                              var userId = username|| email||phone;
                              var response = {
@@ -640,10 +643,11 @@ decrypt_ticket(encryptedTicket)
                                _id: ticket._id,
                                ticketId: ticket.id,
                                passenger: userId,
-                               source: ticket.from.name,
-                               destination: ticket.to.name,
+                               sourceEng: ticket.from.nameEng,
+                               destinationEng: ticket.to.nameEng,
+                               sourceAmh: ticket.from.nameAmh,
+                               destinationAmh: ticket.to.nameAmh,
                                price: ticket.price,
-                               existingPrice: ticket.existingPrice,
                                route: ticket.route,
                                type: ticket.type,
                                status: ticket.status,
