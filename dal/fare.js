@@ -463,7 +463,7 @@ function populateFareCollection(createdBy, fares) {
                       info.forEach(function(station) {
                         counter++;
                         totalDistance += station.distance;
-                        totalPrice += parseInt(station.distance) * 6 / 16000; 
+                        totalPrice += parseInt(station.distance) * 6 / 16000;
                       });
                       console.log("counter", counter);
                       console.log("totalDistance", totalDistance);
@@ -517,7 +517,7 @@ function populateFareCollection(createdBy, fares) {
       }); //end of promise
     }
 
-    function getNumberOfStation(from, to,route){ 
+    function getNumberOfStation(from, to,route){
       return  Math.abs(from-to);
     }
 

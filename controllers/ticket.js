@@ -399,36 +399,38 @@ function findAllMyTicket(req, res, next) {
   };
   TicketDal.findAll(allMyTickets)
     .then((tickets) => {
-      var tickets = JSON.parse(JSON.stringify(tickets));
+      tickets = JSON.parse(JSON.stringify(tickets));
+      //console.log("tickets",tickets)
 
       var publickTicket = [];
-      var ticket = {}
+      var ticket={};
       for (var i = 0; i < tickets.length; i++) {
-        ticket = tickets[i];
+        ticket =tickets[i];
+        console.log("ticket",ticket);
+        console.log("===================================")
         var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
 
-        var username = ticket.passengerId.username;
-        var email = ticket.passengerId.email;
-        var phone = ticket.passengerId.phone;
-
+      var username = ticket.passengerId.username ||"";
+        var email = ticket.passengerId.email ||"";
+        var phone = ticket.passengerId.phone ||"";
         var userId = ticket.passengerId.username;
+
         if (email != "noemail@nodomain.com" & phone != "+251000000000")
-          userId = ticket.passengerId.email || ticket.passengerId.phone;
+          userId =  email||username||phone ;
         var response = {
           _id: ticket._id,
           ticketId: ticket.id,
-          passenger: userId,
+          //passenger: userId,
           source: ticket.from.nameEng,
           destination: ticket.to.nameEng,
           price: ticket.price,
-          existingPrice: ticket.existingPrice,
           route: ticket.route,
           type: ticket.type,
           status: ticket.status,
           createdAt: createdAt
         };
 
-
+         console.log("response",response)
         response.encryptTicket = encryptTicket(response);
         // console.log(response)
         publickTicket.push(response);

@@ -43,8 +43,8 @@ const TicketDalModule = (function(TicketModel) {
     //     createdAt: -1
     //   })
     TicketModel.find(query)
-      .populate('from', "name route stationId id")
-      .populate('to', "name route stationId id")
+      .populate('from')
+      .populate('to')
       .populate('passengerId', "email phone username userType")
       // .sort({
       //   createdAt: -1
@@ -52,7 +52,7 @@ const TicketDalModule = (function(TicketModel) {
       .exec()
       .then((docs) => {
         if (docs) {
-          console.log(docs)
+          //console.log(docs)
           //var publickTicket =JSON.parse(JSON.stringify(tickets));
           //var publickTicket = tickets;
           //publickTicket.createdAt = moment(tickets.createdAt).format("DD-MMM-YYYY hh:mm A");
@@ -71,9 +71,12 @@ const TicketDalModule = (function(TicketModel) {
     debug('GETTING ALL TICKET COLLECTION');
     var defferd = q.defer();
     TicketModel.find(query)
-      .populate('from', "name route stationId")
-      .populate('to', "name route stationId")
-      .populate('passengerId', "email phone username")
+      // .populate('from', "nameEng route stationId")
+      // .populate('to', "nameEng route stationId")
+      // .populate('passengerId', "email phone username")
+      .populate('from')
+      .populate('to')
+      .populate('passengerId')
       .sort({
         createdAt: -1
       })
