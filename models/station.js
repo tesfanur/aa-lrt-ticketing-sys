@@ -16,7 +16,7 @@ var StationSchema = new Schema({
   //   type: Number,
   //   unique: true
   // },
-  userId: {
+  createdBy: {
     type: ObjectId,
     required: true,
     ref: 'User'
@@ -57,7 +57,10 @@ StationSchema.methods.toJSON = function() {
   var station = this;
   var stationObject = station.toObject();
 
-  return _.pick(stationObject, ['_id', 'userId.email', 'stationId', 'name', 'longitude', 'latitude', 'createdAt', 'modifiedAt', "route"]);
+  return _.pick(stationObject, ['_id', 
+    'stationId','createdBy','nameAmh', 'nameEng', 
+    'longitude', 'latitude', 'createdAt', 
+    'modifiedAt', "route"]);
 };
 
 //Static method we can call via Station.getStationByName in our code

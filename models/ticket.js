@@ -30,14 +30,25 @@ var TicketSchema = new Schema({
     ref: 'User'
   },
 
+  // from: {
+  //   type: ObjectId,
+  //   required: true,
+  //   ref: 'Station'
+  // },
+  //
+  // to: {
+  //   type: ObjectId,
+  //   required: true,
+  //   ref: 'Station'
+  // },
   from: {
-    type: ObjectId,
+    type: Number,
     required: true,
     ref: 'Station'
   },
 
   to: {
-    type: ObjectId,
+    type: Number,
     required: true,
     ref: 'Station'
   },
@@ -45,10 +56,10 @@ var TicketSchema = new Schema({
     type: Number,
     required: true
   },
-  existingPrice: {
-    type: Number,
-    required: true
-  },
+  // existingPrice: {
+  //   type: Number,
+  //   required: true
+  // },
   route: {
     type: String,
     required: true

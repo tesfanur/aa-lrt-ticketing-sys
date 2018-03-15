@@ -210,6 +210,7 @@ function createTicket(req, res, next) {
   //use station customid to buy ticket
   //front end guy can use station for final users
 
+
   var from = parseInt(req.body.from);
   var to = parseInt(req.body.to);
   var route = (req.body.route).toUpperCase();
@@ -230,11 +231,30 @@ function createTicket(req, res, next) {
   var validSourceId = validateStationIds(from, route);
   var validDestinationId = validateStationIds(to, route);
 
+
   //console.log("route = "+route + " from = " + from +" to = "+ to)
   if (startsWith(req.body.from) !== startsWith(req.body.to)) {
-   return res.send({"query_result":"Source and station are not on the same route"});
+    StationDal.findByCustomId(from)
+      .then(source => {
+        var source = JSON.parse(JSON.stringify(source));
+        var result = [];
+        console.log(source, source);
+        StationDal.findByCustomId(to)
+          .then(destination => {
+            var destination = JSON.parse(JSON.stringify(destination));
+            console.log(destination, destination);
+            result = [source, destination];
+            return res.status(400).send({
+                "query_result": `${source.name} and ${destination.name} ids are not on the same route`
+              })
+              .catch(error => next(error))
+          })
+
+      })
+      .catch(error => next(error))
 
   }
+
 
   if (!(validSourceId && validDestinationId)) {
     var validStationIdRange = "Valid station Id range for ";
@@ -248,82 +268,95 @@ function createTicket(req, res, next) {
       stationIdRange: validStationIdRange
     })
   } else {
-    //valid source and destination
-    var user = req.user;
+    var user = req.user
+    FareDal.generateTicket(route, from, to, user)
+      .then(ticket => {
+        if (ticket) {
+          //console.log(ticket);
+          //return res.send(ticket);
+          if (!ticket.id) ticket.id = shortid.generate();
 
-    var source= from.toString().substr(1, from.toString().length-1);
-    var destination= to.toString().substr(1, to.toString().length-1);
+          var ticketData = {
+            id: ticket.id,
+            route: ticket.route,
+            passengerId: ticket.passengerId,
+            from: ticket.source_id,
+            to: ticket.destination_id,
+            price: ticket.paid,
+            priceByDistance: ticket.paid,
+            existingPrice: ticket.existingPrice
+          };
+          //console.log("ticketData",ticketData)
+          TicketDal.create(ticketData)
+            .then(createdTicket => {
+              //console.log("createdTicket", createdTicket)
+              if (createdTicket)
+                return createdTicket;
+              //return res.status(201).send(createdTicket);
+            }).then(
+              generatedTicket => {
+                if (generatedTicket) {
+                  console.log("generatedTicket_id:::", ticket)
+                  TicketDal.findById({
+                      _id: generatedTicket._id
+                    })
+                    .then(result => {
+                      //console.log(result)
+                      //tesfaye todo
+                      //var completeticket = new Object();
+                      var completeticket = JSON.parse(JSON.stringify(result)); //solves individual property accessors
 
-    source = parseInt(source);
-    destination = parseInt(destination)
-    var stationCount = Math.abs(destination-source);
-    var ticketPrice =calculateTicketPrice(stationCount);
+                      var publickTicket = {
+                        _id: completeticket._id,
+                        ticketId: completeticket.id,
+                        //passenger: userId,
+                        source: completeticket.from.name,
+                        destination: completeticket.to.name,
+                        price: completeticket.price,
+                        existingPrice: completeticket.existingPrice,
+                        route: completeticket.route,
+                        type: completeticket.type,
+                        status: completeticket.status,
+                        //createdAt: completeticket.createdAt
+                      };
 
-    StationDal.findByCustomId(from)
-              .then(sourceStation =>{
-                //console.log("source",sourceStation)
-                return sourceStation
-              }).then(sourceStation=>{
-                console.log("source",sourceStation)
-                StationDal.findByCustomId(to)
-                          .then(destinationStation =>{
-                            //console.log("destinationStation",destinationStation)
-                            destinationStation=JSON.parse(JSON.stringify(destinationStation))
-                            var ticket ={
-                              passengerId: req.user._id,
-                              from: sourceStation._id,
-                              to: destinationStation._id,
-                              price:ticketPrice,
-                              numberOfStationsTravelled:stationCount,
-                              route:route
-                            }
-                            console.log("ticket",ticket)
-                        TicketDal.create(ticket)
-                                 .then(result=>{
-                                   if(result){
+                      //remove unwanted codes
+                      console.log("publickTicket =", publickTicket)
+                      completeticket.generateTicket = result;
+                      completeticket.existingPrice = ticketData.existingPrice;
 
-                                console.log("ticket",result)
-                                     if(ticketPrice){
-                                       var newResult = encryptTicket(ticket)
-                                       //console.log(decryptTicket(newResult))
-                                         return res.status(201)
-                                           .send(decryptTicket(newResult))
-                                   }
-                                   }
-
-                                 })
-                                 .catch(error=>{
-                                   next(error);
-                                 })
-
-
-                          })
-                          .catch(error=>next(error))
+                      //completeticket.stationCount = counter;
+                      //console.log("completeticket", completeticket)
+                      //var newResult = encryptTicket({completeticket,newPrice:ticketData.existingPrice})
+                      //  var newResult = encryptTicket(completeticket)
+                      //publickTicket
+                      var newResult = encryptTicket(publickTicket)
+                      //console.log(decryptTicket(newResult))
+                      if (result)
+                        return res.status(201)
+                          .send(decryptTicket(newResult))
+                    }).catch(
+                      err => {
+                        res.status(500).send(err);
+                      }
+                    )
+                } //end of if generateTicket
 
               }
 
-              )
-              .catch(error=>next(error))
-
+            )
+            .catch(err => {
+              console.log(err);
+              res.status(500).send(err);
+            })
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err)
+      });
   }
 
-  //}
-
-}
-
-
-function calculateTicketPrice(counter) {
-  var numOfStationsTravelled = Math.abs(counter);
-  //console.log("numOfStationsTravelled",numOfStationsTravelled)
-  if (numOfStationsTravelled >= 1 && numOfStationsTravelled <= 8) {
-    return 2;
-  } else if (numOfStationsTravelled > 8 && numOfStationsTravelled <= 16) {
-    return 4;
-  } else if (numOfStationsTravelled > 16 & numOfStationsTravelled < 25) {
-    return 6;
-  } else {
-    return false; //invalid range
-  }
 }
 
 /**
@@ -357,8 +390,8 @@ function findAllTicket(req, res, next) {
           _id: ticket._id,
           ticketId: ticket.id,
           passenger: userId,
-          source: ticket.from.nameEng,
-          destination: ticket.to.nameEng,
+          source: ticket.from.name,
+          destination: ticket.to.name,
           price: ticket.price,
           existingPrice: ticket.existingPrice,
           route: ticket.route,
@@ -399,44 +432,8 @@ function findAllMyTicket(req, res, next) {
   };
   TicketDal.findAll(allMyTickets)
     .then((tickets) => {
-      var tickets = JSON.parse(JSON.stringify(tickets));
 
-      var publickTicket = [];
-      var ticket = {}
-      for (var i = 0; i < tickets.length; i++) {
-        ticket = tickets[i];
-        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY hh:mm A");
-
-        var username = ticket.passengerId.username;
-        var email = ticket.passengerId.email;
-        var phone = ticket.passengerId.phone;
-
-        var userId = ticket.passengerId.username;
-        if (email != "noemail@nodomain.com" & phone != "+251000000000")
-          userId = ticket.passengerId.email || ticket.passengerId.phone;
-        var response = {
-          _id: ticket._id,
-          ticketId: ticket.id,
-          passenger: userId,
-          source: ticket.from.nameEng,
-          destination: ticket.to.nameEng,
-          price: ticket.price,
-          existingPrice: ticket.existingPrice,
-          route: ticket.route,
-          type: ticket.type,
-          status: ticket.status,
-          createdAt: createdAt
-        };
-
-
-        response.encryptTicket = encryptTicket(response);
-        // console.log(response)
-        publickTicket.push(response);
-
-      }
-
-
-      handleTicketResponse(res, publickTicket);
+      handleTicketResponse(res, tickets);
     })
     .catch(error => next(error));
 

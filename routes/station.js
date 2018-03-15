@@ -278,6 +278,7 @@ router.get('/', stationController.findAll);
  */
 
 router.get('/paginate', stationController.paginate);
+router.get('/generate/collection', stationController.populate);
 /**
  * @api {get} /stations/search/:name  Search By Station Name
  * @apiVersion 0.1.0

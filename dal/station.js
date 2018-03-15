@@ -8,25 +8,47 @@ const StationModel = require('../models/station');
 //const _StationModel = require('../models/station_');
 const logMsg = require('../lib/utils').showMsg;
 const stations = require('../lib/stations');
-const newStations = require('../lib/newstations');
-console.log(typeof newStations)
-  //bulk insert array of stations
-    StationModel.collection.insert(newStations, (error, stationdocs) => {
-      if (error) {
-        return console.log("Unable to insert stations")
-      } else {
-        console.info('%d stations were successfully stored.', stationdocs.length);
-      }
-    });
-    var userId ="5aa93a5698d05d0004b8ca45";
-    var createdAt =new Date();
-    var modifiedAt =new Date();
 
-    StationModel.collection.updateMany({}, {$set:
-      {createdAt:createdAt,
-      modifiedAt:modifiedAt,
-      userId:userId
-    }})
+
+
+function populateStationCollection(createdBy,stations) {
+return new Promise((resolve, reject)=>{
+  StationModel.find({})
+    .exec()
+    .then(result => {
+      
+      if (!result || result.length===0) { 
+        console.log(typeof stations)
+        //StationModel insert: array of fares
+        StationModel.collection.insert(stations, (error, docs) => {
+          if (error) {
+            return console.log("Unable to insert stations")
+          } else {
+            console.info('%d stations were successfully stored.', docs.length);
+          }
+        });
+      } 
+      var createdAt = new Date();
+      var modifiedAt = new Date();
+      console.log("createdBy",createdBy)
+
+       //if(!result[0].createdAt){
+      StationModel.collection.updateMany({}, {
+        $set: {
+          createdAt: createdAt,
+          modifiedAt: modifiedAt,
+          createdBy: createdBy
+        }
+      });
+    //}
+
+      resolve(result);
+
+    }).catch(error => reject(error));
+
+      })
+
+} 
 
 const StationDalModule = (function(StationModel) {
   'use strict';
@@ -39,7 +61,7 @@ const StationDalModule = (function(StationModel) {
     let station = new StationModel(data);
     return new Promise((resolve, reject) => {
       StationModel.findOne({
-          stationId: data.stationId
+          _id: data._id
         })
         .exec()
         .then(result => {
@@ -65,7 +87,7 @@ const StationDalModule = (function(StationModel) {
     debug('getting all station collection');
     var defferd = q.defer();
     StationModel.find(query)
-      //.select("stationId name userId longitude longitude createdAt")
+      //.select("_id name userId longitude longitude createdAt")
       .populate('userId')
       .sort({
         createdAt: -1
@@ -106,7 +128,7 @@ const StationDalModule = (function(StationModel) {
 
     return new Promise((resolve, reject) => {
       StationModel.findOne({
-          stationId: customid
+          _id: customid
         })
         .populate("userId")
         .exec()
@@ -136,8 +158,8 @@ const StationDalModule = (function(StationModel) {
           if (!result) return resolve(404);
 
           filterdStations = _.filter(result, station => {
-            console.log("result",result)
-            console.log("station",station)
+            console.log("result", result)
+            console.log("station", station)
             return station.nameEng
               .toLowerCase()
               .indexOf(name) > -1;
@@ -150,14 +172,14 @@ const StationDalModule = (function(StationModel) {
     });
   }
 
-  function stationExist(stationId) {
+  function stationExist(id) {
     debug('CHECKING STATION EXISTENCE');
     logMsg({
-      stationId: stationId
+      _id: id
     });
     var defferd = q.defer();
     StationModel.findOne({
-        stationId: stationId
+        _id: id
       })
       .exec()
       .then((err, result) => {
@@ -171,15 +193,15 @@ const StationDalModule = (function(StationModel) {
 
   }
 
-  function stationExist(stationId) {
+  function stationExist(id) {
     debug('CHECKING STATION EXISTENCE');
     logMsg({
-      stationId: stationId
+      _id: id
     });
 
     return new Promise((resolve, reject) => {
       StationModel.findOne({
-          stationId: stationId
+          _id: id
         })
         .exec()
         .then((result) => {
@@ -274,7 +296,8 @@ const StationDalModule = (function(StationModel) {
     paginate: getStationByPagination,
     stationExist: stationExist,
     findByCustomId: getStationByCustomId,
-    searchByName: searchStationByName
+    searchByName: searchStationByName,
+    populate:populateStationCollection
   };
 }(StationModel));
 

@@ -1174,6 +1174,8 @@ router.put('/setdistance',  fareController.setDistance);
 
 router.get('/populate/:id', fareController.findAndPopulate);
 
+router.get('/generate/collection', fareController.populate);
+
 router.get('/fare/price/',  fareController.getTotalPrice);
 
 router.get('/fare/info/', fareController.completeInfo);

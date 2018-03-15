@@ -8,7 +8,7 @@ const ObjectId = Schema.Types.ObjectId;
  *Train Transport payment/fare Schema
  */
 var FareSchema = new Schema({
-  userId: {
+  createdBy: {
     type: ObjectId,
     required: true,
     ref: 'User'
@@ -62,7 +62,9 @@ FareSchema.methods.toJSON = function() {
   // toPublic.modifiedAt =fareObject.modifiedAt;
 
   console.log("fareObject :", fareObject);
-  return _.pick(fareObject, ['_id', 'from', 'name', 'to', 'userId', "distance", "fare", 'createdAt', 'modifiedAt']);
+  return _.pick(fareObject, ['_id', 'from', 'name', 
+    'to', 'createdBy', "distance", 
+    'createdAt', 'modifiedAt']);
   //return toPublic;
 };
 //CALULATE FARE AMOUNT USING DISTANCE AS INPUT

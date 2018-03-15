@@ -10,12 +10,12 @@ const Station = require('../models/station');
 
 const StationDal = require('../dal/station');
 const utils = require('../lib/utils');
-const stations = require('../lib/stations');
+
 //console.log(stations)
 
 //private members
 function _validateStationRegistationInput(req, res, next) {
-  req.checkBody('stationId', 'station id is required').notEmpty();
+  req.checkBody('_id', 'station id is required').notEmpty();
   req.checkBody('nameEng', 'station nameEng is required').notEmpty();
   req.checkBody('nameAmh', 'station nameAmh is required').notEmpty();
   req.checkBody('route', 'route is required').notEmpty();
@@ -49,23 +49,22 @@ function getStationAttributes(req, method, station) {
   var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY");
   var user = station.userId;
 
-  var email =user.email || "";
-  var phone =user.phone || "";
-  if(user.email !="noemail@nodomain.com")
-      email =user.email;
-  if(user.phone != "+251000000000");
-      phone =user.phone || "";
+  var email = user.email || "";
+  var phone = user.phone || "";
+  if (user.email != "noemail@nodomain.com")
+    email = user.email;
+  if (user.phone != "+251000000000");
+  phone = user.phone || "";
   var userId = user.username || email || phone;
 
   var nameEng = station.nameEng;
   var nameAmh = station.nameAmh;
-  console.log("nameEng",nameEng);
-  console.log("nameAmh",nameAmh);
+  console.log("nameEng", nameEng);
+  console.log("nameAmh", nameAmh);
 
-var response ={
+  var response = {
     _id: station._id,
-    createdBy: userId, //user should be admin
-    stationId: station.stationId,
+    //createdBy: userId, //user should be admin
     nameEng: station.nameEng,
     nameAmh: station.nameAmh,
     route: station.route,
@@ -78,7 +77,7 @@ var response ={
       url
     }
   };
-  console.log("station",response)
+  console.log("station", response)
   return response;
 
 }
@@ -89,9 +88,9 @@ function createStation(req, res, next) {
   _validateStationRegistationInput(req, res, next);
   var body = req.body;
   body.userId = req.user._id;
-  var stationId = body.stationId;
+  var _id = body._id;
   //pick only the required attributes from the body
-  var body = _.pick(req.body, ["nameEng", "nameAmh", "stationId", "userId", "longitude", "latitude", "route"]);
+  var body = _.pick(req.body, ["nameEng", "nameAmh", "_id", "userId", "longitude", "latitude", "route"]);
   //console.log("body",body);
   //  create if fare doesn't exists from to station
   StationDal.create(body)
@@ -99,7 +98,7 @@ function createStation(req, res, next) {
       console.log("station :: ", createdStation)
       if (createdStation === 400)
         return res.status(400).send({
-          "message": body.stationId + " station already exists"
+          "message": body._id + " station already exists"
         });
       var response = getStationAttributes(req, "POST", createdStation);
       utils.handleResponse(res, 201, response); //station created succesfully
@@ -160,12 +159,16 @@ function searchStationByName(req, res, next) {
  */
 function findStationById(req, res, next) {
   console.log('GETTING STATION BY ID:');
-  var stationId = req.params.id.trim();
+  var station_id = parseFloat(req.params.id.trim());
   //chech if station ObjectId is valid or not
-  var validObjectId = mongoose.Types.ObjectId.isValid(stationId);
+  var validStationId = isNumeric(station_id);
 
-  if (validObjectId) {
-    StationDal.findById(stationId)
+  function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+
+  if (validStationId) {
+    StationDal.findById(station_id)
       .then(station => {
         if (station) {
           var token = req.token;
@@ -175,7 +178,7 @@ function findStationById(req, res, next) {
           //set header
           //console.log("token",token);
           // res.header("x-auth",token);
-          // res.rediret("http://localhost:5000/stations/"+stationId)
+          // res.rediret("http://localhost:5000/stations/"+_id)
           return utils.handleResponse(res, 200, response);
         }
         //else
@@ -214,12 +217,12 @@ function getStationByCustomId(req, res, next) {
 function updateStationInfo(req, res, next) {
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
-  var stationData = _.pick(req.body, ["nameEng", "nameAmh", "stationId", "latitude", "longitude", "route", "modifiedAt"]);
+  var stationData = _.pick(req.body, ["nameEng", "nameAmh", "_id", "latitude", "longitude", "route", "modifiedAt"]);
   console.log("stationData", stationData)
   var updates = {
     nameEng: req.body.nameEng,
     nameAmh: req.body.nameAmh,
-    stationId: req.body.stationId,
+    _id: req.body._id,
     latitude: req.body.latitude,
     longitude: req.body.longitude,
     route: req.body.route,
@@ -293,6 +296,26 @@ function findStationByPagination(req, res, next) {
 }
 
 /**
+ * populate stations collection automatically
+ */
+function populateFareCollection(req, res, next) {
+  const stations = require('../lib/newstations');
+  var userId = req.user._id;
+  console.log("userId", userId)
+  StationDal.populate(userId, stations)
+    .then(result => {
+      if (result)
+        res.send({
+          stationCount: result.length,
+          result
+        })
+    })
+    .catch(error => next(error));
+
+}
+
+
+/**
  *II. Export station Controllers
  */
 module.exports = {
@@ -303,5 +326,6 @@ module.exports = {
   update: updateStationInfo,
   delete: deleteStationById,
   paginate: findStationByPagination,
-  findByCustomId: getStationByCustomId
+  findByCustomId: getStationByCustomId,
+  populate: populateFareCollection
 }

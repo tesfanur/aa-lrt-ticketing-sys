@@ -324,6 +324,28 @@ var FareModule = (function(FareDal) {
   }
 
   /**
+   * populate fare collection automatically
+   */
+  function populateFareCollection(req, res, next) {
+    const fares = require('../lib/newfares');
+    // console.log("fares",fares)
+    // console.log(typeof fares)
+    var userId = req.user._id;
+    console.log("userId", userId)
+    FareDal.populate(userId, fares)
+      .then(result => {
+        if (result)
+          res.send({
+            fareCount: result.length,
+            result
+          })
+      })
+      .catch(error => next(error));
+
+  }
+
+
+  /**
    *Return public API
    */
   return {
@@ -337,7 +359,8 @@ var FareModule = (function(FareDal) {
     setFareAmount: setFareAmount,
     setDistance: setDistance,
     getTotalPrice: getTotalPrice,
-    completeInfo: getCompleteFareInfo
+    completeInfo: getCompleteFareInfo,
+    populate: populateFareCollection
   };
 
 }(FareDal));
