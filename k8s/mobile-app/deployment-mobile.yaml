@@ -17,7 +17,7 @@ spec:
         env: staging
     spec:
       containers:
-      - name: mobile-service
+      - name: mobile-app-service
         image: gcr.io/gcr-project/sample:1.0.0
         env:
           - name: MONGO_PRO
