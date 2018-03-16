@@ -20,11 +20,11 @@ spec:
       - name: mobile-service
         image: gcr.io/gcr-project/sample:1.0.0
         env:
-          - name: MONGODB_URL
+          - name: MONGO_PRO
             valueFrom:
               secretKeyRef:
                 name: mongo-secret
-                key: MONGODB_URL
+                key: MONGO_PRO
         resources:
           limits:
             memory: "500Mi"
