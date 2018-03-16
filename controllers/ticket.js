@@ -459,7 +459,33 @@ function findTicketById(req, res, next) {
   if (validObjectId) {
     TicketDal.findById(ticketId)
       .then(ticket => {
-        handleTicketResponse(res, ticket);
+        console.log("ticket",ticket)
+         if(!ticket || ticket===404) return res.status(404).send({query_result:"Invalid Ticket"})
+         ticket = JSON.parse(JSON.stringify(ticket));
+
+        var username = ticket.passengerId.username ||"";
+        var email = ticket.passengerId.email||"";
+        var phone = ticket.passengerId.phone||"";
+        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
+         if (email != "noemail@nodomain.com" & phone != "+251000000000")
+         var userId = username|| email||phone;
+         var response = {
+            message:"Valid ticket",
+           _id: ticket._id,
+           ticketId: ticket.id,
+           passenger: userId,
+           sourceEng: ticket.from.nameEng,
+           destinationEng: ticket.to.nameEng,
+           sourceAmh: ticket.from.nameAmh,
+           destinationAmh: ticket.to.nameAmh,
+           price: ticket.price,
+           route: ticket.route,
+           type: ticket.type,
+           status: ticket.status,
+           createdAt: createdAt
+         };
+
+        handleTicketResponse(res, {query_result:response});
       })
       .catch(error => next(error));
 
@@ -654,7 +680,7 @@ decrypt_ticket(encryptedTicket)
                                createdAt: createdAt
                              };
 
-                          res.send(response);
+                          res.send({query_result:response});
                            })
                            .catch(error => next(error));
 
