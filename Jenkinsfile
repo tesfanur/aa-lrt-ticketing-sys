@@ -1,7 +1,7 @@
 node {
   def project = 'devops-trainee-teshome'
   def appName = 'mobile-app-service'
-  def nameSpace='mobile-app'
+  def nameSpace= 'mobile-app'
   def cluster='jenkins-cd'
   def feSvcName = "PROJECT-${appName}"
   def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
