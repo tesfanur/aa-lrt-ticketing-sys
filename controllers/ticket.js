@@ -125,7 +125,7 @@ if(!IsJsonString(str)){
   // decryptedTicket =decryptedTicket.toObject()
   //decryptedTicket =_.pick(decryptedTicket,"generateTicket _id route passengerId from to price existingPrice createdAt status type id")
   var result = {
-    encryptedTicket: encryptedTicket,
+    query_result: encryptedTicket,
     decryptedTicket: decryptedTicket
   }
   return result;
@@ -442,7 +442,7 @@ function findAllMyTicket(req, res, next) {
       }
 
 
-      handleTicketResponse(res, publickTicket);
+      handleTicketResponse(res, {query_result: publickTicket});
     })
     .catch(error => next(error));
 

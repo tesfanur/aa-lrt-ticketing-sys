@@ -191,6 +191,27 @@ function findUserById(req, res) {
 
 }
 /**
+ *5. Find user by their username controller
+ */
+function findByUsername(req, res,next) {
+  console.log('Getting user by id:');
+  var username = req.params.username;
+  //chech if User ObjectId is valid or not
+  var validObjectId =  req.params.username!="";
+  if (validObjectId) {
+    UserDal.findByUsername(username)
+      .then(user => handleUserResponse(res, req.method, user))
+      .catch(error => next(error));
+  } else {
+    res.status(400).send({
+      "message": "Username required"
+    });
+  }
+
+
+}
+
+/**
  *5. Update User Info Controller
  */
 function updateUserInfo(req, res) {
@@ -273,6 +294,7 @@ module.exports = {
   create: create_user,
   findAll: findAllUser,
   findById: findUserById,
+  findByUsername:findByUsername,
   update: updateUserInfo,
   delete: deleteUserById,
   login: user_login,

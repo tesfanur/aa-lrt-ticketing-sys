@@ -102,9 +102,14 @@ const TicketDalModule = (function(TicketModel) {
         })
         .populate('from', "nameEng nameAmh route _id")
         .populate('to', "nameEng nameAmh route _id")
-        .populate('passengerId', "email phone")
+        .populate('passengerId', "email phone username")
         .exec()
         .then((result) => {
+
+          var ticket ={
+            passenger: result.passengerId
+          }
+          console.log("ticket",ticket);
           if (!result) return resolve(404); //ticket not found
           return resolve(result);
         }, function(err) {
@@ -298,8 +303,12 @@ const TicketDalModule = (function(TicketModel) {
           if (err) return reject("couldn't get image file from " + imagePath)
           var bytes = cryptoJS.AES.decrypt(decodedResult, 'secret key 123');
           var decryptedData = JSON.parse(bytes.toString(cryptoJS.enc.Utf8));
+          // var result = {
+          //   encryptedTicket: decodedResult,
+          //   decryptedTicket: decryptedData
+          // }
           var result = {
-            encryptedTicket: decodedResult,
+            query_result: decodedResult,
             decryptedTicket: decryptedData
           }
 

@@ -215,6 +215,8 @@ router.get('/',userController.findAll);
  *@apiUse UnauthorizedError
  */
 router.get('/:userId',userController.findById);
+//
+router.get('/search/:username',userController.findByUsername);
 /**
  * @api {put} /Users/:userId Update User
  * @apiName putUser

@@ -64,6 +64,22 @@ var UserDalModule = (function(UserModel) {
     return defferd.promise;
   }
   /**
+   *3.Get User by Id
+   */
+  function getUserByUsername(username) {
+    debug('GETTING USER BY ID');
+    var defferd = q.defer();
+    UserModel.findOne({
+        username: username
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
+  /**
    *4.FIND USER BY EMAIL
    */
   function findUserByEmail(email) {
@@ -95,7 +111,7 @@ var UserDalModule = (function(UserModel) {
   }
   /**
    *find user by one of these["email","username","phone"] fields
-   */ 
+   */
 
   function findUserByUserID(userId) {
     debug('GETTING USER BY userid');
@@ -217,6 +233,7 @@ var UserDalModule = (function(UserModel) {
     login: userLogin,
     findAll: getAllUsers,
     findById: getUserById,
+    findByUsername:getUserByUsername,
     update: updateUser,
     delete: deleteUser,
     findUserByEmail: findUserByEmail,
