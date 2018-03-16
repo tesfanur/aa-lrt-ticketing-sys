@@ -1,0 +1,40 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: mobile-app-deployment
+spec:
+  selector:
+    matchLabels:
+      app: mobile-app-service
+      role: mobile
+  replicas: 1
+  template:
+    metadata:
+      name: api-deployment
+      labels:
+        app: mobile-app-service
+        role: mobile
+        env: staging
+    spec:
+      containers:
+      - name: mobile-app-service
+        image: gcr.io/gcr-project/sample:1.0.0
+        env:
+          - name: MONGODB_URL
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secret
+                key: MONGODB_URL
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+        #args: ['--env="HOST_IP=$(HOST_IP)"','--env="API_URL=$(API_URL)"','--env="MONGODB_URL=$(MONGODB_URL)"']
+        ports:
+        - name: mobile-app-service
+          containerPort: 5000
