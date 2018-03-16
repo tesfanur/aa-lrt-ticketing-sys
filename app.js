@@ -4,13 +4,20 @@
 var cors = require('cors'),
 	morgan = require('morgan'),
 	express = require('express'),
-	passport = require('passport'),
 	mongoose = require('mongoose'),
 	bodyParser = require('body-parser'),
 	debug = require('debug')('api'),
 	cookieParser = require('cookie-parser'),
 	session = require('express-session'),
-	validate = require('express-validator');
+	validate = require('express-validator'),
+	RateLimit = require('express-rate-limit');
+
+var apiLimiter = new RateLimit({
+  windowMs: 15*60*1000, // 15 minutes
+  max: 100,
+  delayMs: 0 // disabled
+});
+
 /**
  *Load local module dependecies
  */
@@ -23,6 +30,13 @@ var router = require('./routes'),
 
 //instantiate express -server
 var app = express();
+// apply RateLimit for requests that begin with
+//tickets, users, stations, fares
+app.use('/tickets/', apiLimiter);
+app.use('/users/', apiLimiter);
+app.use('/stations/', apiLimiter);
+app.use('/fares/', apiLimiter);
+
 app.disable('x-powered-by');
 app.set('x-powered-by', false);
 

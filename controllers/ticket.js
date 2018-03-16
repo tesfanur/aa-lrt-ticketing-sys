@@ -42,31 +42,58 @@ const utils = require('../lib/utils');
  *******/
 
 function getTicketAttributes(req, method, ticket) {
-  if (!ticket) return {};
-  var url = req.protocol + '://' +
-    req.hostname + req.originalUrl;
-  var createdAt = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
-  var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
-  var passenger = ticket.passengerId
-  var source = ticket.from.name || "";
-  var destination = ticket.to.name || "";
-  var passenger = ticket.passengerId
-  var passenger = ticket.passengerId
+  //===================================================
+          var username = ticket.passengerId.username ||"";
+          var email = ticket.passengerId.email||"";
+          var phone = ticket.passengerId.phone||"";
+          var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
+           if (email != "noemail@nodomain.com" & phone != "+251000000000")
+           var userId = username|| email||phone;
+           var response = {
+              message:"Valid ticket",
+             _id: ticket._id,
+             ticketId: ticket.id,
+             passenger: userId,
+             sourceEng: ticket.from.nameEng,
+             destinationEng: ticket.to.nameEng,
+             sourceAmh: ticket.from.nameAmh,
+             destinationAmh: ticket.to.nameAmh,
+             price: ticket.price,
+             route: ticket.route,
+             type: ticket.type,
+             status: ticket.status,
+             createdAt: createdAt
+           };
+return response;
 
-  return {
-    _id: ticket._id,
-    //passenger : passenger,//user should be admin
-    ticketId: ticket.id,
-    route: ticket.from.route,
-    from: ticket.from.name,
-    to: ticket.to.name,
-    createdAt: createdAt,
-    modifiedAt: modifiedAt,
-    request: {
-      method,
-      url
-    }
-  };
+  //===================================================
+  // if (!ticket) return {};
+  // var url = req.protocol + '://' +
+  //   req.hostname + req.originalUrl;
+  // var createdAt = moment(ticket.createdAt).format("DD-MMM-YYYY hh:mm A");
+  // var modifiedAt = moment(ticket.modifiedAt).format("DD-MMM-YYYY hh:mm A");
+  // var passenger = ticket.passengerId
+  // var sourceEng = ticket.from.nameEng || "";
+  // var destinationEng = ticket.to.nameEng || "";
+  // var sourceAmh = ticket.from.nameAmh || "";
+  // var destinationAmh = ticket.to.nameAmh || "";
+  // var passenger = ticket.passengerId
+  // var passenger = ticket.passengerId
+  //
+  // return {
+  //   _id: ticket._id,
+  //   //passenger : passenger,//user should be admin
+  //   ticketId: ticket.id,
+  //   route: ticket.from.route,
+  //   from: ticket.from.name,
+  //   to: ticket.to.name,
+  //   createdAt: createdAt,
+  //   modifiedAt: modifiedAt,
+  //   // request: {
+  //   //   method,
+  //   //   url
+  //   // }
+  // };
 
 }
 
@@ -460,38 +487,15 @@ function findTicketById(req, res, next) {
     TicketDal.findById(ticketId)
       .then(ticket => {
         console.log("ticket",ticket)
-         if(!ticket || ticket===404) return res.status(404).send({query_result:"Invalid Ticket"})
+         if(!ticket) return res.status(404).send({query_result:"No matching ticket found"})
          ticket = JSON.parse(JSON.stringify(ticket));
-
-        var username = ticket.passengerId.username ||"";
-        var email = ticket.passengerId.email||"";
-        var phone = ticket.passengerId.phone||"";
-        var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
-         if (email != "noemail@nodomain.com" & phone != "+251000000000")
-         var userId = username|| email||phone;
-         var response = {
-            message:"Valid ticket",
-           _id: ticket._id,
-           ticketId: ticket.id,
-           passenger: userId,
-           sourceEng: ticket.from.nameEng,
-           destinationEng: ticket.to.nameEng,
-           sourceAmh: ticket.from.nameAmh,
-           destinationAmh: ticket.to.nameAmh,
-           price: ticket.price,
-           route: ticket.route,
-           type: ticket.type,
-           status: ticket.status,
-           createdAt: createdAt
-         };
-
-        handleTicketResponse(res, {query_result:response});
+        handleTicketResponse(res, {query_result:getTicketAttributes(req, "GET", ticket)});
       })
       .catch(error => next(error));
 
   } else {
     res.status(400).send({
-      "message": "Ticket Id is not valid"
+      "query_result": "Ticket Id is not valid"
     });
   }
 }
@@ -513,13 +517,12 @@ function findTicketByCustomId(req, res, next) {
 function updateTicketInfo(req, res, next) {
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
-  var ticketData = _.pick(req.body, ["name", "ticketId", "latitude", "longitude", "route", "modifiedAt"]);
+  var ticketData = _.pick(req.body, ["nameEng", "nameAmh","ticketId","", "route", "modifiedAt"]);
   console.log("ticketData", ticketData)
   var updates = {
-    name: req.body.name,
+    nameEng: req.body.nameEng,
+    nameAmh: req.body.nameAmh,
     ticketId: req.body.ticketId,
-    latitude: req.body.latitude,
-    longitude: req.body.longitude,
     route: req.body.route,
     modifiedAt: req.body.modifiedAt
   };
@@ -540,11 +543,10 @@ function updateTicketInfo(req, res, next) {
         var response ={
           _id:updatedticket._id,
           ticketId:updatedticket.ticketId,
-          source:updatedticket.from.name,
-          destination:updatedticket.to.name,
+          source:updatedticket.from.nameEng,
+          destination:updatedticket.to.nameEng,
           source:updatedticket.from.name,
           price:updatedticket.price,
-          existingPricee:updatedticket.existingPricee,
         }
         console.log("ticket",response);
         }
@@ -570,25 +572,24 @@ function updateTicketInfo(req, res, next) {
 
   TicketDal.updateStatus(query, updates)
     .then(updatedticket => {
-      if(updatedticket===404 || updatedticket===400) return res.status(404).send({"query_result":"This ticket has been already used."})
+      if(updatedticket===404 || updatedticket===400)
+      return res.status(404).send({"query_result":"This ticket has been already used."})
+
       if(updatedticket){
       updatedticket=JSON.parse(JSON.stringify(updatedticket));
       var modifiedAt =moment(updatedticket.modifiedAt).format("Do-MMM-YYYY");
-      var response ={
-        query_result:"updated",
-        _id:updatedticket._id,
-        ticketId:updatedticket.id,
-        source:updatedticket.from.name,
-        destination:updatedticket.to.name,
-        price:updatedticket.price,
-        existingPrice:updatedticket.existingPrice,
-        status:updatedticket.status,
-        modifiedAt:modifiedAt,
+          var response ={
+            query_result:"updated",
+            _id:updatedticket._id,
+            ticketId:updatedticket.id,
+            source:updatedticket.from.nameEng,
+            destination:updatedticket.to.nameEng,
+            price:updatedticket.price,
+            status:updatedticket.status,
+            modifiedAt:modifiedAt,
+          }
       }
-      console.log("ticket",response);
-      }
-        console.log("ticket",response);
-      handleTicketResponse(res, response);
+      handleTicketResponse(res, {query_result: getTicketAttributes(req,"PUT",updatedticket)});
     })
     .catch(error => next(error));
 }

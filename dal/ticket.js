@@ -105,12 +105,7 @@ const TicketDalModule = (function(TicketModel) {
         .populate('passengerId', "email phone username")
         .exec()
         .then((result) => {
-
-          var ticket ={
-            passenger: result.passengerId
-          }
-          console.log("ticket",ticket);
-          if (!result) return resolve(404); //ticket not found
+          //if (!result) return resolve(404); //ticket not found
           return resolve(result);
         }, function(err) {
           reject(err);
