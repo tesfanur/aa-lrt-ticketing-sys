@@ -188,7 +188,14 @@ router.get('/',userController.findAll);
  * @apiPermission authenticated user
  *
  * @apiExample {js} Example usage:
- * $http.defaults.headers.common["Authorization"] = token;
+ * @apiHeader  Authorization JWT token value
+ * @apiHeader Content-Type (application/json).
+ * @apiSuccess (Success 200) {text} Location URI of created Thing.
+ * @apiSuccess (Success 200) {text} body Thing id.
+ * @apiError {text} 401/Unauthorized.
+ * @apiError {text} 403/Access Denied
+
+ * $http.header("Authorization") = token;
  * $http.get(url)
  *   .success((res, status) => doSomethingHere())
  *   .error((err, status) => doSomethingHere());

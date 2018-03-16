@@ -12,12 +12,14 @@ var cors = require('cors'),
 	validate = require('express-validator'),
 	RateLimit = require('express-rate-limit');
 
+/**
+*API request limiter
+*/
 var apiLimiter = new RateLimit({
   windowMs: 15*60*1000, // 15 minutes
   max: 100,
   delayMs: 0 // disabled
 });
-
 /**
  *Load local module dependecies
  */

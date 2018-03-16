@@ -193,11 +193,11 @@ function findUserById(req, res) {
 /**
  *5. Find user by their username controller
  */
-function findByUsername(req, res,next) {
+function findByUsername(req, res, next) {
   console.log('Getting user by id:');
   var username = req.params.username;
   //chech if User ObjectId is valid or not
-  var validObjectId =  req.params.username!="";
+  var validObjectId = req.params.username != "";
   if (validObjectId) {
     UserDal.findByUsername(username)
       .then(user => handleUserResponse(res, req.method, user))
@@ -217,8 +217,11 @@ function findByUsername(req, res,next) {
 function updateUserInfo(req, res) {
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
-  var setUpdates = _.pick(req.body, ["email", "password", "phone", "userType", "modifiedAt"]);
+  var setUpdates = _.pick(req.body, ["email", "username", "password",
+    "phone", "userType", "modifiedAt"
+  ]);
   var updates = {
+    username: setUpdates.username,
     email: setUpdates.email,
     phone: setUpdates.phone,
     userType: setUpdates.userType
@@ -294,7 +297,7 @@ module.exports = {
   create: create_user,
   findAll: findAllUser,
   findById: findUserById,
-  findByUsername:findByUsername,
+  findByUsername: findByUsername,
   update: updateUserInfo,
   delete: deleteUserById,
   login: user_login,

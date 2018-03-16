@@ -120,7 +120,7 @@ function findAllStation(req, res, next) {
       var response = {
         stationCount: stationCount,
         stations: stations.map((st) => {
-        return res.send(stations)
+          return res.send(stations)
           //return getStationAttributes(req, "GET", st);
         })
       }
