@@ -101,6 +101,19 @@ var router = express.Router();
  * @apiSuccess(Success 201) {String} status The status of Ticket usage[unused, used, cancelled]
   * @apiSuccess(Success 201) {String} type The type of ticket[default: for adult]
 */
+/**
+ * @apiDefine TicketCreationSuccess
+  * @apiVersion 0.2.0
+ * @apiSuccess(Success 201) {Object} _id      A Unique id of Ticket document
+ * @apiSuccess(Success 201) {Number} from     The starting/source station custom id
+ * @apiSuccess(Success 201) {Number} to       The  ending/destination  station  custom id
+ * @apiSuccess(Success 201) {String} route    The route where the passenger want to travel
+ * @apiSuccess(Success 201) {Object} passenger The Ticket owner/passenger Object
+ * @apiSuccess(Success 201) {Number} price The price of the ticket
+ * @apiSuccess(Success 201) {Date} createdAt The Date time when Ticket bought
+ * @apiSuccess(Success 201) {String} status The status of Ticket usage[unused, used, cancelled]
+  * @apiSuccess(Success 201) {String} type The type of ticket[default: for adult]
+*/
 // ------------------------------------------------------------------------------------------
 // Current Permissions.
 // ------------------------------------------------------------------------------------------
@@ -116,6 +129,30 @@ var router = express.Router();
  *      "message":"Access denied"
  *     }
  */
+ /**
+  * @apiDefine UnauthorizedError
+  * @apiVersion 0.2.0
+  *
+  * @apiError Unauthorized Only authenticated users can access the endpoint.
+  *
+  * @apiErrorExample  Unauthorized-Error-Response:
+  *     HTTP 401 Unauthorized
+  *     {
+  *      "query_result":"Access denied"
+  *     }
+  */
+ /**
+  * @apiDefine UnauthorizedError
+  * @apiVersion 0.2.0
+  *
+  * @apiError Unauthorized Only authenticated users can access the endpoint.
+  *
+  * @apiErrorExample  Unauthorized-Error-Response:
+  *     HTTP 401 Unauthorized
+  *     {
+  *      "query_result":"Access denied"
+  *     }
+  */
  /**
   * @apiDefine UnauthorizedError
   * @apiVersion 0.2.0
@@ -426,6 +463,47 @@ router.get('/paginate', ticketController.paginate);
   *@apiUse TicketNotFoundError
   *@apiUse InternalServerError
  */
+ /**
+  * @api {get} /tickets/:id  Get Ticket By Id
+  * @apiVersion 0.2.0
+  * @apiName GetTicket
+  * @apiGroup Ticket
+  * @apiPermission admin
+  *
+  *
+  * http://localhost:5000/tickets/5a96bb56b623564f3c04c7b6
+  *
+  *@apiDescription Retrieve ticket by their Id
+  * @apiParam {String} id The ticket id
+  *
+  * @apiExample {js} Request-Example:
+  * $http.header("Authorization") = jwtwebtoken;
+  *
+  * @apiUse TicketSuccess
+  *
+  * @apiSuccessExample {json} Response-Success-Example:
+   *  HTTP 200 OK
+   {
+    "query_result": {
+        "message": "Valid ticket",
+        "_id": "5aaa9265a4b9633b1459580a",
+        "ticketId": "BkgDV7OKG",
+        "sourceEng": "Nefas Silik 1",
+        "destinationEng": "Abnet",
+        "sourceAmh": "ንፋስ ስልክ 1",
+        "destinationAmh": "አብነት",
+        "price": 4,
+        "route": "NS",
+        "type": "one way",
+        "status": "returned",
+        "createdAt": "15th-Mar-2018"
+    }
+}
+   *@apiUse InvalidSationIdError
+   *@apiUse UnauthorizedError
+   *@apiUse TicketNotFoundError
+   *@apiUse InternalServerError
+  */
 router.get('/:id', ticketController.findById);
 //validateTicket
 router.post('/validate/ticket/', ticketController.validateTicket);
