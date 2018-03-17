@@ -291,21 +291,11 @@ router.get('/generate/collection', stationController.populate);
  * @apiParam {String} id The station id
  *
  * @apiExample {js} Request-Example:
- * $http.defaults.headers.common["Authorization"] = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+ * $http.headers.("Authorization") = token;
  *
  * @apiSuccess {String} _id The station id
  * @apiSuccess {String} name The station name
- *
- * @apiSuccessExample {json} Response-Success-Example:
-  *     HTTP 200 OK
-  *     {
-  *        "_id": "57e8e94ea06a0c473bac50cc",
-  *        "name": "Do the disehs",
-  *        "__v": 0
-  *      }
+  *
   *
   * @apiUse SationNotFoundError
   * @apiUse UnauthorizedError
@@ -326,10 +316,7 @@ router.get('/search/:name', stationController.searchByName);
    * @apiParam {String} id The station id
    *
    * @apiExample {js} Request-Example:
-   * $http.defaults.headers.common["Authorization"] = token;
-   * $http.get(url)
-   *   .success((res, status) => doSomethingHere())
-   *   .error((err, status) => doSomethingHere());
+   * $http.header("Authorization") = token;
    *
    * @apiSuccess {String} _id The station id
    * @apiSuccess {String} name The station name
@@ -378,10 +365,7 @@ router.get('/:id', stationController.findById);
  * @apiParam {String} id The station id
  *
  * @apiExample {js} Request-Example:
- * $http.defaults.headers.common["Authorization"] = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+ * $http.header.("Authorization") = token;
  *
  * @apiSuccess {String} _id The station id
  * @apiSuccess {String} name The station name

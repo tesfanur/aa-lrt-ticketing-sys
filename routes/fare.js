@@ -1063,10 +1063,7 @@ router.get('/paginate', fareController.paginate);
  * @apiParam {String} id The fare id
  *
  * @apiExample {js} Request-Example:
- * $http.defaults.headers.common["Authorization"] = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+ * $http.header("Authorization") = jwtwebtoken; 
  *
  * @apiSuccess {String} _id The fare id
  * @apiSuccess {String} name The fare name

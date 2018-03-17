@@ -86,7 +86,7 @@ var userController = require('../controllers/user');
  */
  function create() { return; }
 router.post('/signup',userController.create);
-router.get('/signup',userController.create);
+
 /**
  * @api {post} /Users/login Login User
  * @apiName LoginUser
@@ -178,7 +178,6 @@ router.post('/login', userController.login);
  */
 function findAll() { return; }
 router.get('/',userController.findAll);
-router.get('/paginate', userController.paginate);
 /**
  * @api {get} /Users/:userId Get User
  * @apiName GetUser
@@ -188,18 +187,12 @@ router.get('/paginate', userController.paginate);
  * @apiVersion 0.1.0
  * @apiPermission authenticated user
  *
- * @apiExample {js} Example usage:
  * @apiHeader  Authorization JWT token value
  * @apiHeader  [Accept=application/json] application/json
- * @apiSuccess (Success 200) {text} Location URI of created Thing.
- * @apiSuccess (Success 200) {text} body Thing id.
  * @apiSatus {text} 401/Unauthorized.
  * @apiStatus {text} 403/Access Denied
 
- * $http.header("Authorization") = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+ * $http.header("Authorization") = jwtwebtoken;
  *
  * @apiSuccess {String} _id The User id
  *
@@ -223,7 +216,7 @@ router.get('/paginate', userController.paginate);
  *@apiUse UnauthorizedError
  */
 router.get('/:userId',userController.findById);
-//
+
 router.get('/search/:username',userController.findByUsername);
 /**
  * @api {put} /Users/:userId Update User
@@ -279,8 +272,8 @@ router.put('/:userId', userController.update);
  *@apiUse UnauthorizedError
  */
 router.delete('/:userId', userController.delete);
+router.get('/paginate', userController.paginate);
 //router.delete('/me/logout', userController.logout);
 router.get('/me/logout', userController.logout);
-
 //expose router to other files
 module.exports =router;

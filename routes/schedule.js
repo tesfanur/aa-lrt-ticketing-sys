@@ -335,10 +335,7 @@ router.get('/paginate', scheduleController.paginate);
  * @apiParam {String} id The schedule id
  *
  * @apiExample {js} Request-Example:
- * $http.defaults.headers.common["Authorization"] = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+ * $http.header("Authorization") = jwtwebtoken;
  *
  * @apiSuccess {String} _id The schedule id
  * @apiSuccess {String} name The schedule name
@@ -370,10 +367,7 @@ router.get('/search/:name', scheduleController.searchByName);
    * @apiParam {String} id The schedule id
    *
    * @apiExample {js} Request-Example:
-   * $http.defaults.headers.common["Authorization"] = token;
-   * $http.get(url)
-   *   .success((res, status) => doSomethingHere())
-   *   .error((err, status) => doSomethingHere());
+   * $http.header("Authorization") = jwtwebtoken;
    *
    * @apiSuccess {String} _id The schedule id
    * @apiSuccess {String} name The schedule name
@@ -413,10 +407,7 @@ router.get('/:id', scheduleController.findById);
  * @apiParam {String} id The schedule id
  *
  * @apiExample {js} Request-Example:
- * $http.defaults.headers.common["Authorization"] = token;
- * $http.get(url)
- *   .success((res, status) => doSomethingHere())
- *   .error((err, status) => doSomethingHere());
+* $http.header("Authorization") = jwtwebtoken;
  *
  * @apiSuccess {String} _id The schedule id
  * @apiSuccess {String} name The schedule name

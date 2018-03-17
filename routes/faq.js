@@ -72,10 +72,7 @@ const router = express.Router();
     *  }
     * }
     *
-    * $http.defaults.headers.common["Authorization"] = token;
-    * $http.post(url, data)
-    *   .success((res, status) => doSomethingHere())
-    *   .error((err, status) => doSomethingHere());
+    * $http.header("Authorization") = jwtwebtoken;
     *
     * @apiSuccess (Success 201) {String} question.description Faq description of the question
     * @apiUse FaqCreationSuccess
@@ -109,10 +106,7 @@ router.post('/', faqController.create);
     *
     * @apiDescription list all frequently asked questions
     * @apiExample {js} Request-Example:
-    * $http.defaults.headers.common["Authorization"] = token;
-    * $http.get(url)
-    *   .success((res, status) => doSomethingHere())
-    *   .error((err, status) => doSomethingHere());
+    * $http.header("Authorization") = jwtwebtoken;
     *
     *apiUse FaqSuccess
     * @apiUse FaqSuccess
@@ -121,7 +115,6 @@ router.post('/', faqController.create);
     *     HTTPS 200 OK
     {
       "_id": "5a9292dc2023554038ff9f87",
-      "__v": 0,
       "answer": {
           "modifiedAt": "2018-02-25T10:41:32.663Z",
           "createdAt": "2018-02-25T10:41:32.663Z",
@@ -148,10 +141,7 @@ router.post('/', faqController.create);
     *
     * @apiDescription list all frequently asked question by pagination
     * @apiExample {js} Request-Example:
-    * $http.defaults.headers.common["Authorization"] = token;
-    * $http.get(url)
-    *   .success((res, status) => doSomethingHere())
-    *   .error((err, status) => doSomethingHere());
+    * $http.header("Authorization") = jwtwebtoken;
     *
     *@apiUse FaqSuccess
     * @apiSuccessExample {json} Success response:
@@ -267,10 +257,7 @@ router.get('/paginate', faqController.paginate);
   * @apiParam {String} id The faq id
   *
   * @apiExample {js} Request-Example:
-  * $http.defaults.headers.common["Authorization"] = token;
-  * $http.get(url)
-  *   .success((res, status) => doSomethingHere())
-  *   .error((err, status) => doSomethingHere());
+  * $http.header("Authorization") = jwtwebtoken;
   *
   * @apiUse FaqSuccess
   *
@@ -363,10 +350,7 @@ router.get('/search/:desc', faqController.searchByDesc);
   * @apiParam {String} id The faq id
   *
   * @apiExample {js} Request-Example:
-  * $http.defaults.headers.common["Authorization"] = token;
-  * $http.get(url)
-  *   .success((res, status) => doSomethingHere())
-  *   .error((err, status) => doSomethingHere());
+  * $http.common("Authorization") = jwtwebtoken;
   *
   * @apiUse FaqSuccess
   *
@@ -437,7 +421,7 @@ router.get('/search/:desc', faqController.searchByDesc);
 router.put('/:id', faqController.update);
 
  /**
-  * @api {delete} /faq/:id Delete a faq
+  * @api {delete} /faqs/:id Delete a faq
   * @apiVersion 0.1.0
   * @apiName DeleteFaq
   * @apiGroup Faq
@@ -448,10 +432,7 @@ router.put('/:id', faqController.update);
   * @apiParam {String} id The faq id
   *
   * @apiExample {js} Request-Example:
-  * $http.defaults.headers.common["Authorization"] = token;
-  * $http.delete(url)
-  *   .success((res, status) => doSomethingHere())
-  *   .error((err, status) => doSomethingHere());
+  * $http.header.("Authorization") = jwtwebtoken;
   *
   * @apiSuccess {String} message Faq deleted successfully!
   *

@@ -146,7 +146,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/faq/:id",
+    "url": "/faqs/:id",
     "title": "Delete a faq",
     "version": "0.1.0",
     "name": "DeleteFaq",
@@ -173,7 +173,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.delete(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.headers.(\"Authorization\") = token;",
         "type": "js"
       }
     ],
@@ -235,7 +235,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.header(\"Authorization\") = jwtwebtoken;",
         "type": "js"
       }
     ],
@@ -367,7 +367,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());\n\napiUse FaqSuccess",
+        "content": "$http.header.common(\"Authorization\") = jwtwebtoken;\n\napiUse FaqSuccess",
         "type": "js"
       }
     ],
@@ -375,7 +375,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success response:",
-          "content": "  HTTPS 200 OK\n  {\n    \"_id\": \"5a9292dc2023554038ff9f87\",\n    \"__v\": 0,\n    \"answer\": {\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\",\n        \"description\": \"Not answerd yet\"\n    },\n    \"question\": {\n        \"description\": \"Is there discount for children?\",\n        \"askedBy\": \"5a8157014d99ed52700bc99f\",\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\"\n    }\n}",
+          "content": "  HTTPS 200 OK\n  {\n    \"_id\": \"5a9292dc2023554038ff9f87\",\n    \"answer\": {\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\",\n        \"description\": \"Not answerd yet\"\n    },\n    \"question\": {\n        \"description\": \"Is there discount for children?\",\n        \"askedBy\": \"5a8157014d99ed52700bc99f\",\n        \"modifiedAt\": \"2018-02-25T10:41:32.663Z\",\n        \"createdAt\": \"2018-02-25T10:41:32.663Z\"\n    }\n}",
           "type": "json"
         }
       ],
@@ -512,7 +512,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.common(\"Authorization\") = jwtwebtoken;",
         "type": "js"
       }
     ],
@@ -657,7 +657,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.header(\"Authorization\") = jwtwebtoken;",
         "type": "js"
       }
     ],
@@ -2511,7 +2511,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.header(\"Authorization\") = token;",
         "type": "js"
       }
     ],
@@ -2608,7 +2608,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.headers.(\"Authorization\") = token;",
         "type": "js"
       }
     ],
@@ -2630,14 +2630,7 @@ define({ "api": [
             "description": "<p>The station name</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response-Success-Example:",
-          "content": "HTTP 200 OK\n{\n   \"_id\": \"57e8e94ea06a0c473bac50cc\",\n   \"name\": \"Do the disehs\",\n   \"__v\": 0\n }",
-          "type": "json"
-        }
-      ]
+      }
     },
     "filename": "routes/station.js",
     "groupTitle": "Station",
@@ -2804,7 +2797,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.header.(\"Authorization\") = token;",
         "type": "js"
       }
     ],
@@ -3398,7 +3391,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Request-Example:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
+        "content": "$http.header(\"Authorization\") = token;",
         "type": "js"
       }
     ],
@@ -3675,6 +3668,172 @@ define({ "api": [
     "name": "postTicket",
     "group": "Ticket",
     "description": "<p>Create a new Ticket</p>",
+    "version": "0.2.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>A Unique id of Ticket document</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "from",
+            "description": "<p>The starting/source station custom id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "to",
+            "description": "<p>The  ending/destination  station custom  id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route where the passenger want to travel</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example",
+          "content": "\n{\n  \"route\":\"NS\",\n  \"from\": 211,\n  \"to\": 226\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Response-Success-Example",
+          "content": "HTTP 200 OK\n {\n    \"query_result\": \"U2FsdGVkX19URQVxY83vRJnD6q8yxSc731SV+WkEnrKhXOgDI6kHCaTokTDCDRssFsGwU4G+G+VbElxMbEOFqbpbOQQk4pMXDZgeCl33gw0UGWGABZaDmuODlPxeUUKSgOlPsa8K2OhqdgtR4Ak44HX2ikGtE7Zy5Lktejq6gNQXY0Vq13SzLrVl9YLqq8wbuCsslMQOqLaB6p7uJDdEXFsWo8YO2FKtcsKZ+qgBTCbcUYFxmj9GEbqeimXjImU/6MBYrx4gzDPWHdpa1TOhU9B/Xae8MDr5TQG4iUuAo+g=\",\n    \"decryptedTicket\": {\n        \"passengerId\": \"5aa296949853f04890757773\",\n        \"sourceEng\": \"kality\",\n        \"destinationEng\": \"Menilik II Square\",\n        \"from\": 26,\n        \"to\": 227,\n        \"price\": 6,\n        \"numberOfStationsTravelled\": 21,\n        \"route\": \"NS\",\n        \"_id\": \"5aacd4fc1c8b3b42d4b5e52a\"\n    }\n}",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 201": [
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>A Unique id of Ticket document</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "from",
+            "description": "<p>The starting/source station autogenerated mongodb id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "to",
+            "description": "<p>The  ending/destination  station autogenerated mongodb  id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "from.stationId",
+            "description": "<p>The starting/source station custom id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "to.stationId",
+            "description": "<p>The  ending/destination  station custom  id</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "route",
+            "description": "<p>The route where the passenger want to travel</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Object",
+            "optional": false,
+            "field": "passenger",
+            "description": "<p>The Ticket owner/passenger Object</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>The price of the ticket</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "Date",
+            "optional": false,
+            "field": "createdAt",
+            "description": "<p>The Date time when Ticket bought</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "status",
+            "description": "<p>The status of Ticket usage[unused, used, cancelled]</p>"
+          },
+          {
+            "group": "Success 201",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>The type of ticket[default: for adult]</p>"
+          }
+        ]
+      }
+    },
+    "filename": "routes/ticket.js",
+    "groupTitle": "Ticket",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Unauthorized",
+            "description": "<p>Only authenticated users can access the endpoint.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Unauthorized-Error-Response:",
+          "content": "HTTP 401 Unauthorized\n{\n \"query_result\":\"Access denied\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Internal-Server-Error-Response:",
+          "content": "* HTTP 500 Bad request\n{\n   \"message\": \"Internal Server Error.\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "type": "POST",
+    "url": "/tickets/",
+    "title": "Create Ticket",
+    "name": "postTicket",
+    "group": "Ticket",
+    "description": "<p>Create a new Ticket</p>",
     "version": "0.1.0",
     "parameter": {
       "fields": {
@@ -3721,7 +3880,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Response-Success-Example",
-          "content": "HTTP 200 OK\n {\n    \"encryptedTicket\": \"U2FsdGVkX19VcFihYHru/VZySuiwKF4yWHEZVCSm5/jbJVmVVI5Fv+CRPe+nOkrWCMboybncLTRqjqvIoV+ReRp5Qe0xa8y3tjt1PGI0vbgInZTuHmss2MwcgMElkBfXmVFU0nadluFnp6MtpJvh9cWWrx8uUy+NvbzE+f/ds8LdCrHJVBnS9DPhD8anBRyggjhinXDc8TAwvcLnEzLR8AXSYNZKehRke/X4vHmzQLKX530O0coRJLxKy45yRov/djYsHTdDmWFw3mYmyxz+mrmCUFQtx7K0aL5+0MqOrP7zcBDqtQuMtDczRrCL6jlinkDwoYVgiUPk76+KWEh8/xASra3C++UC3Zf2tCWDFDgxqlEdubVryhuYYkXoBFTb4OWkBwtU51F55FHt0um02SCjC6uodZMc7Sus8+n4hkH1CJ2fw2h/y3ixEupwJkAzXRbJOxIoWGaG7NDAEeCCKrLPYnPaHulR/pPEDJFmO5wFayWXSMu33QJtovbx9BI/zeRBKpCtsWvQlVtkugFJzfsGGueNKEcKbEPXNZXVlPgd/DRNcgL2E0HBF49PhQVbygQBQBf5sI8ZxgM+HBmL0Q6WnQP/c22xmNP2HfP6JUNH7TDQdBpLoN0y0GV9Pm7FC98Yn3td4uchC8M4u4A6PDZBQfxlFWLmdNP+hClzhMTbGHr3va/2QUbLhaIhT3pGSxImmK+D1a7q4CvLdamaPgbEwQu7RnFoYhMG1+dKdTVgVBDTuS71t0FD0TGkOMHjmyV+VgmvLeGzW0Wxqnkvdq4iK+70tjAfhWWSa8TJVbs=\",\n    \"decryptedTicket\": {\n        \"_id\": \"5a96bb67191681445cf6fd38\",\n        \"route\": \"NS\",\n        \"passengerId\": {\n            \"_id\": \"5a8157014d99ed52700bc99f\",\n            \"email\": \"ayele.gobeze@gmail.com\",\n            \"phone\": \"251-917-123456\",\n            \"createdAt\": \"2018-02-28T14:23:00.000Z\",\n            \"modifiedAt\": \"2018-02-28T14:23:00.000Z\"\n        },\n        \"from\": {\n            \"_id\": \"5a8415c0542c19147c03c52f\",\n            \"stationId\": 211,\n            \"name\": \"Nefas Silik 2\",\n            \"route\": \"NS\"\n        },\n        \"to\": {\n            \"_id\": \"5a8416e2542c19147c03c53e\",\n            \"stationId\": 226,\n            \"name\": \"Minilik II Square\",\n            \"route\": \"NS\"\n        },\n        \"price\": 4.24,\n        \"__v\": 0,\n        \"modifiedAt\": \"2018-02-28T14:23:35.493Z\",\n        \"createdAt\": \"2018-02-28T14:23:35.493Z\",\n        \"status\": \"unused\",\n        \"type\": \"for adult\",\n        \"id\": \"B1yOoNEdM\"\n    }\n}",
+          "content": "HTTP 201 OK\n  {\n     \"encryptedTicket\": \"U2FsdGVkX19VcFihYHru/VZySuiwKF4yWHEZVCSm5/jbJVmVVI5Fv+CRPe+nOkrWCMboybncLTRqjqvIoV+ReRp5Qe0xa8y3tjt1PGI0vbgInZTuHmss2MwcgMElkBfXmVFU0nadluFnp6MtpJvh9cWWrx8uUy+NvbzE+f/ds8LdCrHJVBnS9DPhD8anBRyggjhinXDc8TAwvcLnEzLR8AXSYNZKehRke/X4vHmzQLKX530O0coRJLxKy45yRov/djYsHTdDmWFw3mYmyxz+mrmCUFQtx7K0aL5+0MqOrP7zcBDqtQuMtDczRrCL6jlinkDwoYVgiUPk76+KWEh8/xASra3C++UC3Zf2tCWDFDgxqlEdubVryhuYYkXoBFTb4OWkBwtU51F55FHt0um02SCjC6uodZMc7Sus8+n4hkH1CJ2fw2h/y3ixEupwJkAzXRbJOxIoWGaG7NDAEeCCKrLPYnPaHulR/pPEDJFmO5wFayWXSMu33QJtovbx9BI/zeRBKpCtsWvQlVtkugFJzfsGGueNKEcKbEPXNZXVlPgd/DRNcgL2E0HBF49PhQVbygQBQBf5sI8ZxgM+HBmL0Q6WnQP/c22xmNP2HfP6JUNH7TDQdBpLoN0y0GV9Pm7FC98Yn3td4uchC8M4u4A6PDZBQfxlFWLmdNP+hClzhMTbGHr3va/2QUbLhaIhT3pGSxImmK+D1a7q4CvLdamaPgbEwQu7RnFoYhMG1+dKdTVgVBDTuS71t0FD0TGkOMHjmyV+VgmvLeGzW0Wxqnkvdq4iK+70tjAfhWWSa8TJVbs=\",\n     \"decryptedTicket\": {\n         \"_id\": \"5a96bb67191681445cf6fd38\",\n         \"route\": \"NS\",\n         \"passengerId\": {\n             \"_id\": \"5a8157014d99ed52700bc99f\",\n             \"email\": \"ayele.gobeze@gmail.com\",\n             \"phone\": \"251-917-123456\",\n             \"createdAt\": \"2018-02-28T14:23:00.000Z\",\n             \"modifiedAt\": \"2018-02-28T14:23:00.000Z\"\n         },\n         \"from\": {\n             \"_id\": \"5a8415c0542c19147c03c52f\",\n             \"stationId\": 211,\n             \"name\": \"Nefas Silik 2\",\n             \"route\": \"NS\"\n         },\n         \"to\": {\n             \"_id\": \"5a8416e2542c19147c03c53e\",\n             \"stationId\": 226,\n             \"name\": \"Minilik II Square\",\n             \"route\": \"NS\"\n         },\n         \"price\": 4.24,\n         \"__v\": 0,\n         \"modifiedAt\": \"2018-02-28T14:23:35.493Z\",\n         \"createdAt\": \"2018-02-28T14:23:35.493Z\",\n         \"status\": \"unused\",\n         \"type\": \"for adult\",\n         \"id\": \"B1yOoNEdM\"\n     }\n }",
           "type": "json"
         }
       ],
@@ -4190,6 +4349,13 @@ define({ "api": [
             "optional": false,
             "field": "Authorization",
             "description": "<p>JWT token value</p>"
+          },
+          {
+            "group": "Header",
+            "optional": true,
+            "field": "Accept",
+            "defaultValue": "application/json",
+            "description": "<p>application/json</p>"
           }
         ]
       }
@@ -4199,13 +4365,6 @@ define({ "api": [
     "permission": [
       {
         "name": "authenticated user"
-      }
-    ],
-    "examples": [
-      {
-        "title": "Example usage:",
-        "content": "$http.defaults.headers.common[\"Authorization\"] = token;\n$http.get(url)\n  .success((res, status) => doSomethingHere())\n  .error((err, status) => doSomethingHere());",
-        "type": "js"
       }
     ],
     "success": {

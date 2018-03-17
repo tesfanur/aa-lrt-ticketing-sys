@@ -299,13 +299,15 @@ function createTicket(req, res, next) {
         //console.log("source",sourceStation)
         return sourceStation
       }).then(sourceStation => {
-          //console.log("source",sourceStation)
+          console.log("source",sourceStation)
           StationDal.findByCustomId(to)
             .then(destinationStation => {
-              //console.log("destinationStation",destinationStation)
+              console.log("destinationStation",destinationStation)
               destinationStation = JSON.parse(JSON.stringify(destinationStation))
               var ticket = {
                 passengerId: req.user._id,
+                sourceEng:sourceStation.nameEng,
+                destinationEng:destinationStation.nameEng,
                 from: sourceStation._id,
                 to: destinationStation._id,
                 price: ticketPrice,
