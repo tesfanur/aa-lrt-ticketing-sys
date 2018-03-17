@@ -271,8 +271,8 @@ function populateFareCollection(createdBy, fares) {
       var defferd = q.defer();
       var opts = {
         sort: queryParams.sort || {},
-        page: queryParams.page || 1,
-        limit: queryParams.per_page || 10
+        page: Number(queryParams.page) || 1,
+        limit: Number(queryParams.per_page) || 10
       };
       FareModel.paginate(query, opts)
         .then((faqs) => {

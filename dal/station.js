@@ -16,8 +16,8 @@ return new Promise((resolve, reject)=>{
   StationModel.find({})
     .exec()
     .then(result => {
-      
-      if (!result || result.length===0) { 
+
+      if (!result || result.length===0) {
         console.log(typeof stations)
         //StationModel insert: array of fares
         StationModel.collection.insert(stations, (error, docs) => {
@@ -27,7 +27,7 @@ return new Promise((resolve, reject)=>{
             console.info('%d stations were successfully stored.', docs.length);
           }
         });
-      } 
+      }
       var createdAt = new Date();
       var modifiedAt = new Date();
       console.log("createdBy",createdBy)
@@ -48,7 +48,7 @@ return new Promise((resolve, reject)=>{
 
       })
 
-} 
+}
 
 const StationDalModule = (function(StationModel) {
   'use strict';
@@ -260,8 +260,8 @@ const StationDalModule = (function(StationModel) {
     var defferd = q.defer();
     var opts = {
       sort: qs.sort || {},
-      page: qs.page || 1,
-      limit: qs.per_page || 10
+      page: Number(qs.page) || 1,
+      limit: Number(qs.per_page) || 10
     };
     StationModel.paginate(query, opts)
       .then((stations) => {

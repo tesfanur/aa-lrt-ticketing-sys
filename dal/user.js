@@ -167,29 +167,37 @@ var UserDalModule = (function(UserModel) {
   /**
    *7. Get User by pagination
    */
-  function getUserByPagination(query, qs, cb) {
-    debug('fetching a collection of Users');
+   /**
+    *7. DATA ACCESS LAYER to Get faq documents by pagination
+    */
+   function getUserByPagination(query, queryParams) {
+     debug('FETCHING A COLLECTION OF FAQS');
+     var defferd = q.defer();
+     var opts = {
+       sort: queryParams.sort || {},
+       page: Number(queryParams.page) || 1,
+       limit: Number(queryParams.per_page) || 10
+     };
+     UserModel.paginate(query, opts)
+       .then((users) => {
+         if (!users)
+           return defferd.reject("Faq not found");
 
-    var opts = {
-      sort: qs.sort || {},
-      page: qs.page || 1,
-      limit: qs.per_page || 10
-    };
+         var response = {
+           page: users.page,
+           total_docs: users.total,
+           total_pages: users.pages,
+           per_page: users.limit,
+           docs: users.docs
+         };
+         return defferd.resolve(response);
+       })
+       .catch(err => {
+         defferd.reject(err);
+       });
+     return defferd.promise;
+   }
 
-    UserModel.paginate(query, opts, function(err, data) {
-      if (err) return cb(err, null);
-
-      var response = {
-        page: data.page,
-        total_docs: data.total,
-        total_pages: data.pages,
-        per_page: data.limit,
-        docs: data.docs
-      };
-
-      cb(null, response);
-    });
-  }
 
   function userLogin(userData) {
     console.log("userData from userLogin dal", userData)

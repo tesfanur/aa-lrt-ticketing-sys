@@ -203,8 +203,8 @@ const ScheduleDalModule = (function(ScheduleModel) {
     var defferd = q.defer();
     var opts = {
       sort: qs.sort || {},
-      page: qs.page || 1,
-      limit: qs.per_page || 10
+      page: Number(qs.page) || 1,
+      limit: Number(qs.per_page) || 10
     };
     ScheduleModel.paginate(query, opts)
       .then((schedules) => {

@@ -178,6 +178,7 @@ router.post('/login', userController.login);
  */
 function findAll() { return; }
 router.get('/',userController.findAll);
+router.get('/paginate', userController.paginate);
 /**
  * @api {get} /Users/:userId Get User
  * @apiName GetUser
@@ -189,11 +190,11 @@ router.get('/',userController.findAll);
  *
  * @apiExample {js} Example usage:
  * @apiHeader  Authorization JWT token value
- * @apiHeader Content-Type (application/json).
+ * @apiHeader  [Accept=application/json] application/json
  * @apiSuccess (Success 200) {text} Location URI of created Thing.
  * @apiSuccess (Success 200) {text} body Thing id.
- * @apiError {text} 401/Unauthorized.
- * @apiError {text} 403/Access Denied
+ * @apiSatus {text} 401/Unauthorized.
+ * @apiStatus {text} 403/Access Denied
 
  * $http.header("Authorization") = token;
  * $http.get(url)

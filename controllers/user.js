@@ -5,6 +5,7 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const debug = require('debug')('api:User-Controller');
 /**
  *Load local module dependecies
  */
@@ -291,6 +292,19 @@ function logoutUser(req, res, next) {
     });
 }
 /**
+*Ge user collection by pagination
+**/
+function getUserByPagination(req, res, next) {
+  debug('GET FAQ COLLECTION BY PAGINATION');
+  var query = req.query.query || {}; //default query: find all
+  var queryParams = req.query;
+  var method = req.method;
+
+  UserDal.paginate(query, queryParams)
+    .then(docs => handleUserResponse(res, method, docs))
+    .catch(error => next(error));
+}
+/**
  *II. Export User Controllers
  */
 module.exports = {
@@ -298,6 +312,7 @@ module.exports = {
   findAll: findAllUser,
   findById: findUserById,
   findByUsername: findByUsername,
+  paginate:getUserByPagination,
   update: updateUserInfo,
   delete: deleteUserById,
   login: user_login,

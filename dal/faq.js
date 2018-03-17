@@ -139,8 +139,8 @@ const FaqDal = (function(FaqModel) {
     var defferd = q.defer();
     var opts = {
       sort: queryParams.sort || {},
-      page: queryParams.page || 1,
-      limit: queryParams.per_page || 10
+      page: Number(queryParams.page) || 1,
+      limit: Number(queryParams.per_page) || 10
     };
     FaqModel.paginate(query, opts)
       .then((faqs) => {
