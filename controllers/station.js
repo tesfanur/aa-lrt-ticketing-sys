@@ -299,7 +299,7 @@ function findStationByPagination(req, res, next) {
 /**
  * populate stations collection automatically
  */
-function populateFareCollection(req, res, next) {
+function populateStationCollection(req, res, next) {
   const stations = require('../lib/newstations');
   var createdBy = req.user._id;
   console.log("userId", createdBy)
@@ -328,5 +328,5 @@ module.exports = {
   delete: deleteStationById,
   paginate: findStationByPagination,
   findByCustomId: getStationByCustomId,
-  populate: populateFareCollection
+  populate: populateStationCollection
 }

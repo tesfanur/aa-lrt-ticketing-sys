@@ -88,7 +88,7 @@ var userController = require('../controllers/user');
 router.post('/signup',userController.create);
 
 /**
- * @api {post} /Users/login Login User
+ * @api {post} /users/login Login User
  * @apiName LoginUser
  * @apiGroup User
  * @apiDescription Allows registerd users to login
@@ -122,7 +122,7 @@ router.post('/signup',userController.create);
 function login() { return; }
 router.post('/login', userController.login);
 /**
- * @api {GET} /Users/ Find All Users
+ * @api {GET} /users/ Find All Users
  * @apiName FindAllUsers
  * @apiGroup User
  * @apiDescription Lists all registerd users
@@ -179,7 +179,7 @@ router.post('/login', userController.login);
 function findAll() { return; }
 router.get('/',userController.findAll);
 /**
- * @api {get} /Users/:userId Get User
+ * @api {get} /users/:userId Get User
  * @apiName GetUser
  * @apiGroup User
  * @apiHeader {String} Authorization JWT token value
@@ -219,7 +219,7 @@ router.get('/:userId',userController.findById);
 
 router.get('/search/:username',userController.findByUsername);
 /**
- * @api {put} /Users/:userId Update User
+ * @api {put} /users/:userId Update User
  * @apiName putUser
  * @apiGroup User
  * @apiDescription Allows registerd user to update their account
@@ -247,7 +247,7 @@ router.get('/search/:username',userController.findByUsername);
  */
 router.put('/:userId', userController.update);
 /**
- * @api {delete} /Users/:userId Delete User
+ * @api {delete} /users/:userId Delete User
  * @apiName delete
  * @apiGroup User
  * @apiDescription Delete a user

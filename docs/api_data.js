@@ -4404,7 +4404,7 @@ define({ "api": [
   },
   {
     "type": "GET",
-    "url": "/Users/",
+    "url": "/users/",
     "title": "Find All Users",
     "name": "FindAllUsers",
     "group": "User",
@@ -4482,7 +4482,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/Users/:userId",
+    "url": "/users/:userId",
     "title": "Get User",
     "name": "GetUser",
     "group": "User",
@@ -4604,7 +4604,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/Users/login",
+    "url": "/users/login",
     "title": "Login User",
     "name": "LoginUser",
     "group": "User",
@@ -4716,7 +4716,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/Users/:userId",
+    "url": "/users/:userId",
     "title": "Delete User",
     "name": "delete",
     "group": "User",
@@ -4794,7 +4794,7 @@ define({ "api": [
   },
   {
     "type": "put",
-    "url": "/Users/:userId",
+    "url": "/users/:userId",
     "title": "Update User",
     "name": "putUser",
     "group": "User",

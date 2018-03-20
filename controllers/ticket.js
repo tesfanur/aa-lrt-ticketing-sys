@@ -285,7 +285,7 @@ function createTicket(req, res, next) {
   } else {
     //valid source and destination
     var user = req.user;
-
+    
     var source = from.toString().substr(1, from.toString().length - 1);
     var destination = to.toString().substr(1, to.toString().length - 1);
 
