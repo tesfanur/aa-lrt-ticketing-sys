@@ -62,7 +62,7 @@ FareSchema.methods.toJSON = function() {
   // toPublic.modifiedAt =fareObject.modifiedAt;
 
   console.log("fareObject :", fareObject);
-  return _.pick(fareObject, ['_id', 'from', 'name', 
+  return _.pick(fareObject, ['_id', 'from', 'nameEng', 'nameAmh',
     'to', 'createdBy', "distance", 
     'createdAt', 'modifiedAt']);
   //return toPublic;

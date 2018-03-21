@@ -187,7 +187,7 @@ function populateFareCollection(createdBy, fares) {
         // .populate('to','name stationId route')
         .populate('from')
         .populate('to')
-        .populate('userId', 'email phone userType')
+        .populate('createdBy', 'email phone username')
         .sort({
           createdAt: -1
         })
@@ -217,9 +217,9 @@ function populateFareCollection(createdBy, fares) {
       FareModel.findOne({
           _id: fareId
         })
-        .populate("from")
-        .populate("to")
-        .populate("userId", "email phone")
+        .populate("from","nameEng nameAmh")
+        .populate("to","nameEng nameAmh")
+        .populate("createdBy", "email phone username")
         .exec()
         .then(fare => {
           if (fare) return defferd.resolve(fare);;
@@ -302,9 +302,9 @@ function populateFareCollection(createdBy, fares) {
         FareModel.findOne(query, {
             _id: 0
           })
-          .populate('from', "name")
-          .populate('to', "name")
-          .populate('userId', "email phone")
+          .populate('from', "nameEng nameAmh")
+          .populate('to', "nameEng nameAmh")
+          .populate('createdBy', "email phone username")
           .exec()
           .then(fare => {
               if (!fare) return resolve(404);
