@@ -676,13 +676,15 @@ function validateTicket(req, res, next) {
       //console.log("customid", customId);
       //TODO:change replace customId by _id
       //TicketDal.findByCustomId(customId)
-      console.log("_id", _id)
+      //console.log("_id", _id)
       TicketDal.findById(_id)
         .then(ticket => {
-          console.log("ticket", ticket)
+          //console.log("ticket", ticket)
           if (!ticket || ticket === 404) return res.status(404).send({
             query_result: "Invalid Ticket"
           })
+     
+
           ticket = JSON.parse(JSON.stringify(ticket));
 
           var username = ticket.passengerId.username || "";
@@ -691,8 +693,7 @@ function validateTicket(req, res, next) {
           var createdAt = moment(ticket.createdAt).format("Do-MMM-YYYY");
           if (email != "noemail@nodomain.com" & phone != "+251000000000")
             var userId = username || email || phone;
-          var response = {
-            message: "Valid ticket",
+          var response = { 
             _id: ticket._id,
             ticketId: ticket.id,
             passenger: userId,
@@ -707,8 +708,16 @@ function validateTicket(req, res, next) {
             createdAt: createdAt
           };
 
+          console.log("ticket.status",ticket.status);
+          console.log('ticket.status==="unused"',ticket.status==="unused")
+          if (ticket.status==="used" || ticket.status === "returned") return res.status(400).send({
+            query_result: "Invalid Ticket",
+            ticket:response
+          })
+
           res.send({
-            query_result: response
+            query_result: "Valid Ticket",
+            ticket: response
           });
         })
         .catch(error => next(error));
