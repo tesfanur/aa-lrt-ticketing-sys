@@ -86,9 +86,8 @@ const StationDalModule = (function(StationModel) {
   function getAllStations(query) {
     debug('getting all station collection');
     var defferd = q.defer();
-    StationModel.find(query)
-      //.select("_id name userId longitude longitude createdAt")
-      .populate('userId')
+    StationModel.find(query) 
+      .populate('createdBy',"username") 
       .sort({
         createdAt: -1
       })
@@ -110,7 +109,7 @@ const StationDalModule = (function(StationModel) {
 
     return new Promise((resolve, reject) => {
       StationModel.findById(id)
-        .populate("userId")
+        .populate("createdBy")
         .exec()
         .then((result) => {
           return resolve(result);
@@ -130,7 +129,7 @@ const StationDalModule = (function(StationModel) {
       StationModel.findOne({
           _id: customid
         })
-        .populate("userId")
+        .populate("createdBy")
         .exec()
         .then((result) => {
           resolve(result);

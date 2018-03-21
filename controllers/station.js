@@ -47,7 +47,7 @@ function getStationAttributes(req, method, station) {
     req.hostname + req.originalUrl;
   var createdAt = moment(station.createdAt).format("DD-MMM-YYYY");
   var modifiedAt = moment(station.modifiedAt).format("DD-MMM-YYYY");
-  var user = station.userId;
+  var user = station.createdBy;
 
   var email = user.email || "";
   var phone = user.phone || "";
@@ -64,7 +64,7 @@ function getStationAttributes(req, method, station) {
 
   var response = {
     _id: station._id,
-    //createdBy: userId, //user should be admin
+    createdBy: userId, //user should be admin
     nameEng: station.nameEng,
     nameAmh: station.nameAmh,
     route: station.route,
@@ -144,8 +144,8 @@ function searchStationByName(req, res, next) {
         return utils.handleResponse(res, 404, stations)
       var response = {
         stationCount: stations.legnth,
-        stations: stations.map((faq) => {
-          return getStationAttributes(req, "GET", faq);
+        stations: stations.map((station) => {
+          return getStationAttributes(req, "GET", station);
         })
       }
 
@@ -175,11 +175,7 @@ function findStationById(req, res, next) {
           var token = req.token;
           station = JSON.parse(JSON.stringify(station));
           console.log("station from controller", station)
-          var response = getStationAttributes(req, "GET", station);
-          //set header
-          //console.log("token",token);
-          // res.header("x-auth",token);
-          // res.rediret("http://localhost:5000/stations/"+_id)
+          var response = getStationAttributes(req, "GET", station); 
           return utils.handleResponse(res, 200, response);
         }
         //else
@@ -197,7 +193,7 @@ function findStationById(req, res, next) {
 
 function getStationByCustomId(req, res, next) {
   debug('GETTIGN STATION')
-  var customid = req.params.cid;
+  var customid = Number(req.params.cid);
   //console.log("my station id : " + customid);
 
   StationDal.findByCustomId(customid)
@@ -302,7 +298,7 @@ function findStationByPagination(req, res, next) {
 function populateStationCollection(req, res, next) {
   const stations = require('../lib/newstations');
   var createdBy = req.user._id;
-  console.log("userId", createdBy)
+  console.log("createdBy", createdBy);
   StationDal.populate(createdBy, stations)
     .then(result => {
       if (result)
