@@ -85,12 +85,14 @@ function getStationAttributes(req, method, station) {
  *2.Create new station controller
  */
 function createStation(req, res, next) {
-  _validateStationRegistationInput(req, res, next);
+
   var body = req.body;
-  body.userId = req.user._id;
+  body.createdBy = req.user._id;
   var _id = body._id;
   //pick only the required attributes from the body
-  var body = _.pick(req.body, ["nameEng", "nameAmh", "_id", "userId", "longitude", "latitude", "route"]);
+  var body = _.pick(req.body, ["nameEng", "nameAmh", "_id", "createdBy", "longitude", "latitude", "route"]);
+  _validateStationRegistationInput(req, res, next);
+  
   //console.log("body",body);
   //  create if fare doesn't exists from to station
   StationDal.create(body)
