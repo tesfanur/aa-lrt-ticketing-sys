@@ -103,8 +103,8 @@ UserSchema.statics.findByCredentials = function(userAccount, password) {
       //console.log("user from model method", user)
       if (!user) return resolve(404);
       // Use bcrypt.compare to compare password and user.password
-      bcrypt.compare(password, user.password, (err, compResult) => {
-        if (compResult) return resolve(user);
+      bcrypt.compare(password, user.password, (err, correctPassword) => {
+        if (correctPassword) return resolve(user);
         //console.log("user inside bcrypt", user)
         return reject({
           "query_result": "Wrong password!"
@@ -184,6 +184,8 @@ UserSchema.statics.findByToken = function(token) {
 };
 UserSchema.pre('save', function(next) {
   var user = this;
+  user.username = user.username.toLowerCase();
+  user.email = user.email.toLowerCase();
 
   if (user.isModified('password')) {
     bcrypt.genSalt(10, (err, salt) => {

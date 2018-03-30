@@ -12,8 +12,19 @@ var userController = require('../controllers/user');
 // ------------------------------------------------------------------------------------------
 /**
  * @apiDefine UserSuccess
+ *  @apiVersion 0.1.0
  * @apiSuccess {Object} _id User's Auto generated mongodb Object Unique Id
  * @apiSuccess {String} email User's email address
+ * @apiSuccess {String} userType User's Type/Role, default value: passenger
+ * @apiSuccess {Date} createdAt User's registration date time
+ * @apiSuccess {Date} modifiedAt User's info delete date time
+*/
+/**
+ * @apiDefine UserSuccess
+ * @apiVersion 0.2.0
+ * @apiSuccess {Object} _id User's Auto generated mongodb Object Unique Id
+ * @apiSuccess {String} email User's email address
+ * @apiSuccess {String} phone User's phone number
  * @apiSuccess {String} userType User's Type/Role, default value: passenger
  * @apiSuccess {Date} createdAt User's registration date time
  * @apiSuccess {Date} modifiedAt User's info delete date time
@@ -31,6 +42,18 @@ var userController = require('../controllers/user');
  *     HTTP 401 Unauthorized
  *     {
  *      "message":"Access denied"
+ *     }
+ */
+/**
+ * @apiDefine UnauthorizedError
+ * @apiVersion 0.2.0
+ *
+ * @apiError Unauthorized Only authenticated users can access the endpoint.
+ *
+ * @apiErrorExample  Unauthorized response:
+ *     HTTP 401 Unauthorized
+ *     {
+ *      "query_result":"Access denied"
  *     }
  */
 

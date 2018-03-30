@@ -5,6 +5,7 @@ const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const moment = require("moment");
 const debug = require('debug')('api:User-Controller');
 /**
  *Load local module dependecies
@@ -57,8 +58,11 @@ function create_user(req, res, next) {
   //take only the required field from req.body object
   //use array and destract method to make the following code
   // var body = _.pick(req.body, ["email", "password", "phone","username"]);
-  var userData = body;
-  console.log("userData", userData)
+  var userData = body; 
+  //CONVERT BOTH USERNAME & PASSWORD TO LOWERCASE BEFORE LOGIN 
+  if(userData.username) userData.username= userData.username.toLowerCase();
+  if(userData.email) userData.email = userData.email.toLowerCase();
+
   //before creating user check user if it exists
   //findByCredentials
   var username = userData.username || "";
@@ -88,9 +92,24 @@ function create_user(req, res, next) {
             //test first whether token exists or not
             //if(token)  res.header('x-auth')
             //res.status(201);
-            res.status(201).header('x-auth', token).send({
-              query_result: "success"
-            });
+            function formatDate(date){
+              return moment(date).format("YYYY-MM-DD hh:mm:ss A")
+            }
+            if(user){
+              user ={
+                username:user.username ||"",
+              email:user.email||"",
+            phone:user.phone||"",
+            createdDate:formatDate(user.createdAt),
+            modifiedDate:formatDate(user.modifiedAt)
+
+              }
+              res.status(201).header('x-auth', token).send({
+                query_result: "success",
+                user: user
+              });
+            }
+        
           })
           .catch(e => {
             res.status(400).send(e);
@@ -122,12 +141,13 @@ function user_login(req, res, next) {
     });
   }
 
-  var userData = _.pick(req.body, ['email', 'username', 'phone', 'password']);
-  console.log("userData", userData);
-  /**
-   *TODO: REFACTOR USER LOGIN DAL SO THAT IT HANDLES
-   *      ALL POSSIBLE AUTHENTICATION VIOLATIONS
-   */
+  var user = req.body;
+  //CONVERT BOTH USERNAME & PASSWORD TO LOWERCASE BEFORE LOGIN
+  if(user.username) user.username= user.username.toLowerCase();
+  if(user.email)user.email = user.email.toLowerCase();
+
+  var userData = _.pick(user, ['email', 'username', 'phone', 'password']); 
+  
   UserDal.login(userData)
     .then(result => {
       console.log("result", result)
