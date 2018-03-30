@@ -575,6 +575,12 @@ function updateTicketInfo(req, res, next) {
  *update ticket status
  */
 function updateTicketStatus(req, res, next) {
+    var ticketId = req.params.id;
+  //chech if ticket ObjectId is valid or not
+  var validObjectId = mongoose.Types.ObjectId.isValid(ticketId);
+
+  if (validObjectId) {
+
   var modifiedAt = new Date();
   req.body.modifiedAt = modifiedAt;
   var query = {
@@ -614,6 +620,12 @@ function updateTicketStatus(req, res, next) {
       });
     })
     .catch(error => next(error));
+  } else {
+    res.status(400).send({
+      "query_result": "Invalid ticket Object Id"
+    })
+  }
+
 }
 /**
  *6. Delete ticket Controller
@@ -634,7 +646,7 @@ function deleteTicketById(req, res, next) {
       .catch(error => next(error));
   } else {
     res.status(400).send({
-      "message": "Invalid ticket Object Id"
+      "query_result": "Invalid ticket Object Id"
     })
   }
 
