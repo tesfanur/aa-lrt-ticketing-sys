@@ -3495,7 +3495,7 @@ define({ "api": [
           "type": "json"
         },
         {
-          "title": "Unauthorized-Error-Response:",
+          "title": "Unauthorized response:",
           "content": "HTTP 401 Unauthorized\n{\n \"query_result\":\"Access denied\"\n}",
           "type": "json"
         },
@@ -3961,7 +3961,7 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Unauthorized-Error-Response:",
+          "title": "Unauthorized response:",
           "content": "HTTP 401 Unauthorized\n{\n \"query_result\":\"Access denied\"\n}",
           "type": "json"
         },

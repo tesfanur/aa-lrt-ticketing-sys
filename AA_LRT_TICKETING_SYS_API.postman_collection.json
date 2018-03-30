@@ -1,7 +1,7 @@
 {
 	"info": {
-		"name": "AA_LRT_TICKETING_SYS_API",
 		"_postman_id": "222e961d-7a1d-9024-c33a-f8881e6ef84c",
+		"name": "AA_LRT_TICKETING_SYS_API",
 		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -37,8 +37,7 @@
 								"users",
 								"5a7deed583010f3cbc414e4d"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -128,8 +127,7 @@
 								"users",
 								"5aa296949853f04890757773"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -161,8 +159,7 @@
 								"search",
 								"evana.magato"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -194,8 +191,7 @@
 								"users",
 								"5a6499f832a9f4362cf8bbb2"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -227,8 +223,7 @@
 								"me",
 								"logout"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -250,39 +245,6 @@
 						"body": {
 							"mode": "raw",
 							"raw": "  { \n        \"email\": \"evana.mangato@gmail.com\",\n        \"username\": \"evana.mangato\",\n        \"phone\": \"+251912657147\",\n        \"password\":\"myPassword\"\n    }"
-						},
-						"url": {
-							"raw": "{{url}}/users/signup",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users",
-								"signup"
-							]
-						},
-						"description": "localhost:9000/users"
-					},
-					"response": []
-				},
-				{
-					"name": "create user : WRITE copy",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"email\"    : \"yemane.yohannes@gmail.com\",\n    \"password\" : \"TestPassword@123\", \n    \"confirmPassword\":\"TestPassword@123\",\n    \"phone\":\"251-917-123456\"\n} "
 						},
 						"url": {
 							"raw": "{{url}}/users/signup",
@@ -340,61 +302,6 @@
 							"path": [
 								"users",
 								"login"
-							]
-						},
-						"description": "localhost:9000/users"
-					},
-					"response": []
-				},
-				{
-					"name": "create user : WRITE copy",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "",
-								"value": "",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n   \"email\"    : \"yemane.yohannes@gmail.com\",\n    \"password\" : \"TestPassword@123\", \n    \"confirmPassword\":\"TestPassword@123\",\n    \"phone\":\"251-917-123456\"\n} "
-						},
-						"url": {
-							"raw": "{{url}}/users/signup?email=new19.user@gmail.com&username=new19.use&password=TestPassword@123&phone=251-917-111111",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"users",
-								"signup"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "new19.user@gmail.com",
-									"equals": true
-								},
-								{
-									"key": "username",
-									"value": "new19.use",
-									"equals": true
-								},
-								{
-									"key": "password",
-									"value": "TestPassword@123",
-									"equals": true
-								},
-								{
-									"key": "phone",
-									"value": "251-917-111111",
-									"equals": true
-								}
 							]
 						},
 						"description": "localhost:9000/users"
@@ -461,8 +368,7 @@
 								"users",
 								"5a9fd1e82a8b7f209404515"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -513,13 +419,23 @@
 							"raw": "{\n    \"email\"    : \"mango.belachew@gmail.com\",\n    \"password\" : \"TestPassword@123\",\n    \"firstName\": \"Tesfaye\",\n    \"lastName\" :\"Belachew\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/faqs/paginate",
+							"raw": "{{url}}/users/paginate?page=1&per_page=5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"faqs",
+								"users",
 								"paginate"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
 							]
 						},
 						"description": "localhost:9000/users"
@@ -586,8 +502,7 @@
 								"profiles",
 								"5a8c261c8b96712e5c9cf35e"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -618,8 +533,7 @@
 								"profiles",
 								"5a8c27b7332ce12be0791ed"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -650,8 +564,7 @@
 								"profiles",
 								"5a8c261c8b96712e5c9cf35d"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -792,8 +705,7 @@
 								"search",
 								"tesfanur"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -824,8 +736,7 @@
 								"schedules",
 								"5a9bea8c9b212d3904716546"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -893,8 +804,7 @@
 								"faqs",
 								"5a9292dc2023554038ff9f87"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -948,13 +858,23 @@
 							"raw": "{\n    \"email\"    : \"mango.belachew@gmail.com\",\n    \"password\" : \"TestPassword@123\",\n    \"firstName\": \"Tesfaye\",\n    \"lastName\" :\"Belachew\"\n}"
 						},
 						"url": {
-							"raw": "{{url}}/faqs/paginate",
+							"raw": "{{url}}/faqs/paginate?page=2&per_page=5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"faqs",
 								"paginate"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
 							]
 						},
 						"description": "localhost:9000/users"
@@ -988,8 +908,7 @@
 								"faqs",
 								"5a92b72364f0582538373c70"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -1021,8 +940,7 @@
 								"search",
 								"the"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -1053,8 +971,7 @@
 								"faqs",
 								"5a92700e9bde510708ef58aa"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -1138,8 +1055,7 @@
 								"profiles",
 								"5a8c261c8b96712e5c9cf35d"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1232,8 +1148,7 @@
 								"profiles",
 								"5a8c24ef259b0f2688f3a362"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1265,8 +1180,7 @@
 								"search",
 								"tesfanur"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1298,8 +1212,7 @@
 								"profiles",
 								"5a8c24ef259b0f2688f3a362"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -1372,8 +1285,7 @@
 								"my",
 								"tickets"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -1605,8 +1517,7 @@
 								"stations",
 								"5a856a87e3319923bc22383e"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1699,8 +1610,7 @@
 								"stations",
 								"5a97c030424ea4000473c72c"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1723,17 +1633,16 @@
 							"raw": "{\n    \"_id\": \"5a2ce63c98636e19307caf38\",\n    \"email\": \"mitu.belachew@gmail.com\",\n    \"password\": \"TestPassword@123\",\n    \"firstName\": \"Mitu\",\n    \"lastName\": \"Belachew\" \n}"
 						},
 						"url": {
-							"raw": "{{url}}/stations/customid/211",
+							"raw": "{{url}}/stations/customid/12",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"stations",
 								"customid",
-								"211"
+								"12"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -1768,7 +1677,7 @@
 					},
 					"response": [
 						{
-							"id": "39d5aa9c-47e7-4240-a88a-cf1eeb162a41",
+							"id": "7044cd68-7967-4814-9ed3-c16cdeaa0e4d",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -1853,7 +1762,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "433e8467-c1e8-4601-a133-f772e62f2534",
+							"id": "d4fcecc9-d004-44e3-b6b7-ffba77f01399",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -1972,7 +1881,7 @@
 					},
 					"response": [
 						{
-							"id": "1d4158e0-6d1b-41a9-901e-0dcf3e38dd12",
+							"id": "1680ab28-081b-4044-bdee-0c4f672b8ac1",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -2057,7 +1966,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "fe6dd736-4051-44b2-bb86-bc8b281022cd",
+							"id": "e8777a45-4fe1-49be-80a5-4280652c0545",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -2203,8 +2112,7 @@
 								"stations",
 								"5a9066f9df757a2f7035ecd1"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2292,7 +2200,7 @@
 					},
 					"response": [
 						{
-							"id": "4e677c0f-4949-4629-895f-5fcb6cb13ce1",
+							"id": "447b1936-b65c-472c-b0d8-51d3d8a460aa",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -2377,7 +2285,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "c40b8991-816f-4e62-9d42-1573ac580a2b",
+							"id": "ca3bf1b4-fca5-4a29-81e1-40bfefce4198",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -2491,8 +2399,7 @@
 								"customid",
 								"11"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -2562,8 +2469,7 @@
 								"schedules",
 								"5a9bbcf14b6f950020ddd373"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -2625,8 +2531,7 @@
 								"schedules",
 								"5a9bbdf99ba09e438cfdde4d"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2658,8 +2563,7 @@
 								"customid",
 								"11"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2694,7 +2598,7 @@
 					},
 					"response": [
 						{
-							"id": "10bc8525-18c8-4bd6-b519-ea8a5ae5fc59",
+							"id": "ee57dd48-548c-4a17-9132-01bc5ccbb802",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -2779,7 +2683,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "5a3dfc1b-44e9-4da2-aedc-c2881f2067e7",
+							"id": "a2908259-9e19-49ad-80f3-48ddad009bb7",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -2925,8 +2829,7 @@
 								"schedules",
 								"5a9066f9df757a2f7035ecd1"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -2983,7 +2886,7 @@
 					},
 					"response": [
 						{
-							"id": "fe55abd3-39dd-42ed-bbfb-16be55e7435c",
+							"id": "353c78ce-b568-43d9-a55c-c1f91b3275ed",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -3068,7 +2971,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "5af9d652-b85e-4f45-9af5-c959f3e06e6b",
+							"id": "a00ac913-f404-44c9-9dd2-7e810e8aa1fd",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -3182,8 +3085,7 @@
 								"customid",
 								"11"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -3253,8 +3155,7 @@
 								"fares",
 								"5a858ff72294cc4fb896e061"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3380,8 +3281,7 @@
 								"fares",
 								"5a83fa1b1104c34bd8a66e72"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3413,8 +3313,7 @@
 								"populate",
 								"5a858ff72294cc4fb896e061"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3446,8 +3345,7 @@
 								"fare",
 								"price"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -3482,22 +3380,18 @@
 							"query": [
 								{
 									"key": "from",
-									"value": "27",
-									"equals": true
+									"value": "27"
 								},
 								{
 									"key": "to",
-									"value": "220",
-									"equals": true
+									"value": "220"
 								},
 								{
 									"key": "route",
-									"value": "ns",
-									"equals": true
+									"value": "ns"
 								}
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -3622,8 +3516,7 @@
 								"fares",
 								"5a96981b3993840b742ab7b5"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3718,38 +3611,6 @@
 			"description": "",
 			"item": [
 				{
-					"name": "update ticket by id : UPDATE",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "x-auth",
-								"value": "{{x-auth}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"_id\": \"5a8b5a4e7474781c44dfc65e\",\n    \"route\": \"EW\",\n    \"passengerId\": {\n        \"_id\": \"5a815c1b205e0c14546476f6\",\n        \"email\": \"tesfaye.belachew@gmail.com\",\n        \"phone\": \"251-917-123456\",\n        \"createdAt\": \"2018-02-25T12:28:00.000Z\",\n        \"modifiedAt\": \"2018-02-25T12:28:00.000Z\"\n    },\n    \"from\": {\n        \"_id\": \"5a7455ec8e130d47c86a03f7\",\n        \"stationId\": 14,\n        \"name\": \"St Michael\",\n        \"route\": \"EW\"\n    },\n    \"to\": {\n        \"_id\": \"5a83e6d2abe26a1a1c0be0c4\",\n        \"stationId\": 118,\n        \"name\": \"Mexico\",\n        \"route\": \"EW\"\n    },\n    \"price\": 3.98,\n    \"__v\": 0,\n    \"modifiedAt\": \"2018-02-25T12:16:49.826Z\",\n    \"createdAt\": \"2018-02-19T23:14:22.794Z\",\n    \"status\": \"unused\",\n    \"type\": \"for adult\",\n    \"id\": \"r1NHbR5Pf\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/tickets/5a8b5a4e7474781c44dfc65e",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"tickets",
-								"5a8b5a4e7474781c44dfc65e"
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
 					"name": "update ticket status by id : UPDATE",
 					"request": {
 						"method": "PUT",
@@ -3777,8 +3638,7 @@
 								"status",
 								"5aaa9d685b0f393f38871a9c"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3798,15 +3658,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \n     \"route\":\"ns\",\n     \"from\": 26,\n     \"to\": 227,\n     \"price\": 4\n}"
+							"raw": "{  \n     \"route\":\"ew\",\n     \"from\": 13,\n     \"to\": 120 \n}"
 						},
 						"url": {
-							"raw": "{{url}}/tickets",
+							"raw": "{{url}}/tickets/",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"tickets"
+								"tickets",
+								""
 							]
 						},
 						"description": "localhost:9000/users"
@@ -3840,8 +3701,7 @@
 								"tickets",
 								" 5aaa9265a4b9633b1459580a"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -3873,8 +3733,7 @@
 								"validate",
 								"ticket"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -3906,8 +3765,7 @@
 								"customid",
 								"rkl7r-OfYz"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -3942,7 +3800,7 @@
 					},
 					"response": [
 						{
-							"id": "18b23fb1-34da-4ebd-b3e6-f15a84300aee",
+							"id": "b1e6c2a7-88cd-4784-a2a0-7d3c1e4625b5",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -4027,7 +3885,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "66b85a91-3c7d-4092-ad72-f650f62d7623",
+							"id": "e2f7cc7a-0b3e-4b95-abee-b075fbaaf717",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -4146,7 +4004,7 @@
 					},
 					"response": [
 						{
-							"id": "eab0ef62-76c1-4d9b-b468-fcc0b9475f40",
+							"id": "e26260d4-ef33-4f74-8927-ae6e519a0cb8",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -4231,7 +4089,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "2f4ae852-8145-4895-af45-b12274b6f9df",
+							"id": "3b9ebb7f-4e76-4e99-ac76-2188a1645339",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -4349,7 +4207,7 @@
 					},
 					"response": [
 						{
-							"id": "454d1e36-02a2-47b5-bb5f-72efd99e67f5",
+							"id": "bca1a0d1-830e-4867-b1de-ccfa09ea7c30",
 							"name": "get all stations: READ",
 							"originalRequest": {
 								"method": "GET",
@@ -4434,7 +4292,7 @@
 							"body": "[{\"_id\":\"5a83f03bfa21cd0698fc186a\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"23\",\"name\":\"Torhailoch 2\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T08:15:55.756Z\",\"modifiedAt\":\"2018-02-14T08:15:55.756Z\",\"route\":\"EW\"},{\"_id\":\"5a83e76fabe26a1a1c0be0cc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"22\",\"name\":\"Torhailoch\",\"longitude\":38.7206376,\"latitude\":9.0095722,\"createdAt\":\"2018-02-14T07:38:23.487Z\",\"modifiedAt\":\"2018-02-14T07:38:23.487Z\",\"route\":\"EW\"},{\"_id\":\"5a83e74eabe26a1a1c0be0ca\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"21\",\"name\":\"Cocacola\",\"longitude\":38.7280203,\"latitude\":9.0160633,\"createdAt\":\"2018-02-14T07:37:50.083Z\",\"modifiedAt\":\"2018-02-14T07:37:50.083Z\",\"route\":\"EW\"},{\"_id\":\"5a83e726abe26a1a1c0be0c8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"20\",\"name\":\"St Lideta\",\"longitude\":38.7373638,\"latitude\":9.0109313,\"createdAt\":\"2018-02-14T07:37:10.037Z\",\"modifiedAt\":\"2018-02-14T07:37:10.037Z\",\"route\":\"EW\"},{\"_id\":\"5a83e700abe26a1a1c0be0c6\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"19\",\"name\":\"Tegbared\",\"longitude\":38.7435072,\"latitude\":9.0110386,\"createdAt\":\"2018-02-14T07:36:32.020Z\",\"modifiedAt\":\"2018-02-14T07:36:32.020Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6d2abe26a1a1c0be0c4\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"18\",\"name\":\"Mexico\",\"longitude\":38.7445091,\"latitude\":9.0102287,\"createdAt\":\"2018-02-14T07:35:46.561Z\",\"modifiedAt\":\"2018-02-14T07:35:46.561Z\",\"route\":\"EW\"},{\"_id\":\"5a83e6ababe26a1a1c0be0c2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"17\",\"name\":\"Leghar\",\"longitude\":38.7537469,\"latitude\":9.0117927,\"createdAt\":\"2018-02-14T07:35:07.517Z\",\"modifiedAt\":\"2018-02-14T07:35:07.517Z\",\"route\":\"EW\"},{\"_id\":\"5a83e683abe26a1a1c0be0c0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"16\",\"name\":\"Stadium\",\"longitude\":38.756779,\"latitude\":9.0130655,\"createdAt\":\"2018-02-14T07:34:27.126Z\",\"modifiedAt\":\"2018-02-14T07:34:27.126Z\",\"route\":\"EW\"},{\"_id\":\"5a83e659abe26a1a1c0be0be\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"15\",\"name\":\"St Estifanos\",\"longitude\":38.7634417,\"latitude\":9.0109387,\"createdAt\":\"2018-02-14T07:33:45.957Z\",\"modifiedAt\":\"2018-02-14T07:33:45.957Z\",\"route\":\"EW\"},{\"_id\":\"5a83e61eabe26a1a1c0be0bc\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"14\",\"name\":\"Bambis\",\"longitude\":38.772033,\"latitude\":9.0100176,\"createdAt\":\"2018-02-14T07:32:46.532Z\",\"modifiedAt\":\"2018-02-14T07:32:46.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5faabe26a1a1c0be0ba\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"13\",\"name\":\"St Urael\",\"longitude\":38.7849234,\"latitude\":8.9952218,\"createdAt\":\"2018-02-14T07:32:10.925Z\",\"modifiedAt\":\"2018-02-14T07:32:10.925Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5cdabe26a1a1c0be0b8\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"12\",\"name\":\"Hayahulet 2\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:31:25.667Z\",\"modifiedAt\":\"2018-02-14T07:31:25.667Z\",\"route\":\"EW\"},{\"_id\":\"5a83e53d4f018d281460fba2\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"11\",\"name\":\"Hayahulet 1\",\"longitude\":38.7893983,\"latitude\":9.0162255,\"createdAt\":\"2018-02-14T07:29:01.396Z\",\"modifiedAt\":\"2018-02-14T07:29:01.396Z\",\"route\":\"EW\"},{\"_id\":\"5a83e5064f018d281460fba0\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"10\",\"name\":\"Lem Hotel\",\"longitude\":38.783239,\"latitude\":9.0148745,\"createdAt\":\"2018-02-14T07:28:06.532Z\",\"modifiedAt\":\"2018-02-14T07:28:06.532Z\",\"route\":\"EW\"},{\"_id\":\"5a83e4c24f018d281460fb9d\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"9\",\"name\":\"Megenagna\",\"longitude\":38.8024029,\"latitude\":9.0204692,\"createdAt\":\"2018-02-14T07:26:58.791Z\",\"modifiedAt\":\"2018-02-14T07:26:58.791Z\",\"route\":\"EW\"},{\"_id\":\"5a83e46c4f018d281460fb9c\",\"userId\":{\"email\":\"tarikuwa.abeje@gmail.com\"},\"stationId\":\"8\",\"name\":\"Gurd Shola 2\",\"longitude\":38.8110718,\"latitude\":9.0199604,\"createdAt\":\"2018-02-14T07:25:32.982Z\",\"modifiedAt\":\"2018-02-14T07:25:32.982Z\",\"route\":\"EW\"},{\"_id\":\"5a7dff23480f3643f41dfc9f\",\"stationId\":\"7\",\"name\":\"Gurd Shola 1\",\"longitude\":38.8139838,\"latitude\":9.0158921,\"createdAt\":\"2018-02-09T20:05:55.739Z\",\"modifiedAt\":\"2018-02-09T20:05:55.740Z\",\"route\":\"EW\"},{\"_id\":\"5a7dfbfd06f32e2cb8deda25\",\"stationId\":\"6\",\"name\":\"Management Institute\",\"longitude\":38.8278991,\"latitude\":9.0212291,\"createdAt\":\"2018-02-09T19:52:29.203Z\",\"modifiedAt\":\"2018-02-09T19:52:29.203Z\",\"route\":\"EW\"},{\"_id\":\"5a7456388e130d47c86a03fa\",\"stationId\":\"5\",\"name\":\"Civil Service College\",\"longitude\":38.8283497,\"latitude\":9.0208389,\"createdAt\":\"2018-02-02T12:14:48.545Z\",\"modifiedAt\":\"2018-02-02T12:14:48.545Z\",\"route\":\"EW\"},{\"_id\":\"5a7455ec8e130d47c86a03f7\",\"stationId\":\"4\",\"name\":\"St Michael\",\"longitude\":38.8403703,\"latitude\":9.0230248,\"createdAt\":\"2018-02-02T12:13:32.776Z\",\"modifiedAt\":\"2018-02-02T12:13:32.776Z\",\"route\":\"EW\"},{\"_id\":\"5a7455be8e130d47c86a03f6\",\"stationId\":\"3\",\"name\":\"CMC\",\"longitude\":38.8510787,\"latitude\":9.0082027,\"createdAt\":\"2018-02-02T12:12:46.185Z\",\"modifiedAt\":\"2018-02-02T12:12:46.185Z\",\"route\":\"EW\"},{\"_id\":\"5a74264fc461a418b08dae07\",\"stationId\":\"2\",\"name\":\"Meri\",\"longitude\":38.863153,\"latitude\":9.0195233,\"createdAt\":\"2018-02-02T08:50:23.602Z\",\"modifiedAt\":\"2018-02-02T08:50:23.602Z\",\"route\":\"EW\"},{\"_id\":\"5a741be70449d804944dce63\",\"stationId\":\"1\",\"name\":\"Hayat\",\"longitude\":38.8717911,\"latitude\":9.0234472,\"createdAt\":\"2018-02-02T08:05:59.029Z\",\"modifiedAt\":\"2018-02-02T08:05:59.029Z\",\"route\":\"EW\"}]"
 						},
 						{
-							"id": "db389344-31b6-4c10-b88a-5c4392ab1cc6",
+							"id": "aa516c5a-5175-4ba4-aec4-aa7227b63e84",
 							"name": "get all stations: response",
 							"originalRequest": {
 								"method": "GET",
@@ -4547,8 +4405,7 @@
 								"tickets",
 								"5aaa9139d1f8f1339c8862f6"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
