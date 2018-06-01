@@ -53,7 +53,7 @@ function create_user(req, res, next) {
       'validation-errors': errors
     });
   }
-  var body = _.pick(req.body, ["username", "password", "phone", "email"]);
+  var body = _.pick(req.body, ["username", "password", "phone", "email","userType"]);
   //var query =_.pick(req.query,["username","password","phone","email"]);
   //console.log(query);
   //take only the required field from req.body object
@@ -76,55 +76,91 @@ function create_user(req, res, next) {
     return res.status(400).json({
       'query_result': phone + " phone is not valid"
     });
-  }
-
-  var userID = userData.username || userData.email || userData.phone;
-  UserDal.findUserByUserID(userID)
-    //UserModel.findByCredentials(userData)
-    .then(user => {
-      console.log("user from user create controller", user)
-      if (!user) {
-        //create user
-
-        UserDal.create(userData)
-          .then(result => {
-            //destruct result array into token and user object
-            let [token, user] = result;
-            //test first whether token exists or not
-            //if(token)  res.header('x-auth')
-            //res.status(201);
-            function formatDate(date){
-              return moment(date).format("YYYY-MM-DD hh:mm:ss A")
-            }
-            if(user){
-              user ={
-                username:user.username ||"",
-              email:user.email||"",
-            phone:user.phone||"",
-            createdDate:formatDate(user.createdAt),
-            modifiedDate:formatDate(user.modifiedAt)
-
-              }
-              res.status(201).header('x-auth', token).send({
-                query_result: "success",
-                user: user
-              });
-            }
-        
-          })
-          .catch(e => {
-            res.status(400).send(e);
-          });
-        //});
-      } else {
-        //user already exists
-        //console.log("error: "+ newUser.email + " already exists");
-        return res.status(400).json({
-          query_result: userID + " already in use."
+  } 
+  if (username.length <= 4) {
+    return res.status(400).json({
+      'query_result': username + " is invalid username. It should be at least five character long"
+    });
+  } 
+console.log("phone",phone);
+  if (phone) {
+    UserDal.findByPhone(phone)
+      .then(user =>{
+        if(user){
+        res.status(400).send({
+          "query_result":phone + " already exist",
+          "user":user
         });
+      } else{
+        UserDal.findByUsername(username)
+                .then(userResult=>{
+                  if(userResult){
+                   return res.status(400).send({
+                      "query_result":username + " already exist",
+                      "user":userResult
+                    });
+                  }else{                    
+                    var userID = userData.username || userData.email || userData.phone;
+                    console.log("userID",userID);
+                    UserDal.findUserByUserID(userID)
+                      //UserModel.findByCredentials(userData)
+                      .then(user => {
+                        console.log("user from user create controller", user);
+                        console.log("!user", !user);
+                        console.log("user==null", user ==null);
+                        if (user ==null) {
+                          //create user
+                          UserDal.create(userData)
+                            .then(result => {
+                              //destruct result array into token and user object
+                              let [token, user] = result;
+                              //test first whether token exists or not
+                              //if(token)  res.header('x-auth')
+                              //res.status(201);
+                              function formatDate(date){
+                                return moment(date).format("YYYY-MM-DD hh:mm:ss A")
+                              }
+                              if(user){
+                                user ={
+                                  username:user.username ||"",
+                                email:user.email||"",
+                              phone:user.phone||"",
+                              createdDate:formatDate(user.createdAt),
+                              modifiedDate:formatDate(user.modifiedAt)
+                  
+                                }
+                                res.status(201).header('x-auth', token).send({
+                                  query_result: "success",
+                                  user: user
+                                });
+                              }
+                          
+                            })
+                            .catch(e => {
+                              res.status(400).send(e);
+                            });
+                          //});
+                        } else {
+                          //user already exists
+                          //console.log("error: "+ newUser.email + " already exists");
+                          return res.status(400).json({
+                            query_result: userID + " already in use."
+                          });
+                        }
+                      })
+                      .catch(e => next(e))
+
+                  }
+                }).catch(error => next(error));
       }
-    })
-    .catch(e => next(e))
+      })
+      .catch(error => next(error));
+      return;
+  }  
+
+ //=====
+ //taken from here: code ref
+ //=====
 }
 
 /**
@@ -234,6 +270,27 @@ function findByUsername(req, res, next) {
 }
 
 /**
+ *5. Find user by their username controller
+ */
+function findByUserPhoneNumber(req, res, next) {
+  console.log('Getting user by phone Number:');
+  var phone = req.params.phone || req.body.phone;
+  //chech if User ObjectId is valid or not
+  var validObjectId = req.params.phone != "";
+  if (phone) {
+    UserDal.findByPhone(phone)
+      .then(user => handleUserResponse(res, req.method, user))
+      .catch(error => next(error));
+  } else {
+    res.status(400).send({
+      "query_result": "Phone required"
+    });
+  }
+
+
+}
+
+/**
  *5. Update User Info Controller
  */
 function updateUserInfo(req, res) {
@@ -333,6 +390,7 @@ module.exports = {
   findAll: findAllUser,
   findById: findUserById,
   findByUsername: findByUsername,
+  findByPhone:findByUserPhoneNumber,
   paginate:getUserByPagination,
   update: updateUserInfo,
   delete: deleteUserById,

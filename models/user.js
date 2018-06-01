@@ -37,7 +37,7 @@ var UserSchema = new Schema({
     type: String,
     require: true,
     unique: true,
-    minlength: 6
+    minlength: 5
   },
   phone: {
     type: String,
@@ -88,7 +88,7 @@ var UserSchema = new Schema({
 
 UserSchema.statics.findByCredentials = function(userAccount, password) {
   var User = this;
-  console.log(userAccount, password);
+  //console.log(userAccount, password);
 
   return new Promise((resolve, reject) => {
     User.findOne({
@@ -136,6 +136,7 @@ UserSchema.methods.generateAuthToken = function() {
   var _this = this;
   var access = 'auth';
   var token = jwt.sign({
+      exp: Math.floor(Date.now() / 1000) + (24*60 * 60),//24hrs or 1day of exprire time
       _id: _this._id.toHexString(),
       access
     },

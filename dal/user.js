@@ -79,6 +79,22 @@ var UserDalModule = (function(UserModel) {
       })
     return defferd.promise;
   }
+    /**
+   *3.Get User by Phone
+   */
+  function getUserByPhoneNumber(phone) {
+    debug('GETTING USER BY PHONE');
+    var defferd = q.defer();
+    UserModel.findOne({
+        phone: phone
+      })
+      //.populate('userId',"firstName lastName username profileImage")
+      .exec((err, user) => {
+        if (err) return defferd.reject(err);
+        return defferd.resolve(user);
+      })
+    return defferd.promise;
+  }
   /**
    *4.FIND USER BY EMAIL
    */
@@ -241,7 +257,8 @@ var UserDalModule = (function(UserModel) {
     login: userLogin,
     findAll: getAllUsers,
     findById: getUserById,
-    findByUsername:getUserByUsername,
+    findByUsername:getUserByUsername,  
+    findByPhone:getUserByPhoneNumber,
     update: updateUser,
     delete: deleteUser,
     findUserByEmail: findUserByEmail,
