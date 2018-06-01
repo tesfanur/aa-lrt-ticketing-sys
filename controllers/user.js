@@ -36,8 +36,8 @@ function handleUserResponse(res, method, doc) {
  */
 function create_user(req, res, next) {
   //validate user input
-
-  req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
+   //user email is optional
+  //req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
   req.checkBody('username', 'username is required').notEmpty();
   req.checkBody('phone', 'phone is required').notEmpty();
   //req.checkBody('confirmPassword', 'password is required').matches();
