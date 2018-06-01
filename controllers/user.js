@@ -36,131 +36,134 @@ function handleUserResponse(res, method, doc) {
  */
 function create_user(req, res, next) {
   //validate user input
-   //user email is optional
+  //user email is optional
   //req.checkBody('email', 'Email you entered is invalid. Please try again').isEmail().trim();
   req.checkBody('username', 'username is required').notEmpty();
   req.checkBody('phone', 'phone is required').notEmpty();
   //req.checkBody('confirmPassword', 'password is required').matches();
   //req.checkBody('password', 'Password doesn\'t match').equals(req.body.confirmPassword);
   req.checkBody('password', 'Password is required').notEmpty();
- 
+
 
   var errors = req.validationErrors();
   if (errors) {
     console.log(errors);
     return res.status(400).json({
-      "query_result":"Incomplete Credentials",
+      "query_result": "Incomplete Credentials",
       'validation-errors': errors
     });
   }
-  var body = _.pick(req.body, ["username", "password", "phone", "email","userType"]);
+  var body = _.pick(req.body, ["username", "password", "phone", "email", "userType"]);
   //var query =_.pick(req.query,["username","password","phone","email"]);
   //console.log(query);
   //take only the required field from req.body object
   //use array and destract method to make the following code
   // var body = _.pick(req.body, ["email", "password", "phone","username"]);
-  var userData = body; 
+  var userData = body;
   //CONVERT BOTH USERNAME & PASSWORD TO LOWERCASE BEFORE LOGIN 
-  if(userData.username) userData.username= userData.username.toLowerCase();
-  if(userData.email) userData.email = userData.email.toLowerCase();
+  if (userData.username) userData.username = userData.username.toLowerCase();
+  if (userData.email) userData.email = userData.email.toLowerCase();
 
   //before creating user check user if it exists
   //findByCredentials
   var username = userData.username || "";
   var email = userData.email || "";
   var phone = userData.phone || "";
-  var validPhone = function(v) {
+  var validPhone = function (v) {
     return /^\+[0-9]{12,13}$/.test(v);
   }
   if (!validPhone(phone) && phone !== "") {
     return res.status(400).json({
       'query_result': phone + " phone is not valid"
     });
-  } 
+  }
   if (username.length <= 4) {
     return res.status(400).json({
       'query_result': username + " is invalid username. It should be at least five character long"
     });
-  } 
-console.log("phone",phone);
+  }
+  console.log("phone", phone);
   if (phone) {
     UserDal.findByPhone(phone)
-      .then(user =>{
-        if(user){
-        res.status(400).send({
-          "query_result":phone + " already exist",
-          "user":user
-        });
-      } else{
-        UserDal.findByUsername(username)
-                .then(userResult=>{
-                  if(userResult){
-                   return res.status(400).send({
-                      "query_result":username + " already exist",
-                      "user":userResult
-                    });
-                  }else{                    
-                    var userID = userData.username || userData.email || userData.phone;
-                    console.log("userID",userID);
-                    UserDal.findUserByUserID(userID)
-                      //UserModel.findByCredentials(userData)
-                      .then(user => {
-                        console.log("user from user create controller", user);
-                        console.log("!user", !user);
-                        console.log("user==null", user ==null);
-                        if (user ==null) {
-                          //create user
-                          UserDal.create(userData)
-                            .then(result => {
-                              //destruct result array into token and user object
-                              let [token, user] = result;
-                              //test first whether token exists or not
-                              //if(token)  res.header('x-auth')
-                              //res.status(201);
-                              function formatDate(date){
-                                return moment(date).format("YYYY-MM-DD hh:mm:ss A")
-                              }
-                              if(user){
-                                user ={
-                                  username:user.username ||"",
-                                email:user.email||"",
-                              phone:user.phone||"",
-                              createdDate:formatDate(user.createdAt),
-                              modifiedDate:formatDate(user.modifiedAt)
-                  
-                                }
-                                res.status(201).header('x-auth', token).send({
-                                  query_result: "success",
-                                  user: user
-                                });
-                              }
-                          
-                            })
-                            .catch(e => {
-                              res.status(400).send(e);
-                            });
-                          //});
-                        } else {
-                          //user already exists
-                          //console.log("error: "+ newUser.email + " already exists");
-                          return res.status(400).json({
-                            query_result: userID + " already in use."
-                          });
-                        }
-                      })
-                      .catch(e => next(e))
+      .then(user => {
+        if (user) {
+          res.status(400).send({
+            "query_result": phone + " already exist",
+            "user": user
+          });
+        } else {
+          UserDal.findByUsername(username)
+            .then(userResult => {
+              if (userResult) {
+                return res.status(400).send({
+                  "query_result": username + " already exist",
+                  "user": userResult
+                });
+              } else {
+                //=====
+                //taken from here: code ref
+                //=====                  
+                var userID = userData.username || userData.email || userData.phone;
+                console.log("userID", userID);
+                UserDal.findUserByUserID(userID)
+                  //UserModel.findByCredentials(userData)
+                  .then(user => {
+                    console.log("user from user create controller", user);
+                    console.log("!user", !user);
+                    console.log("user==null", user == null);
+                    if (user == null) {
+                      //create user
+                      UserDal.create(userData)
+                        .then(result => {
+                          //destruct result array into token and user object
+                          let [token, user] = result;
+                          //test first whether token exists or not
+                          //if(token)  res.header('x-auth')
+                          //res.status(201);
+                          function formatDate(date) {
+                            return moment(date).format("YYYY-MM-DD hh:mm:ss A")
+                          }
+                          if (user) {
+                            user = {
+                              username: user.username || "",
+                              email: user.email || "",
+                              phone: user.phone || "",
+                              createdDate: formatDate(user.createdAt),
+                              modifiedDate: formatDate(user.modifiedAt)
 
-                  }
-                }).catch(error => next(error));
-      }
+                            }
+                            res.status(201).header('x-auth', token).send({
+                              query_result: "success",
+                              user: user
+                            });
+                          }
+
+                        })
+                        .catch(e => {
+                          res.status(400).send(e);
+                        });
+                      //});
+                    } else {
+                      //user already exists
+                      //console.log("error: "+ newUser.email + " already exists");
+                      return res.status(400).json({
+                        query_result: userID + " already in use."
+                      });
+                    }
+                  })
+                  .catch(e => next(e))
+
+              }
+            }).catch(error => next(error));
+        }
       })
       .catch(error => next(error));
-      return;
-  }  
+    return;
+  }
 
- //=====
- //taken from here: code ref
- //=====
+  //=====
+  //taken from here: code ref
+  //=====
 }
 
 /**
@@ -180,11 +183,11 @@ function user_login(req, res, next) {
 
   var user = req.body;
   //CONVERT BOTH USERNAME & PASSWORD TO LOWERCASE BEFORE LOGIN
-  if(user.username) user.username= user.username.toLowerCase();
-  if(user.email)user.email = user.email.toLowerCase();
+  if (user.username) user.username = user.username.toLowerCase();
+  if (user.email) user.email = user.email.toLowerCase();
 
-  var userData = _.pick(user, ['email', 'username', 'phone', 'password']); 
-  
+  var userData = _.pick(user, ['email', 'username', 'phone', 'password']);
+
   UserDal.login(userData)
     .then(result => {
       console.log("result", result)
@@ -370,8 +373,8 @@ function logoutUser(req, res, next) {
     });
 }
 /**
-*Ge user collection by pagination
-**/
+ *Ge user collection by pagination
+ **/
 function getUserByPagination(req, res, next) {
   debug('GET FAQ COLLECTION BY PAGINATION');
   var query = req.query.query || {}; //default query: find all
@@ -390,8 +393,8 @@ module.exports = {
   findAll: findAllUser,
   findById: findUserById,
   findByUsername: findByUsername,
-  findByPhone:findByUserPhoneNumber,
-  paginate:getUserByPagination,
+  findByPhone: findByUserPhoneNumber,
+  paginate: getUserByPagination,
   update: updateUserInfo,
   delete: deleteUserById,
   login: user_login,
