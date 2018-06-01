@@ -277,7 +277,7 @@ function findByUsername(req, res, next) {
  */
 function findByUserPhoneNumber(req, res, next) {
   console.log('Getting user by phone Number:');
-  var phone = req.params.phone || req.body.phone;
+  var phone = req.params.phoneNum || req.body.phone;
   //chech if User ObjectId is valid or not
   var validObjectId = req.params.phone != "";
   if (phone) {

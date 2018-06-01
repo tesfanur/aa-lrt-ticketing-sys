@@ -68,7 +68,7 @@ function findAllUserProfile(req, res, next) {
         "ERROR": "NO userProfile FOUND"
       });
       res.json(userProfiles);
-    }, function(error) {
+    }, function (error) {
       res.status(500).send({
         "ERROR": "Unable to fecth userProfile document!"
       })
@@ -225,7 +225,7 @@ function findUserProfileByPagination(req, res, next) {
   var qs = req.query;
 
   UserProfileDal.paginate(query, qs)
-    .then(function(docs) {
+    .then(function (docs) {
       if (!docs)
         return res.status(404).json({
           message: "Profile not found"

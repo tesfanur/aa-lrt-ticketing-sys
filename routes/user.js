@@ -295,6 +295,8 @@ router.put('/:userId', userController.update);
  *@apiUse UnauthorizedError
  */
 router.delete('/:userId', userController.delete);
+//findByPhone
+router.get('/phone/:phoneNum', userController.findByPhone); 
 router.get('/paginate', userController.paginate); 
 /**
  * @api {get} /users/me/logout Logout User
