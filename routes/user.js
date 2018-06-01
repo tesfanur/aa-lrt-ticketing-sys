@@ -295,8 +295,17 @@ router.put('/:userId', userController.update);
  *@apiUse UnauthorizedError
  */
 router.delete('/:userId', userController.delete);
-router.get('/paginate', userController.paginate);
-//router.delete('/me/logout', userController.logout);
+router.get('/paginate', userController.paginate); 
+/**
+ * @api {get} /users/me/logout Logout User
+ * @apiName logout
+ * @apiGroup User
+ * @apiDescription Logout a user
+ * @apiVersion 0.1.0  
+ * @apiSuccessExample Response Example
+ *http status 204
+ *http Authorization header is set to null 
+ */
 router.get('/me/logout', userController.logout);
 //expose router to other files
 module.exports =router;

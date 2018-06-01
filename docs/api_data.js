@@ -4793,6 +4793,26 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "/users/me/logout",
+    "title": "Logout User",
+    "name": "logout",
+    "group": "User",
+    "description": "<p>Logout a user</p>",
+    "version": "0.1.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Response Example",
+          "content": "http status 204\nhttp Authorization header is set to null",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "routes/user.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "put",
     "url": "/users/:userId",
     "title": "Update User",
